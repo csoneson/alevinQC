@@ -1,0 +1,155 @@
+---
+title: "Alevin example report"
+output: 
+  html_document:
+    theme: sandstone
+    toc: true
+    toc_float: true
+    df_print: kable
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+suppressPackageStartupMessages({
+    library(ggplot2)
+    library(GGally)
+    library(dplyr)
+    library(rjson)
+})
+```
+
+```{r}
+alevinDir <- file.path(baseDir, "alevin")
+```
+
+## Read necessary files
+
+```{r}
+## Raw CB frequencies
+rawcbfreq <- read.delim(file.path(alevinDir, "raw_cb_frequency.txt"), 
+                        header = FALSE, as.is = TRUE) %>%
+    dplyr::rename(CB = V1, originalFreq = V2) %>%
+    dplyr::mutate(ranking = seq_len(length(CB)))
+
+## First set of whitelisted CBs (quantified)
+filtcbfreq <- read.delim(file.path(alevinDir, "filtered_cb_frequency.txt"),
+                         header = FALSE, as.is = TRUE) %>%
+    dplyr::rename(CB = V1, collapsedFreq = V2) %>%
+    dplyr::left_join(rawcbfreq, by = "CB")
+
+## featureDump
+featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
+                          header = FALSE, as.is = TRUE) %>%
+    dplyr::rename(CB = V1, mappingRate = V2, duplicationRate = V3,
+                  unknown1 = V4, nbrGenes = V5)
+
+## mapped UMI
+mappedumi <- read.delim(file.path(alevinDir, "MappedUmi.txt"),
+                        header = FALSE, as.is = TRUE) %>%
+    dplyr::rename(CB = V1, nbrMappedUMI = V2)
+
+## Final set of whitelisted CBs
+finalwhitelist <- read.delim(file.path(alevinDir, "whitelist.txt"), 
+                             header = FALSE, as.is = TRUE)$V1
+
+## Quantification
+quantmat <- ReadAlevin(baseDir)
+quants <- data.frame(CB = colnames(quantmat),
+                     totalUMICount = colSums(quantmat),
+                     nbrGenes2 = colSums(quantmat >= 0.05),
+                     stringsAsFactors = FALSE)
+
+## Merge information about quantified CBs
+quantbcs <- filtcbfreq %>% 
+    dplyr::full_join(featuredump, by = "CB") %>%
+    dplyr::full_join(mappedumi, by = "CB") %>%
+    dplyr::full_join(quants, by = "CB") %>%
+    dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist)
+
+metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json"))
+cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
+```
+
+## Knee plot
+
+```{r}
+ggplot(rawcbfreq %>% dplyr::mutate(origwl = (ranking <= nrow(quantbcs))),
+       aes(x = ranking, y = originalFreq)) + 
+    geom_line(size = 2, aes(color = origwl)) + scale_x_log10() + scale_y_log10() + 
+    xlab("Barcode rank") + ylab("Barcode frequency") + 
+    theme_bw() + theme(legend.position = "none") + 
+    scale_color_manual(values = c(`TRUE` = "red", `FALSE` = "black")) + 
+    geom_label(data = rawcbfreq[nrow(quantbcs), ], 
+               aes(label = paste0("(", ranking, ", ", originalFreq, ")")),
+               hjust = 0, nudge_x = 0.1)
+```
+
+## Correcting barcodes and merging with original whitelist
+
+```{r}
+ggplot(quantbcs, aes(x = originalFreq, y = collapsedFreq, color = inFinalWhiteList)) + 
+    geom_abline(slope = 1, intercept = 0) + 
+    geom_point() + theme_bw() + 
+    scale_color_manual(values = c(`TRUE` = "red", `FALSE` = "darkgreen")) + 
+    xlab("Barcode frequency, original whitelist") + 
+    ylab("Barcode frequency, following reassignment")
+```
+
+## Quantification
+
+```{r}
+## This plot will say something about whether the reads are in genes, and the UMI efficiency
+ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
+                                   `Total UMI count` = "totalUMICount",
+                                   `Nbr detected genes` = "nbrGenes2"),
+        mapping = aes(colour = inFinalWhiteList), 
+        columns = c("Barcode frequency", "Total UMI count", 
+                    "Nbr detected genes"),
+    upper = list(continuous = function(data, mapping, ...) {
+         ggally_cor(data = data, mapping = mapping) + 
+            scale_colour_manual(values = c("darkgreen", "red"))}),
+    lower = list(continuous = function(data, mapping, ...) {
+         ggally_points(data = data, mapping = mapping, alpha = 0.5) + 
+            scale_colour_manual(values = c("darkgreen", "red"))}),
+    diag = list(continuous = function(data, mapping, ...) {
+         ggally_densityDiag(data = data, mapping = mapping, alpha = 0.5) + 
+            scale_fill_manual(values = c("darkgreen", "red"))})) + 
+    theme_bw()
+```
+
+```{r}
+t(data.frame(`Total number of processed reads` = metainfo$num_processed,
+             `Number of reads with valid barcode (no Ns)` = round(sum(rawcbfreq$originalFreq)),
+             `Nbr whitelisted barcodes (first round)` = nrow(quantbcs),
+             `Fraction reads in whitelisted barcodes` = sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq),
+             `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
+             `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
+             `Median nbr detected genes` = median(quantbcs$nbrGenes2),
+             `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
+             `Median UMI count` = median(quantbcs$totalUMICount),
+             `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
+             `Fraction reads in final whitelisted barcodes` = sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq),
+             check.names = FALSE))
+
+t(data.frame(`Start time` = metainfo$start_time,
+             `Salmon version` = metainfo$salmon_version,
+             `Index` = cmdinfo$index,
+             `R1file` = cmdinfo$mates1,
+             `R2file` = cmdinfo$mates2,
+             `tgMap` = cmdinfo$tgMap,
+             stringsAsFactors = FALSE,
+             check.names = FALSE))
+```
+
+## Session info
+
+```{r}
+sessionInfo()
+```
+
