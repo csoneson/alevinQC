@@ -55,7 +55,13 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     ## This function was inspired by code from Nicholas Hamilton, provided at
     ## http://stackoverflow.com/questions/37097535/generate-report-in-r
 
-    if (is.null(outputFormat)) outputFormat <- "html_document"
+    if (is.null(outputFormat)) {
+        if (tools::file_ext(outputFile) == "pdf") {
+            outputFormat <- "pdf_document"
+        } else {
+            outputFormat <- "html_document"
+        }
+    }
 
     ## Check if pandoc and pandoc-citeproc is available
     if (Sys.which("pandoc") == "") {
