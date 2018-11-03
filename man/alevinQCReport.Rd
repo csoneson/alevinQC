@@ -4,16 +4,45 @@
 \alias{alevinQCReport}
 \title{Generate Alevin summary report}
 \usage{
-alevinQCReport(baseDir, outputFile, outputDir = "./",
+alevinQCReport(baseDir, sampleId, outputFile, outputDir = "./",
   outputFormat = NULL, showCode = FALSE, forceOverwrite = FALSE,
-  sampleId, knitrProgress = FALSE, quiet = FALSE,
-  ignorePandoc = FALSE, ...)
+  knitrProgress = FALSE, quiet = FALSE, ignorePandoc = FALSE, ...)
 }
 \arguments{
-\item{sampleId}{Sample ID}
+\item{baseDir}{Path to the output directory from the Alevin run (should be
+the directory containing the \code{alevin} directory).}
 
-\item{basedir}{Base directory (should be the directory containing the
-\code{alevin} directory).}
+\item{sampleId}{Sample ID, will be used set the title for the report}
+
+\item{outputFile}{File name of the output report. The file name extension
+must be either \code{.html} or \code{.pdf}, depending on the value of
+\code{outputFormat}.}
+
+\item{outputDir}{Path to the output directory where the report will be
+generated.}
+
+\item{outputFormat}{The format of the output report. Either
+\code{"html_document"} or \code{"pdf_document"}. The file name extension of
+\code{outputFile} must be consistent with this choice.}
+
+\item{showCode}{Logical, whether to display the R code in the output report.}
+
+\item{forceOverwrite}{Logical, whether to force overwrite an existing report
+with the same name in the output directory.}
+
+\item{knitrProgress}{Logical, whether to display the progress of \code{knitr}
+when generating the report.}
+
+\item{quiet}{Logical, whether to show progress messages.}
+
+\item{ignorePandoc}{Logical, determines what to do if \code{pandoc} or
+\code{pandoc-citeproc} is missing (if \code{Sys.which("pandoc")} or
+\code{Sys.which("pandoc-citeproc")} returns ""). If \code{ignorePandoc} is
+TRUE, only a warning is given. The figures will be generated, but not the
+final report. If \code{ignorePandoc} is FALSE (default), the execution
+stops immediately.}
+
+\item{...}{Other arguments that will be passed to \code{rmarkdown::render}.}
 }
 \value{
 No value is returned, but a report is generated in the
@@ -21,7 +50,7 @@ No value is returned, but a report is generated in the
 }
 \description{
 Generate a report summarizing the main aspects of an Alevin quantification
-run. The report generation assumes that Alevin has been run with
+run. The report generation assumes that Alevin has been run with the
 --dumpFeatures flag to generate the necessary output files.
 }
 \details{

@@ -14,7 +14,7 @@ editor_options:
 title: "`r paste0('Alevin report, ', sampleId)`"
 ---
 
-```{r setup, include = FALSE}
+```{r prep, include = FALSE}
 knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
 knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
@@ -63,7 +63,7 @@ finalwhitelist <- read.delim(file.path(alevinDir, "whitelist.txt"),
                              header = FALSE, as.is = TRUE)$V1
 
 ## Quantification
-quantmat <- ReadAlevin(baseDir)
+quantmat <- readAlevin(baseDir)
 quants <- data.frame(CB = colnames(quantmat),
                      totalUMICount = colSums(quantmat),
                      nbrGenes2 = colSums(quantmat >= 0.05),
@@ -81,14 +81,55 @@ metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json")
 cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
 ```
 
+## Version info
+
+```{r}
+knitr::kable(
+    t(data.frame(`Start time` = metainfo$start_time,
+                 `Salmon version` = metainfo$salmon_version,
+                 `Index` = cmdinfo$index,
+                 `R1file` = cmdinfo$mates1,
+                 `R2file` = cmdinfo$mates2,
+                 `tgMap` = cmdinfo$tgMap,
+                 stringsAsFactors = FALSE,
+                 check.names = FALSE))
+)
+```
+
+## Summary table
+
+```{r}
+knitr::kable(
+    t(data.frame(`Total number of processed reads` = as.character(metainfo$num_processed),
+                 `Number of reads with valid barcode (no Ns)` = as.character(round(sum(rawcbfreq$originalFreq))),
+                 `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
+                 `Fraction reads in whitelisted barcodes` = paste0(signif(100 * sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq), 4), "%"),
+                 `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
+                 `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
+                 `Median nbr detected genes` = median(quantbcs$nbrGenes2),
+                 `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
+                 `Median UMI count` = median(quantbcs$totalUMICount),
+                 `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
+                 `Fraction reads in final whitelisted barcodes` = paste0(signif(100 *  sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq), 4), "%"),
+                 stringsAsFactors = FALSE,
+                 check.names = FALSE))
+)
+```
+
 ## Knee plot
+
+The knee plot displays the number of times a cell barcode is observed, and is
+used to define an initial set of whitelisted cell barcodes.
 
 ```{r}
 ggplot(rawcbfreq %>% dplyr::mutate(origwl = (ranking <= nrow(quantbcs))),
        aes(x = ranking, y = originalFreq)) + 
-    geom_line(size = 2, aes(color = origwl)) + scale_x_log10() + scale_y_log10() + 
-    xlab("Barcode rank") + ylab("Barcode frequency") + 
-    theme_bw() + theme(legend.position = "none") + 
+    geom_line(size = 2, aes(color = origwl)) + 
+    scale_x_log10() + scale_y_log10() + 
+    xlab("Cell barcode rank") + ylab("Cell barcode frequency") + 
+    theme_bw() + 
+    theme(legend.position = "none",
+          axis.title = element_text(size = 12)) + 
     scale_color_manual(values = c(`TRUE` = "red", `FALSE` = "black")) + 
     geom_label(data = rawcbfreq[nrow(quantbcs), ], 
                aes(label = paste0("(", ranking, ", ", originalFreq, ")")),
@@ -97,19 +138,39 @@ ggplot(rawcbfreq %>% dplyr::mutate(origwl = (ranking <= nrow(quantbcs))),
 
 ## Correcting barcodes and merging with original whitelist
 
+Once the initial set of whitelisted cell barcodes is defined, Alevin goes
+through the remaining cell barcodes. If a cell barcode is similar enough to a
+whitelisted barcode, it will be corrected to the whitelisted one. The figure
+below shows the original frequency of the whitelisted barcodes vs the frequency
+after this correction. The reads corresponding to cell barcodes that can not be
+corrected to whitelisted barcode are discarded. After quantification, a
+refinement of the cell barcode whitelist is performed, with the aim to exclude
+low quality cells. The color in the figure below indicates whether a cell
+barcode is included in this final whitelist.
+
 ```{r}
 ggplot(quantbcs, aes(x = originalFreq, y = collapsedFreq, color = inFinalWhiteList)) + 
     geom_abline(slope = 1, intercept = 0) + 
     geom_point() + theme_bw() + 
+    theme(axis.title = element_text(size = 12)) + 
     scale_color_manual(values = c(`TRUE` = "red", `FALSE` = "darkgreen")) + 
-    xlab("Barcode frequency, original whitelist") + 
-    ylab("Barcode frequency, following reassignment")
+    xlab("Cell barcode frequency, original whitelist") + 
+    ylab("Cell barcode frequency, following reassignment")
 ```
 
 ## Quantification
 
+The plots below show the association between the cell barcode frequency (the
+number of observed reads corresponding to a cell barcode), the total UMI count
+(obtained by summing the UMI counts for the individual genes in the returned
+count matrix) and the number of detected genes (also obtained from the returned
+count matrix). The cell barcodes are colored by whether or not they are included
+in the final whitelist.
+
+These figures can give an indication of whether the sequenced reads actually
+align to genes, as well as the duplication rate.
+
 ```{r}
-## This plot will say something about whether the reads are in genes, and the UMI efficiency
 ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
                                    `Total UMI count` = "totalUMICount",
                                    `Nbr detected genes` = "nbrGenes2"),
@@ -126,34 +187,6 @@ ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
          ggally_densityDiag(data = data, mapping = mapping, alpha = 0.5) + 
             scale_fill_manual(values = c("darkgreen", "red"))})) + 
     theme_bw()
-```
-
-```{r}
-knitr::kable(
-    t(data.frame(`Total number of processed reads` = metainfo$num_processed,
-                 `Number of reads with valid barcode (no Ns)` = round(sum(rawcbfreq$originalFreq)),
-                 `Nbr whitelisted barcodes (first round)` = nrow(quantbcs),
-                 `Fraction reads in whitelisted barcodes` = sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq),
-                 `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
-                 `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
-                 `Median nbr detected genes` = median(quantbcs$nbrGenes2),
-                 `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
-                 `Median UMI count` = median(quantbcs$totalUMICount),
-                 `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
-                 `Fraction reads in final whitelisted barcodes` = sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq),
-                 check.names = FALSE))
-)
-
-knitr::kable(
-    t(data.frame(`Start time` = metainfo$start_time,
-                 `Salmon version` = metainfo$salmon_version,
-                 `Index` = cmdinfo$index,
-                 `R1file` = cmdinfo$mates1,
-                 `R2file` = cmdinfo$mates2,
-                 `tgMap` = cmdinfo$tgMap,
-                 stringsAsFactors = FALSE,
-                 check.names = FALSE))
-)
 ```
 
 ## Session info
