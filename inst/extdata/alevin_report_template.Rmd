@@ -173,7 +173,7 @@ count matrix). The cell barcodes are colored by whether or not they are included
 in the final whitelist.
 
 These figures can give an indication of whether the sequenced reads actually
-align to genes, as well as the duplication rate.
+align to genes, as well as the duplication rate and the degree of saturation.
 
 ```{r}
 if (!quiet) message("Generating quantification summary plot...")
@@ -194,6 +194,24 @@ ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
             scale_fill_manual(values = c("darkgreen", "red"))})) + 
     theme_bw()
 ```
+
+## Knee plot, number of detected genes
+
+The plot below shows the number of detected genes as a function of barcode rank,
+for the first set of whitelisted barcodes.
+
+```{r}
+ggplot(quantbcs %>% dplyr::arrange(desc(nbrGenes2)) %>%
+           dplyr::mutate(x = seq_along(nbrGenes2)), 
+       aes(x = x, y = nbrGenes2)) + 
+    geom_line(size = 2) + 
+    #scale_x_log10() + scale_y_log10() + 
+    xlab("Cell barcode rank") + ylab("Number of detected genes") + 
+    theme_bw() + 
+    theme(legend.position = "none",
+          axis.title = element_text(size = 12))
+```
+
 
 ## Session info
 
