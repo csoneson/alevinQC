@@ -1,39 +1,52 @@
-## Function from Avi Srivastava, to read binary Alevin quant matrix
-ReadAlevin <- function(base.path = NULL) {
-    if (!dir.exists(base.path)) {
+#' Read binary Alevin quant matrix
+#'
+#' @param baseDir Path to the output directory from the Alevin run
+#'
+#' @author Avi Srivastava
+#'
+#' @export
+#'
+#' @return A matrix with gene counts for the whitelisted barcodes. Rows
+#'   represent genes, columns cell barcodes.
+#'
+readAlevin <- function(baseDir = NULL, quiet = TRUE) {
+    if (!dir.exists(baseDir)) {
         stop("Directory provided does not exist")
     }
-    barcode.loc <- file.path(base.path, "alevin/quants_mat_rows.txt")
-    gene.loc <- file.path(base.path, "alevin/quants_mat_cols.txt")
-    matrix.loc <- file.path(base.path, "alevin/quants_mat.gz")
+    barcodeFile <- file.path(baseDir, "alevin/quants_mat_rows.txt")
+    geneFile <- file.path(baseDir, "alevin/quants_mat_cols.txt")
+    matrixFile <- file.path(baseDir, "alevin/quants_mat.gz")
 
-    if (!file.exists(barcode.loc)) {
+    if (!file.exists(barcodeFile)) {
         stop("Barcode file missing")
     }
-    if (!file.exists(gene.loc)) {
+    if (!file.exists(geneFile)) {
         stop("Gene name file missing")
     }
-    if (!file.exists(matrix.loc)) {
+    if (!file.exists(matrixFile)) {
         stop("Expression matrix file missing")
     }
 
-    cell.names <- readLines(barcode.loc)
-    gene.names <- readLines(gene.loc)
-    num.cells <- length(cell.names)
-    num.genes <- length(gene.names)
+    cellNames <- readLines(barcodeFile)
+    geneNames <- readLines(geneFile)
+    numCells <- length(cellNames)
+    numGenes <- length(geneNames)
 
-    out.matrix <- matrix(NA, nrow = num.genes, ncol = num.cells)
-    con <- gzcon(file(matrix.loc, "rb"))
+    outMatrix <- matrix(NA, nrow = numGenes, ncol = numCells)
+    con <- gzcon(file(matrixFile, "rb"))
 
-    total.molecules <- 0.0
-    for (n in seq_len(num.cells)) {
-        out.matrix[, n] <- readBin(con, double(), endian = "little", n = num.genes)
-        total.molecules <- total.molecules + sum(out.matrix[, n])
+    totalMolecules <- 0.0
+    for (n in seq_len(numCells)) {
+        outMatrix[, n] <- readBin(con, double(), endian = "little", n = numGenes)
+        totalMolecules <- totalMolecules + sum(outMatrix[, n])
     }
 
-    colnames(out.matrix) <- cell.names
-    rownames(out.matrix) <- gene.names
+    colnames(outMatrix) <- cellNames
+    rownames(outMatrix) <- geneNames
 
-    print(paste("Found total ", round(total.molecules), " molecules."))
-    return(out.matrix)
+    if (!quiet) {
+        print(paste("Found total ", round(totalMolecules), " molecules."))
+    }
+
+    return(outMatrix)
 }

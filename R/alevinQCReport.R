@@ -1,12 +1,33 @@
 #' Generate Alevin summary report
 #'
 #' Generate a report summarizing the main aspects of an Alevin quantification
-#' run. The report generation assumes that Alevin has been run with
+#' run. The report generation assumes that Alevin has been run with the
 #' --dumpFeatures flag to generate the necessary output files.
 #'
-#' @param basedir Base directory (should be the directory containing the
-#'   \code{alevin} directory).
-#' @param sampleId Sample ID
+#' @param baseDir Path to the output directory from the Alevin run (should be
+#'   the directory containing the \code{alevin} directory).
+#' @param sampleId Sample ID, will be used set the title for the report
+#' @param outputFile File name of the output report. The file name extension
+#'   must be either \code{.html} or \code{.pdf}, depending on the value of
+#'   \code{outputFormat}.
+#' @param outputDir Path to the output directory where the report will be
+#'   generated.
+#' @param outputFormat The format of the output report. Either
+#'   \code{"html_document"} or \code{"pdf_document"}. The file name extension of
+#'   \code{outputFile} must be consistent with this choice.
+#' @param showCode Logical, whether to display the R code in the output report.
+#' @param forceOverwrite Logical, whether to force overwrite an existing report
+#'   with the same name in the output directory.
+#' @param knitrProgress Logical, whether to display the progress of \code{knitr}
+#'   when generating the report.
+#' @param quiet Logical, whether to show progress messages.
+#' @param ignorePandoc Logical, determines what to do if \code{pandoc} or
+#'   \code{pandoc-citeproc} is missing (if \code{Sys.which("pandoc")} or
+#'   \code{Sys.which("pandoc-citeproc")} returns ""). If \code{ignorePandoc} is
+#'   TRUE, only a warning is given. The figures will be generated, but not the
+#'   final report. If \code{ignorePandoc} is FALSE (default), the execution
+#'   stops immediately.
+#' @param ... Other arguments that will be passed to \code{rmarkdown::render}.
 #'
 #' @author Charlotte Soneson
 #'
@@ -19,6 +40,7 @@
 #'   generated.
 #'
 #' @export
+#'
 #' @importFrom rmarkdown render
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom methods is
@@ -28,11 +50,10 @@
 #'
 #' @examples
 #'
-alevinQCReport <- function(baseDir, outputFile, outputDir = "./",
-                           outputFormat = NULL,
-                           showCode = FALSE, forceOverwrite = FALSE,
-                           sampleId, knitrProgress = FALSE, quiet = FALSE,
-                           ignorePandoc = FALSE, ...) {
+alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
+                           outputFormat = NULL, showCode = FALSE,
+                           forceOverwrite = FALSE, knitrProgress = FALSE,
+                           quiet = FALSE, ignorePandoc = FALSE, ...) {
     ## This function was inspired by code from Nicholas Hamilton, provided at
     ## http://stackoverflow.com/questions/37097535/generate-report-in-r
 

@@ -1,36 +1,40 @@
 ---
-title: "Alevin example report"
 output: 
-  html_document:
-    theme: sandstone
-    toc: true
-    toc_float: true
-    df_print: kable
-    code_folding: hide
+    html_document:
+        theme: sandstone
+        toc: true
+        toc_float: true
+        df_print: kable
+        code_folding: show
+    pdf_document:
+        toc: true
+always_allow_html: yes
 editor_options: 
-  chunk_output_type: console
+    chunk_output_type: console
+title: "`r paste0('Alevin report, ', sampleId)`"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
+knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
 
-```{r}
+```{r setup}
+## -------------------------------------------------------------------------- ##
+## Load packages
+## -------------------------------------------------------------------------- ##
 suppressPackageStartupMessages({
     library(ggplot2)
     library(GGally)
     library(dplyr)
     library(rjson)
 })
-```
 
-```{r}
 alevinDir <- file.path(baseDir, "alevin")
-```
 
-## Read necessary files
-
-```{r}
+## -------------------------------------------------------------------------- ##
+## Read files
+## -------------------------------------------------------------------------- ##
 ## Raw CB frequencies
 rawcbfreq <- read.delim(file.path(alevinDir, "raw_cb_frequency.txt"), 
                         header = FALSE, as.is = TRUE) %>%
@@ -43,13 +47,13 @@ filtcbfreq <- read.delim(file.path(alevinDir, "filtered_cb_frequency.txt"),
     dplyr::rename(CB = V1, collapsedFreq = V2) %>%
     dplyr::left_join(rawcbfreq, by = "CB")
 
-## featureDump
+## FeatureDump
 featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
                           header = FALSE, as.is = TRUE) %>%
     dplyr::rename(CB = V1, mappingRate = V2, duplicationRate = V3,
                   unknown1 = V4, nbrGenes = V5)
 
-## mapped UMI
+## Mapped UMI
 mappedumi <- read.delim(file.path(alevinDir, "MappedUmi.txt"),
                         header = FALSE, as.is = TRUE) %>%
     dplyr::rename(CB = V1, nbrMappedUMI = V2)
@@ -72,6 +76,7 @@ quantbcs <- filtcbfreq %>%
     dplyr::full_join(quants, by = "CB") %>%
     dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist)
 
+## Meta information and command information
 metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json"))
 cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
 ```
@@ -124,27 +129,31 @@ ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
 ```
 
 ```{r}
-t(data.frame(`Total number of processed reads` = metainfo$num_processed,
-             `Number of reads with valid barcode (no Ns)` = round(sum(rawcbfreq$originalFreq)),
-             `Nbr whitelisted barcodes (first round)` = nrow(quantbcs),
-             `Fraction reads in whitelisted barcodes` = sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq),
-             `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
-             `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
-             `Median nbr detected genes` = median(quantbcs$nbrGenes2),
-             `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
-             `Median UMI count` = median(quantbcs$totalUMICount),
-             `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
-             `Fraction reads in final whitelisted barcodes` = sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq),
-             check.names = FALSE))
+knitr::kable(
+    t(data.frame(`Total number of processed reads` = metainfo$num_processed,
+                 `Number of reads with valid barcode (no Ns)` = round(sum(rawcbfreq$originalFreq)),
+                 `Nbr whitelisted barcodes (first round)` = nrow(quantbcs),
+                 `Fraction reads in whitelisted barcodes` = sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq),
+                 `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
+                 `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
+                 `Median nbr detected genes` = median(quantbcs$nbrGenes2),
+                 `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
+                 `Median UMI count` = median(quantbcs$totalUMICount),
+                 `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
+                 `Fraction reads in final whitelisted barcodes` = sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq),
+                 check.names = FALSE))
+)
 
-t(data.frame(`Start time` = metainfo$start_time,
-             `Salmon version` = metainfo$salmon_version,
-             `Index` = cmdinfo$index,
-             `R1file` = cmdinfo$mates1,
-             `R2file` = cmdinfo$mates2,
-             `tgMap` = cmdinfo$tgMap,
-             stringsAsFactors = FALSE,
-             check.names = FALSE))
+knitr::kable(
+    t(data.frame(`Start time` = metainfo$start_time,
+                 `Salmon version` = metainfo$salmon_version,
+                 `Index` = cmdinfo$index,
+                 `R1file` = cmdinfo$mates1,
+                 `R2file` = cmdinfo$mates2,
+                 `tgMap` = cmdinfo$tgMap,
+                 stringsAsFactors = FALSE,
+                 check.names = FALSE))
+)
 ```
 
 ## Session info
