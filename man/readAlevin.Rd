@@ -8,6 +8,9 @@ readAlevin(baseDir = NULL, quiet = TRUE)
 }
 \arguments{
 \item{baseDir}{Path to the output directory from the Alevin run}
+
+\item{quiet}{Logical, whether to suppress printing of the number of detected
+molecules.}
 }
 \value{
 A matrix with gene counts for the whitelisted barcodes. Rows

@@ -1,6 +1,8 @@
 #' Read binary Alevin quant matrix
 #'
 #' @param baseDir Path to the output directory from the Alevin run
+#' @param quiet Logical, whether to suppress printing of the number of detected
+#'   molecules.
 #'
 #' @author Avi Srivastava
 #'

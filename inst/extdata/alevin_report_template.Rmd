@@ -23,6 +23,7 @@ knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ## -------------------------------------------------------------------------- ##
 ## Load packages
 ## -------------------------------------------------------------------------- ##
+if (!quiet) message("Loading packages...")
 suppressPackageStartupMessages({
     library(ggplot2)
     library(GGally)
@@ -35,6 +36,7 @@ alevinDir <- file.path(baseDir, "alevin")
 ## -------------------------------------------------------------------------- ##
 ## Read files
 ## -------------------------------------------------------------------------- ##
+if (!quiet) message("Reading Alevin output files...")
 ## Raw CB frequencies
 rawcbfreq <- read.delim(file.path(alevinDir, "raw_cb_frequency.txt"), 
                         header = FALSE, as.is = TRUE) %>%
@@ -99,6 +101,7 @@ knitr::kable(
 ## Summary table
 
 ```{r}
+if (!quiet) message("Generating summary table...")
 knitr::kable(
     t(data.frame(`Total number of processed reads` = as.character(metainfo$num_processed),
                  `Number of reads with valid barcode (no Ns)` = as.character(round(sum(rawcbfreq$originalFreq))),
@@ -122,6 +125,7 @@ The knee plot displays the number of times a cell barcode is observed, and is
 used to define an initial set of whitelisted cell barcodes.
 
 ```{r}
+if (!quiet) message("Generating knee plot...")
 ggplot(rawcbfreq %>% dplyr::mutate(origwl = (ranking <= nrow(quantbcs))),
        aes(x = ranking, y = originalFreq)) + 
     geom_line(size = 2, aes(color = origwl)) + 
@@ -149,6 +153,7 @@ low quality cells. The color in the figure below indicates whether a cell
 barcode is included in this final whitelist.
 
 ```{r}
+if (!quiet) message("Generating barcode collapsing plot...")
 ggplot(quantbcs, aes(x = originalFreq, y = collapsedFreq, color = inFinalWhiteList)) + 
     geom_abline(slope = 1, intercept = 0) + 
     geom_point() + theme_bw() + 
@@ -171,6 +176,7 @@ These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate.
 
 ```{r}
+if (!quiet) message("Generating quantification summary plot...")
 ggpairs(quantbcs %>% dplyr::rename(`Barcode frequency` = "collapsedFreq",
                                    `Total UMI count` = "totalUMICount",
                                    `Nbr detected genes` = "nbrGenes2"),

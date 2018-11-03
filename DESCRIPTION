@@ -4,8 +4,8 @@ Title: Generate QC Report For Alevin Output
 Version: 0.1.0
 Author: Charlotte Soneson, Avi Srivastava
 Maintainer: Charlotte Soneson <charlottesoneson@gmail.com>
-Description: Generate QC report for Alevin output
-License: MIT
+Description: Generate QC report for Alevin output.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
     rmarkdown,

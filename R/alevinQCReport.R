@@ -48,8 +48,6 @@
 #' @return No value is returned, but a report is generated in the
 #'   \code{outputDir} directory.
 #'
-#' @examples
-#'
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,
                            forceOverwrite = FALSE, knitrProgress = FALSE,

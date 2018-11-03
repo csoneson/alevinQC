@@ -62,9 +62,6 @@ When the function is called, an .Rmd template file will be copied
   the copied template in the output folder will be deleted once the report is
   generated.
 }
-\examples{
-
-}
 \author{
 Charlotte Soneson
 }
