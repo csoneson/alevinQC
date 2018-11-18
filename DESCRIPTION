@@ -10,5 +10,12 @@ Encoding: UTF-8
 Imports: 
     rmarkdown,
     tools,
-    methods
-RoxygenNote: 6.1.0
+    methods,
+    ggplot2,
+    GGally,
+    dplyr,
+    rjson,
+    shiny,
+    shinydashboard,
+    DT
+RoxygenNote: 6.1.1
