@@ -17,5 +17,7 @@ Imports:
     rjson,
     shiny,
     shinydashboard,
-    DT
+    DT,
+    stats,
+    utils
 RoxygenNote: 6.1.1

@@ -38,8 +38,8 @@ alevinDir <- file.path(baseDir, "alevin")
 ## -------------------------------------------------------------------------- ##
 if (!quiet) message("Reading Alevin output files...")
 ## Raw CB frequencies
-rawcbfreq <- read.delim(file.path(alevinDir, "raw_cb_frequency.txt"), 
-                        header = FALSE, as.is = TRUE) %>%
+rawcbfreq <- utils::read.delim(file.path(alevinDir, "raw_cb_frequency.txt"), 
+                               header = FALSE, as.is = TRUE) %>%
     dplyr::rename(CB = V1, originalFreq = V2) %>%
     dplyr::mutate(ranking = seq_len(length(CB)))
 
@@ -108,10 +108,10 @@ knitr::kable(
                  `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
                  `Fraction reads in whitelisted barcodes` = paste0(signif(100 * sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq), 4), "%"),
                  `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
-                 `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
-                 `Median nbr detected genes` = median(quantbcs$nbrGenes2),
+                 `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq)),
+                 `Median nbr detected genes` = stats::median(quantbcs$nbrGenes2),
                  `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
-                 `Median UMI count` = median(quantbcs$totalUMICount),
+                 `Median UMI count` = stats::median(quantbcs$totalUMICount),
                  `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
                  `Fraction reads in final whitelisted barcodes` = paste0(signif(100 *  sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq), 4), "%"),
                  stringsAsFactors = FALSE,

@@ -1,20 +1,38 @@
+#' Generate Alevin summary shiny app
+#'
+#' Generate a shiny app summarizing the main aspects of an Alevin quantification
+#' run. The app generation assumes that Alevin has been run with the
+#' --dumpFeatures flag to generate the necessary output files.
+#'
+#' @param baseDir Path to the output directory from the Alevin run (should be
+#'   the directory containing the \code{alevin} directory).
+#' @param sampleId Sample ID, will be used set the title for the app.
+#'
+#' @author Charlotte Soneson
+#'
+#' @export
+#'
 #' @importFrom ggplot2 aes xlab ylab theme_bw theme element_text geom_line ggplot scale_colour_manual geom_point geom_abline geom_label scale_x_log10 scale_y_log10
 #' @importFrom GGally ggally_densityDiag ggally_points ggally_cor ggpairs
-#' @importFrom dplyr rename mutate left_join full_join arrange
+#' @import dplyr
 #' @importFrom rjson fromJSON
 #' @importFrom shiny fluidRow plotOutput renderPlot shinyApp
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar box
 #' @importFrom DT dataTableOutput datatable renderDataTable
+#' @importFrom utils read.delim
+#' @importFrom stats median
 #'
-alevinQCShiny <- function(baseDir, sampleId, ...) {
+#' @return A shiny app.
+#'
+alevinQCShiny <- function(baseDir, sampleId) {
     alevinDir <- file.path(baseDir, "alevin")
 
     ## -------------------------------------------------------------------------- ##
     ## Read files
     ## -------------------------------------------------------------------------- ##
     ## Raw CB frequencies
-    rawcbfreq <- read.delim(file.path(alevinDir, "raw_cb_frequency.txt"),
-                            header = FALSE, as.is = TRUE) %>%
+    rawcbfreq <- utils::read.delim(file.path(alevinDir, "raw_cb_frequency.txt"),
+                                   header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, originalFreq = V2) %>%
         dplyr::mutate(ranking = seq_len(length(CB)))
 
@@ -59,10 +77,10 @@ alevinQCShiny <- function(baseDir, sampleId, ...) {
 
     pLayout <- function() {
         shinydashboard::dashboardPage(
-            skin = "purple",
+            skin = "red",
 
             shinydashboard::dashboardHeader(title = paste0("alevinQC, ", sampleId),
-                                            titleWidth = nchar(sampleId) * 20),
+                                            titleWidth = (10 + nchar(sampleId)) * 20),
 
             shinydashboard::dashboardSidebar(disable = TRUE),
 
@@ -125,10 +143,10 @@ alevinQCShiny <- function(baseDir, sampleId, ...) {
                              `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
                              `Fraction reads in whitelisted barcodes` = paste0(signif(100 * sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq), 4), "%"),
                              `Mean reads per cell` = round(mean(quantbcs$collapsedFreq)),
-                             `Median reads per cell` = round(median(quantbcs$collapsedFreq)),
-                             `Median nbr detected genes` = median(quantbcs$nbrGenes2),
+                             `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq)),
+                             `Median nbr detected genes` = stats::median(quantbcs$nbrGenes2),
                              `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
-                             `Median UMI count` = median(quantbcs$totalUMICount),
+                             `Median UMI count` = stats::median(quantbcs$totalUMICount),
                              `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList),
                              `Fraction reads in final whitelisted barcodes` = paste0(signif(100 *  sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq), 4), "%"),
                              stringsAsFactors = FALSE,

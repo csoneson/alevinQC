@@ -12,7 +12,7 @@ alevinQCReport(baseDir, sampleId, outputFile, outputDir = "./",
 \item{baseDir}{Path to the output directory from the Alevin run (should be
 the directory containing the \code{alevin} directory).}
 
-\item{sampleId}{Sample ID, will be used set the title for the report}
+\item{sampleId}{Sample ID, will be used set the title for the report.}
 
 \item{outputFile}{File name of the output report. The file name extension
 must be either \code{.html} or \code{.pdf}, depending on the value of

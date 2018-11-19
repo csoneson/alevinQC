@@ -6,7 +6,7 @@
 #'
 #' @param baseDir Path to the output directory from the Alevin run (should be
 #'   the directory containing the \code{alevin} directory).
-#' @param sampleId Sample ID, will be used set the title for the report
+#' @param sampleId Sample ID, will be used set the title for the report.
 #' @param outputFile File name of the output report. The file name extension
 #'   must be either \code{.html} or \code{.pdf}, depending on the value of
 #'   \code{outputFormat}.
@@ -44,6 +44,9 @@
 #' @importFrom rmarkdown render
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom methods is
+#' @importFrom utils read.delim
+#' @importFrom stats median
+#' @import dplyr
 #'
 #' @return No value is returned, but a report is generated in the
 #'   \code{outputDir} directory.
