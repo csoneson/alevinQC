@@ -20,7 +20,7 @@
 #' @return A shiny app.
 #'
 alevinQCShiny <- function(baseDir, sampleId) {
-    alevin <- readAlevinQC(baseDir, quiet = TRUE)
+    alevin <- readAlevinQC(baseDir)
 
     pLayout <- function() {
         shinydashboard::dashboardPage(
@@ -70,7 +70,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
     server_function <- function(input, output, session) {
         output$versionTable <- DT::renderDataTable(
             DT::datatable(
-                alevin$versiontable,
+                alevin$versionTable,
                 colnames = "",
                 options = list(scrollX = TRUE)
             )
@@ -78,27 +78,26 @@ alevinQCShiny <- function(baseDir, sampleId) {
 
         output$summaryTable <- DT::renderDataTable(
             DT::datatable(
-                alevin$summarytable,
+                alevin$summaryTable,
                 colnames = "",
                 options = list(scrollX = TRUE)
             )
         )
 
         output$rawCBKneePlot <- shiny::renderPlot(
-            plotAlevinKneeRaw(alevin$rawcbfreq,
-                              threshold = nrow(alevin$quantbcs))
+            plotAlevinKneeRaw(alevin$cbTable)
         )
 
         output$barcodeCollapsePlot <- shiny::renderPlot(
-            plotAlevinBarcodeCollapse(alevin$quantbcs)
+            plotAlevinBarcodeCollapse(alevin$cbTable)
         )
 
         output$quantPairsPlot <- shiny::renderPlot(
-            plotAlevinQuantPairs(alevin$quantbcs)
+            plotAlevinQuantPairs(alevin$cbTable)
         )
 
         output$nbrGenesKneePlot <- shiny::renderPlot(
-            plotAlevinKneeNbrGenes(alevin$quantbcs)
+            plotAlevinKneeNbrGenes(alevin$cbTable)
         )
     }
 
