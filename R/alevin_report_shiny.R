@@ -12,15 +12,10 @@
 #'
 #' @export
 #'
-#' @importFrom ggplot2 aes xlab ylab theme_bw theme element_text geom_line ggplot scale_colour_manual geom_point geom_abline geom_label scale_x_log10 scale_y_log10
-#' @importFrom GGally ggally_densityDiag ggally_points ggally_cor ggpairs
 #' @import dplyr
-#' @importFrom rjson fromJSON
 #' @importFrom shiny fluidRow plotOutput renderPlot shinyApp
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar box
 #' @importFrom DT dataTableOutput datatable renderDataTable
-#' @importFrom utils read.delim
-#' @importFrom stats median
 #'
 #' @return A shiny app.
 #'
