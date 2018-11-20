@@ -35,31 +35,31 @@ alevinQCShiny <- function(baseDir, sampleId) {
                 shiny::fluidRow(
                     shinydashboard::box(
                         title = "Version info",
-                        DT::dataTableOutput("first.table")
+                        DT::dataTableOutput("versionTable")
                     ),
                     shinydashboard::box(
                         title = "Summary table",
-                        DT::dataTableOutput("second.table")
+                        DT::dataTableOutput("summaryTable")
                     )
                 ),
                 shiny::fluidRow(
                     shinydashboard::box(
                         title = "Knee plot I",
-                        shiny::plotOutput("first.plot")
+                        shiny::plotOutput("rawCBKneePlot")
                     ),
                     shinydashboard::box(
                         title = "Barcode collapsing",
-                        shiny::plotOutput("second.plot")
+                        shiny::plotOutput("barcodeCollapsePlot")
                     )
                 ),
                 shiny::fluidRow(
                     shinydashboard::box(
                         title = "Knee plot II",
-                        shiny::plotOutput("fourth.plot")
+                        shiny::plotOutput("nbrGenesKneePlot")
                     ),
                     shinydashboard::box(
                         title = "Quantification summary",
-                        shiny::plotOutput("third.plot")
+                        shiny::plotOutput("quantPairsPlot")
                     )
                 )
 
@@ -68,7 +68,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
     }
 
     server_function <- function(input, output, session) {
-        output$first.table <- DT::renderDataTable(
+        output$versionTable <- DT::renderDataTable(
             DT::datatable(
                 alevin$versiontable,
                 colnames = "",
@@ -76,7 +76,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
             )
         )
 
-        output$second.table <- DT::renderDataTable(
+        output$summaryTable <- DT::renderDataTable(
             DT::datatable(
                 alevin$summarytable,
                 colnames = "",
@@ -84,20 +84,20 @@ alevinQCShiny <- function(baseDir, sampleId) {
             )
         )
 
-        output$first.plot <- shiny::renderPlot(
+        output$rawCBKneePlot <- shiny::renderPlot(
             plotAlevinKneeRaw(alevin$rawcbfreq,
                               threshold = nrow(alevin$quantbcs))
         )
 
-        output$second.plot <- shiny::renderPlot(
+        output$barcodeCollapsePlot <- shiny::renderPlot(
             plotAlevinBarcodeCollapse(alevin$quantbcs)
         )
 
-        output$third.plot <- shiny::renderPlot(
+        output$quantPairsPlot <- shiny::renderPlot(
             plotAlevinQuantPairs(alevin$quantbcs)
         )
 
-        output$fourth.plot <- shiny::renderPlot(
+        output$nbrGenesKneePlot <- shiny::renderPlot(
             plotAlevinKneeNbrGenes(alevin$quantbcs)
         )
     }
