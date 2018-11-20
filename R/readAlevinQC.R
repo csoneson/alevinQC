@@ -17,7 +17,7 @@
 #'
 readAlevinQC <- function(baseDir, quiet = TRUE) {
     ## Check that all required files are available
-    checkInputFiles(baseDir)
+    checkAlevinInputFiles(baseDir)
 
     alevinDir <- file.path(baseDir, "alevin")
 

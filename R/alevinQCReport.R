@@ -8,14 +8,14 @@
 #'   the directory containing the \code{alevin} directory).
 #' @param sampleId Sample ID, will be used set the title for the report.
 #' @param outputFile File name of the output report. The file name extension
-#'   must be either \code{.html} or \code{.pdf}, depending on the value of
-#'   \code{outputFormat}.
+#'   must be either \code{.html} or \code{.pdf}, and consistent with the value
+#'   of \code{outputFormat}.
 #' @param outputDir Path to the output directory where the report will be
 #'   generated.
 #' @param outputFormat The format of the output report. Either
 #'   \code{"html_document"} or \code{"pdf_document"}. The file name extension of
 #'   \code{outputFile} must be consistent with this choice.
-#' @param showCode Logical, whether to display the R code in the output report.
+#' @param showCode Logical, whether to display the R code in the report.
 #' @param forceOverwrite Logical, whether to force overwrite an existing report
 #'   with the same name in the output directory.
 #' @param knitrProgress Logical, whether to display the progress of \code{knitr}
@@ -32,20 +32,18 @@
 #' @author Charlotte Soneson
 #'
 #' @details When the function is called, an .Rmd template file will be copied
-#'   into the output folder, and \code{rmarkdown::render} will be called to
+#'   into the output directory, and \code{rmarkdown::render} will be called to
 #'   generate the final report. If there is already a .Rmd file with the same
-#'   name in the output folder, the function will raise an error and stop, to
+#'   name in the output directory, the function will raise an error and stop, to
 #'   avoid overwriting the existing file. The reason for this behaviour is that
-#'   the copied template in the output folder will be deleted once the report is
-#'   generated.
+#'   the copied template in the output directory will be deleted once the report
+#'   is generated.
 #'
 #' @export
 #'
 #' @importFrom rmarkdown render
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom methods is
-#' @importFrom utils read.delim
-#' @importFrom stats median
 #' @import dplyr
 #'
 #' @return No value is returned, but a report is generated in the
@@ -58,6 +56,8 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     ## This function was inspired by code from Nicholas Hamilton, provided at
     ## http://stackoverflow.com/questions/37097535/generate-report-in-r
 
+    ## If possible, set output format based on the extension of outputFile, if
+    ## the output format is not provided
     if (is.null(outputFormat)) {
         if (tools::file_ext(outputFile) == "pdf") {
             outputFormat <- "pdf_document"
@@ -66,7 +66,7 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
         }
     }
 
-    ## Check if pandoc and pandoc-citeproc is available
+    ## Check if pandoc and pandoc-citeproc are available
     if (Sys.which("pandoc") == "") {
         if (ignorePandoc) {
             ## If ignorePandoc is TRUE, just give a warning
@@ -88,15 +88,15 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
         }
     }
 
-    ## ------------------------------------------------------------------------ ##
-    ## --------------------- Check input arguments ---------------------------- ##
-    ## ------------------------------------------------------------------------ ##
+    ## ---------------------------------------------------------------------- ##
+    ## --------------------- Check input arguments -------------------------- ##
+    ## ---------------------------------------------------------------------- ##
 
-    ## ------------------------ outputFormat --------------------------------- ##
+    ## ------------------------ outputFormat -------------------------------- ##
     ## Raise an error if outputFormat is not one of the allowed
     if (!(outputFormat %in% c("pdf_document", "html_document"))) {
-        stop("The provided outputFormat is currently not supported. Please use ",
-             "either 'html_document' (or NULL) or 'pdf_document'.", call. = FALSE)
+        stop("The provided outputFormat is currently not supported. Please ",
+             "use either 'html_document' or 'pdf_document'.", call. = FALSE)
     }
 
     ## Raise an error if the output format and file name extension don't match
@@ -106,16 +106,16 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                     gsub("_document$", "", outputFormat)), call. = FALSE)
     }
 
-    ## ----------------------- input directory ------------------------------- ##
+    ## ----------------------- input directory ------------------------------ ##
     ## Check that all required input files are available
-    checkInputFiles(baseDir)
+    checkAlevinInputFiles(baseDir)
 
     ## sampleId must be a character string of length 1
     if (!is(sampleId, "character") || length(sampleId) != 1) {
         stop("sampleId must be a character string")
     }
 
-    ## ------------------------- output files --------------------------------- ##
+    ## ------------------------- output files ------------------------------- ##
     outputReport <- file.path(outputDir, basename(outputFile))
     outputRmd <- file.path(
         outputDir,

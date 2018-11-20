@@ -15,8 +15,8 @@ the directory containing the \code{alevin} directory).}
 \item{sampleId}{Sample ID, will be used set the title for the report.}
 
 \item{outputFile}{File name of the output report. The file name extension
-must be either \code{.html} or \code{.pdf}, depending on the value of
-\code{outputFormat}.}
+must be either \code{.html} or \code{.pdf}, and consistent with the value
+of \code{outputFormat}.}
 
 \item{outputDir}{Path to the output directory where the report will be
 generated.}
@@ -25,7 +25,7 @@ generated.}
 \code{"html_document"} or \code{"pdf_document"}. The file name extension of
 \code{outputFile} must be consistent with this choice.}
 
-\item{showCode}{Logical, whether to display the R code in the output report.}
+\item{showCode}{Logical, whether to display the R code in the report.}
 
 \item{forceOverwrite}{Logical, whether to force overwrite an existing report
 with the same name in the output directory.}
@@ -55,12 +55,12 @@ run. The report generation assumes that Alevin has been run with the
 }
 \details{
 When the function is called, an .Rmd template file will be copied
-  into the output folder, and \code{rmarkdown::render} will be called to
+  into the output directory, and \code{rmarkdown::render} will be called to
   generate the final report. If there is already a .Rmd file with the same
-  name in the output folder, the function will raise an error and stop, to
+  name in the output directory, the function will raise an error and stop, to
   avoid overwriting the existing file. The reason for this behaviour is that
-  the copied template in the output folder will be deleted once the report is
-  generated.
+  the copied template in the output directory will be deleted once the report
+  is generated.
 }
 \author{
 Charlotte Soneson
