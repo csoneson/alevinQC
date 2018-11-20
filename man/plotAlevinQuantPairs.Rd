@@ -2,19 +2,20 @@
 % Please edit documentation in R/plotAlevinQuantPairs.R
 \name{plotAlevinQuantPairs}
 \alias{plotAlevinQuantPairs}
-\title{Plot quantification statistics}
+\title{Pairs plot with quantification summary statistics}
 \usage{
-plotAlevinQuantPairs(quantbcs)
+plotAlevinQuantPairs(cbTable)
 }
 \arguments{
-\item{quantbcs}{data.frame with barcode frequencies (as returned by
-\code{readAlevinQC}).}
+\item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
+\code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
+count and the number of detected genes for each cell.}
 }
 \value{
 A ggplot object
 }
 \description{
-Plot quantification statistics
+Pairs plot with quantification summary statistics
 }
 \author{
 Charlotte Soneson

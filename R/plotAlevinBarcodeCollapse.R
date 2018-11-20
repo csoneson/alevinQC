@@ -1,20 +1,29 @@
-#' Plot cell barcode collapsing
+#' Summary plot of cell barcode collapsing
+#'
+#' Plot the original frequency of each cell barcode in the original whitelist
+#' against the frequency after collapsing similar cell barcodes. Points are
+#' colored based on whether the corresponding cell barcodes are retained in the
+#' final whitelist or not.
 #'
 #' @author Charlotte Soneson
 #'
-#' @param quantbcs data.frame with barcode frequencies (as returned by
-#'   \code{readAlevinQC}).
+#' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
+#'   \code{readAlevinQC}) with barcode frequencies before and after collapsing,
+#'   as well as a column indicating whether the barcode is retained in the final
+#'   whitelist.
 #'
 #' @export
 #'
 #' @importFrom ggplot2 ggplot aes geom_abline geom_point theme_bw theme
 #'   scale_color_manual element_text xlab ylab
+#' @import dplyr
 #'
 #' @return A ggplot object
 #'
-plotAlevinBarcodeCollapse <- function(quantbcs) {
-    ggplot2::ggplot(quantbcs, ggplot2::aes(x = originalFreq, y = collapsedFreq,
-                                           color = inFinalWhiteList)) +
+plotAlevinBarcodeCollapse <- function(cbTable) {
+    ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList),
+                    ggplot2::aes(x = originalFreq, y = collapsedFreq,
+                                 color = inFinalWhiteList)) +
         ggplot2::geom_abline(slope = 1, intercept = 0) +
         ggplot2::geom_point() +
         ggplot2::theme_bw() +

@@ -1,9 +1,11 @@
-#' Plot nbr genes knee plot
+#' Knee plot of the number of detected genes per cell
+#'
+#' Plot the number of detected genes per cell in decreasing order.
 #'
 #' @author Charlotte Soneson
 #'
-#' @param quantbcs data.frame with barcode frequencies (as returned by
-#'   \code{readAlevinQC}).
+#' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
+#'   \code{readAlevinQC}) with the number of detected genes per cell.
 #'
 #' @export
 #'
@@ -13,8 +15,9 @@
 #'
 #' @return A ggplot object
 #'
-plotAlevinKneeNbrGenes <- function(quantbcs) {
-    ggplot2::ggplot(quantbcs %>% dplyr::arrange(desc(nbrGenes2)) %>%
+plotAlevinKneeNbrGenes <- function(cbTable) {
+    ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList) %>%
+                        dplyr::arrange(desc(nbrGenes2)) %>%
                         dplyr::mutate(x = seq_along(nbrGenes2)),
                     ggplot2::aes(x = x, y = nbrGenes2)) +
         ggplot2::geom_line(size = 2) +

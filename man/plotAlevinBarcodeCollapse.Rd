@@ -2,19 +2,24 @@
 % Please edit documentation in R/plotAlevinBarcodeCollapse.R
 \name{plotAlevinBarcodeCollapse}
 \alias{plotAlevinBarcodeCollapse}
-\title{Plot cell barcode collapsing}
+\title{Summary plot of cell barcode collapsing}
 \usage{
-plotAlevinBarcodeCollapse(quantbcs)
+plotAlevinBarcodeCollapse(cbTable)
 }
 \arguments{
-\item{quantbcs}{data.frame with barcode frequencies (as returned by
-\code{readAlevinQC}).}
+\item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
+\code{readAlevinQC}) with barcode frequencies before and after collapsing,
+as well as a column indicating whether the barcode is retained in the final
+whitelist.}
 }
 \value{
 A ggplot object
 }
 \description{
-Plot cell barcode collapsing
+Plot the original frequency of each cell barcode in the original whitelist
+against the frequency after collapsing similar cell barcodes. Points are
+colored based on whether the corresponding cell barcodes are retained in the
+final whitelist or not.
 }
 \author{
 Charlotte Soneson

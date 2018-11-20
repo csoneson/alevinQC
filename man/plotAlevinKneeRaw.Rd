@@ -2,22 +2,20 @@
 % Please edit documentation in R/plotAlevinKneeRaw.R
 \name{plotAlevinKneeRaw}
 \alias{plotAlevinKneeRaw}
-\title{Plot raw knee plot}
+\title{Knee plot of raw cell barcode frequencies}
 \usage{
-plotAlevinKneeRaw(rawcbfreq, threshold)
+plotAlevinKneeRaw(cbTable)
 }
 \arguments{
-\item{rawcbfreq}{data.frame with raw barcode frequencies (as returned by
-\code{readAlevinQC}).}
-
-\item{threshold}{The number of initially selected barcodes (will be indicated
-in the plot).}
+\item{cbTable}{\code{data.frame} with raw barcode frequencies (such as the
+\code{cbTable} returned by \code{readAlevinQC}).}
 }
 \value{
 A ggplot object
 }
 \description{
-Plot raw knee plot
+Plot the raw cell barcode frequencies in decreasing order, and indicate a
+predetermined breakpoint using color as well as a label.
 }
 \author{
 Charlotte Soneson

@@ -1,9 +1,10 @@
-#' Plot quantification statistics
+#' Pairs plot with quantification summary statistics
 #'
 #' @author Charlotte Soneson
 #'
-#' @param quantbcs data.frame with barcode frequencies (as returned by
-#'   \code{readAlevinQC}).
+#' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
+#'   \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
+#'   count and the number of detected genes for each cell.
 #'
 #' @export
 #'
@@ -13,9 +14,9 @@
 #'
 #' @return A ggplot object
 #'
-plotAlevinQuantPairs <- function(quantbcs) {
+plotAlevinQuantPairs <- function(cbTable) {
     GGally::ggpairs(
-        quantbcs %>%
+        cbTable %>% dplyr::filter(inFirstWhiteList) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",
                           `Total UMI count` = "totalUMICount",
                           `Nbr detected genes` = "nbrGenes2"),

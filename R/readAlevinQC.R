@@ -32,8 +32,7 @@ readAlevinQC <- function(baseDir) {
     ## First set of whitelisted CBs (quantified)
     filtcbfreq <- read.delim(file.path(alevinDir, "filtered_cb_frequency.txt"),
                              header = FALSE, as.is = TRUE) %>%
-        dplyr::rename(CB = V1, collapsedFreq = V2) %>%
-        dplyr::left_join(rawcbfreq, by = "CB")
+        dplyr::rename(CB = V1, collapsedFreq = V2)
 
     ## FeatureDump
     featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
@@ -64,6 +63,12 @@ readAlevinQC <- function(baseDir) {
         dplyr::full_join(quants, by = "CB") %>%
         dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist)
 
+    cbtable <- dplyr::full_join(
+        rawcbfreq,
+        quantbcs %>% dplyr::mutate(inFirstWhiteList = TRUE)
+    ) %>% dplyr::mutate(inFirstWhiteList = replace(inFirstWhiteList,
+                                                   is.na(inFirstWhiteList), FALSE))
+
     ## Meta information and command information
     metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
@@ -93,6 +98,6 @@ readAlevinQC <- function(baseDir) {
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
 
-    list(rawcbfreq = rawcbfreq, quantbcs = quantbcs,
-         versiontable = versiontable, summarytable = summarytable)
+    ## Return
+    list(cbTable = cbtable, versionTable = versiontable, summaryTable = summarytable)
 }

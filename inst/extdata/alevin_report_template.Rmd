@@ -22,14 +22,14 @@ knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```{r setup}
 ## Read input files
 if (!quiet) message("Reading Alevin output files...")
-alevin <- readAlevinQC(baseDir, quiet = quiet)
+alevin <- readAlevinQC(baseDir)
 ```
 
 ## Version info
 
 ```{r}
 knitr::kable(
-    alevin$versiontable
+    alevin$versionTable
 )
 ```
 
@@ -38,7 +38,7 @@ knitr::kable(
 ```{r}
 if (!quiet) message("Generating summary table...")
 knitr::kable(
-    alevin$summarytable
+    alevin$summaryTable
 )
 ```
 
@@ -49,8 +49,7 @@ used to define an initial set of whitelisted cell barcodes.
 
 ```{r}
 if (!quiet) message("Generating knee plot...")
-plotAlevinKneeRaw(rawcbfreq = alevin$rawcbfreq, 
-                  threshold = nrow(alevin$quantbcs))
+plotAlevinKneeRaw(alevin$cbTable)
 ```
 
 ## Correcting barcodes and merging with original whitelist
@@ -67,7 +66,7 @@ barcode is included in this final whitelist.
 
 ```{r}
 if (!quiet) message("Generating barcode collapsing plot...")
-plotAlevinBarcodeCollapse(alevin$quantbcs)
+plotAlevinBarcodeCollapse(alevin$cbTable)
 ```
 
 ## Quantification
@@ -84,7 +83,7 @@ align to genes, as well as the duplication rate and the degree of saturation.
 
 ```{r}
 if (!quiet) message("Generating quantification summary plot...")
-plotAlevinQuantPairs(alevin$quantbcs)
+plotAlevinQuantPairs(alevin$cbTable)
 ```
 
 ## Knee plot, number of detected genes
@@ -94,7 +93,7 @@ for the first set of whitelisted barcodes.
 
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
-plotAlevinKneeNbrGenes(alevin$quantbcs)
+plotAlevinKneeNbrGenes(alevin$cbTable)
 ```
 
 

@@ -2,19 +2,19 @@
 % Please edit documentation in R/plotAlevinKneeNbrGenes.R
 \name{plotAlevinKneeNbrGenes}
 \alias{plotAlevinKneeNbrGenes}
-\title{Plot nbr genes knee plot}
+\title{Knee plot of the number of detected genes per cell}
 \usage{
-plotAlevinKneeNbrGenes(quantbcs)
+plotAlevinKneeNbrGenes(cbTable)
 }
 \arguments{
-\item{quantbcs}{data.frame with barcode frequencies (as returned by
-\code{readAlevinQC}).}
+\item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
+\code{readAlevinQC}) with the number of detected genes per cell.}
 }
 \value{
 A ggplot object
 }
 \description{
-Plot nbr genes knee plot
+Plot the number of detected genes per cell in decreasing order.
 }
 \author{
 Charlotte Soneson
