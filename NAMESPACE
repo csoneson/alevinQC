@@ -2,6 +2,7 @@
 
 export(alevinQCReport)
 export(alevinQCShiny)
+export(checkInputFiles)
 export(readAlevin)
 import(dplyr)
 importFrom(DT,dataTableOutput)
