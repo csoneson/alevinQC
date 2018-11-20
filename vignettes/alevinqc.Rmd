@@ -1,0 +1,90 @@
+---
+title: "alevinQC"
+author: "Charlotte Soneson"
+package: alevinQC
+output: 
+    BiocStyle::html_document
+vignette: >
+    %\VignetteIndexEntry{alevinQC}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}  
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+The purpose of `r Biocpkg("alevinQC")` is to generate QC reports based on the
+output of [Alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
+[@Srivastava2018]. The QC report can be generated as a html or pdf file, or
+launched as a shiny application.
+
+```{r}
+library(alevinQC)
+```
+
+# Assumed output directory structure
+
+```{r, eval=FALSE, results='asis'}
+baseDir
+  |--alevin
+  |    |--featureDump.txt
+  |    |--filtered_cb_frequency.txt
+  |    |--MappedUmi.txt
+  |    |--quants_mat_cols.txt
+  |    |--quants_mat_rows.txt
+  |    |--quants_mat.gz
+  |    |--raw_cb_frequency.txt
+  |    |--whitelist.txt
+  |--aux_info
+  |    |--meta_info.json
+  |--cmd_info.json
+```
+
+# Check that all required Alevin files are available
+
+```{r}
+baseDir <- system.file("extdata", package = "alevinQC")
+checkAlevinInputFiles(baseDir = baseDir)
+```
+
+# Generate html report
+
+```{r}
+outputDir <- tempdir()
+alevinQCReport(baseDir = baseDir, sampleId = "testSample", 
+               outputFile = "alevinReport.html", 
+               outputDir = outputDir, forceOverwrite = TRUE)
+```
+
+# Generate pdf report
+
+```{r}
+outputDir <- tempdir()
+alevinQCReport(baseDir = baseDir, sampleId = "testSample", 
+               outputFile = "alevinReport.pdf", 
+               outputDir = outputDir, forceOverwrite = TRUE)
+```
+
+# Create shiny app
+
+```{r}
+app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample"
+```
+
+Launch app
+
+```{r, eval=FALSE}
+runApp(app)
+```
+
+# Session info
+
+```{r}
+sessionInfo()
+```
+

@@ -21,3 +21,9 @@ Imports:
     stats,
     utils
 RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    BiocStyle,
+    rmarkdown
+VignetteBuilder: knitr
+biocViews: QualityControl, SingleCell
