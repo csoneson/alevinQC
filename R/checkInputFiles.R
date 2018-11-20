@@ -7,6 +7,9 @@
 #'
 #' @export
 #'
+#' @return Returns nothing, raises an error if any of the required files are
+#'   missing.
+#'
 checkInputFiles <- function(baseDir) {
     ## Raise an error if any of the required files is missing
     reqFiles <- c(file.path(baseDir, "alevin/raw_cb_frequency.txt"),
