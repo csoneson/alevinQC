@@ -68,12 +68,12 @@ readAlevinQC <- function(baseDir, quiet = TRUE) {
     cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
 
     ## Create "version info" table
-    versiontable <- t(data.frame(`Start time` = alevin$metainfo$start_time,
-                                 `Salmon version` = alevin$metainfo$salmon_version,
-                                 `Index` = alevin$cmdinfo$index,
-                                 `R1file` = alevin$cmdinfo$mates1,
-                                 `R2file` = alevin$cmdinfo$mates2,
-                                 `tgMap` = alevin$cmdinfo$tgMap,
+    versiontable <- t(data.frame(`Start time` = metainfo$start_time,
+                                 `Salmon version` = metainfo$salmon_version,
+                                 `Index` = cmdinfo$index,
+                                 `R1file` = cmdinfo$mates1,
+                                 `R2file` = cmdinfo$mates2,
+                                 `tgMap` = cmdinfo$tgMap,
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
 
@@ -93,5 +93,5 @@ readAlevinQC <- function(baseDir, quiet = TRUE) {
                                  check.names = FALSE))
 
     list(rawcbfreq = rawcbfreq, quantbcs = quantbcs,
-         versiontable, summarytable)
+         versiontable = versiontable, summarytable = summarytable)
 }

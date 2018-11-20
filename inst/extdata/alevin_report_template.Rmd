@@ -20,17 +20,6 @@ knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
 
 ```{r setup}
-## -------------------------------------------------------------------------- ##
-## Load packages
-## -------------------------------------------------------------------------- ##
-if (!quiet) message("Loading packages...")
-suppressPackageStartupMessages({
-    library(ggplot2)
-    library(GGally)
-    library(dplyr)
-    library(rjson)
-})
-
 ## Read input files
 alevin <- readAlevinQC(baseDir, quiet = quiet)
 ```
