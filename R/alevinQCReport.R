@@ -46,8 +46,8 @@
 #' @importFrom methods is
 #' @import dplyr
 #'
-#' @return No value is returned, but a report is generated in the
-#'   \code{outputDir} directory.
+#' @return Generates a summary report in the \code{outputDir} directory, and
+#'   returns (invisibly) the name of the generated report.
 #'
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,
@@ -132,12 +132,13 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
             if (!quiet) {
                 warning("The file ", outputReport,
                         " already exists and will be overwritten, since ",
-                        "forceOverwrite = TRUE.", immediate. = TRUE, call. = FALSE)
+                        "forceOverwrite = TRUE.", immediate. = TRUE,
+                        call. = FALSE)
             }
         }
     }
 
-    ## ------------------------- Rmd template --------------------------------- ##
+    ## ------------------------- Rmd template ------------------------------- ##
     ## Path to the template file
     templateFile <- system.file("extdata",
                                 "alevin_report_template.Rmd",
@@ -151,13 +152,13 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
             file.copy(from = templateFile, to = outputRmd, overwrite = FALSE)
         }
     } else {
-        stop("The intended Rmd template file ", templateFile, " does not exist.",
+        stop("The Rmd template file ", templateFile, " does not exist.",
              call. = FALSE)
     }
 
-    ## ------------------------------------------------------------------------ ##
-    ## ----------------------- Process the arguments -------------------------- ##
-    ## ------------------------------------------------------------------------ ##
+    ## ---------------------------------------------------------------------- ##
+    ## ----------------------- Process the arguments ------------------------ ##
+    ## ---------------------------------------------------------------------- ##
 
     args <- list(...)
     args$input <- outputRmd
@@ -165,9 +166,9 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     args$output_file <- outputFile
     args$quiet <- !knitrProgress
 
-    ## ------------------------------------------------------------------------ ##
-    ## ------------------------ Render the report ----------------------------- ##
-    ## ------------------------------------------------------------------------ ##
+    ## ---------------------------------------------------------------------- ##
+    ## ------------------------ Render the report --------------------------- ##
+    ## ---------------------------------------------------------------------- ##
 
     outputFile <- do.call("render", args = args)
 
