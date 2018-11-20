@@ -21,6 +21,7 @@ knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 
 ```{r setup}
 ## Read input files
+if (!quiet) message("Reading Alevin output files...")
 alevin <- readAlevinQC(baseDir, quiet = quiet)
 ```
 

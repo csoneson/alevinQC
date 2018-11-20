@@ -2,22 +2,21 @@
 % Please edit documentation in R/readAlevinQC.R
 \name{readAlevinQC}
 \alias{readAlevinQC}
-\title{Read all input data}
+\title{Read Alevin data required to generate summary report}
 \usage{
-readAlevinQC(baseDir, quiet = TRUE)
+readAlevinQC(baseDir)
 }
 \arguments{
 \item{baseDir}{Path to the output directory from the Alevin run (should be
 the directory containing the \code{alevin} directory).}
-
-\item{quiet}{Logical, whether to show progress messages.}
 }
 \value{
-A list with all information necessary to create the alevinQC
-  report/app.
+A list collecting all necessary information for generating the
+  summary report/shiny app.
 }
 \description{
-Read all input data
+Read all Alevin output files required to generate the summary report or shiny
+app.
 }
 \author{
 Charlotte Soneson

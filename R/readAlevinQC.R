@@ -1,8 +1,10 @@
-#' Read all input data
+#' Read Alevin data required to generate summary report
+#'
+#' Read all Alevin output files required to generate the summary report or shiny
+#' app.
 #'
 #' @param baseDir Path to the output directory from the Alevin run (should be
 #'   the directory containing the \code{alevin} directory).
-#' @param quiet Logical, whether to show progress messages.
 #'
 #' @author Charlotte Soneson
 #'
@@ -12,16 +14,15 @@
 #' @import dplyr
 #' @importFrom rjson fromJSON
 #'
-#' @return A list with all information necessary to create the alevinQC
-#'   report/app.
+#' @return A list collecting all necessary information for generating the
+#'   summary report/shiny app.
 #'
-readAlevinQC <- function(baseDir, quiet = TRUE) {
-    ## Check that all required files are available
+readAlevinQC <- function(baseDir) {
+    ## Check that all required files are available, stop if not
     checkAlevinInputFiles(baseDir)
 
     alevinDir <- file.path(baseDir, "alevin")
 
-    if (!quiet) message("Reading Alevin output files...")
     ## Raw CB frequencies
     rawcbfreq <- utils::read.delim(file.path(alevinDir, "raw_cb_frequency.txt"),
                                    header = FALSE, as.is = TRUE) %>%

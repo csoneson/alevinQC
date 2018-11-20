@@ -45,8 +45,8 @@ stops immediately.}
 \item{...}{Other arguments that will be passed to \code{rmarkdown::render}.}
 }
 \value{
-No value is returned, but a report is generated in the
-  \code{outputDir} directory.
+Generates a summary report in the \code{outputDir} directory, and
+  returns (invisibly) the name of the generated report.
 }
 \description{
 Generate a report summarizing the main aspects of an Alevin quantification
