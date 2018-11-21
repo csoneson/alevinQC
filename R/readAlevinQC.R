@@ -67,7 +67,9 @@ readAlevinQC <- function(baseDir) {
         rawcbfreq,
         quantbcs %>% dplyr::mutate(inFirstWhiteList = TRUE)
     ) %>% dplyr::mutate(inFirstWhiteList = replace(inFirstWhiteList,
-                                                   is.na(inFirstWhiteList), FALSE))
+                                                   is.na(inFirstWhiteList), FALSE),
+                        inFinalWhiteList = replace(inFinalWhiteList,
+                                                   is.na(inFinalWhiteList), FALSE))
 
     ## Meta information and command information
     metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json"))

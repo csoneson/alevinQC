@@ -23,6 +23,7 @@ Imports:
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
-    BiocStyle
+    BiocStyle,
+    testthat
 VignetteBuilder: knitr
 biocViews: QualityControl, SingleCell
