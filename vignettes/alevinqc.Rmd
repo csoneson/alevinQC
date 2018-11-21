@@ -6,8 +6,10 @@ output:
     BiocStyle::html_document
 vignette: >
     %\VignetteIndexEntry{alevinQC}
-    %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}  
+    %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -48,7 +50,7 @@ baseDir
 # Check that all required Alevin files are available
 
 ```{r}
-baseDir <- system.file("extdata", package = "alevinQC")
+baseDir <- system.file("extdata/alevin_example", package = "alevinQC")
 checkAlevinInputFiles(baseDir = baseDir)
 ```
 
@@ -64,7 +66,6 @@ alevinQCReport(baseDir = baseDir, sampleId = "testSample",
 # Generate pdf report
 
 ```{r}
-outputDir <- tempdir()
 alevinQCReport(baseDir = baseDir, sampleId = "testSample", 
                outputFile = "alevinReport.pdf", 
                outputDir = outputDir, forceOverwrite = TRUE)
@@ -73,7 +74,7 @@ alevinQCReport(baseDir = baseDir, sampleId = "testSample",
 # Create shiny app
 
 ```{r}
-app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample"
+app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample")
 ```
 
 Launch app
