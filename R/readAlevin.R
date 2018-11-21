@@ -39,7 +39,8 @@ readAlevin <- function(baseDir = NULL, quiet = TRUE) {
 
     totalMolecules <- 0.0
     for (n in seq_len(numCells)) {
-        outMatrix[, n] <- readBin(con, double(), endian = "little", n = numGenes)
+        outMatrix[, n] <- readBin(con, double(), endian = "little",
+                                  n = numGenes)
         totalMolecules <- totalMolecules + sum(outMatrix[, n])
     }
 

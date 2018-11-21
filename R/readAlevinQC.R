@@ -67,12 +67,15 @@ readAlevinQC <- function(baseDir) {
         rawcbfreq,
         quantbcs %>% dplyr::mutate(inFirstWhiteList = TRUE)
     ) %>% dplyr::mutate(inFirstWhiteList = replace(inFirstWhiteList,
-                                                   is.na(inFirstWhiteList), FALSE),
+                                                   is.na(inFirstWhiteList),
+                                                   FALSE),
                         inFinalWhiteList = replace(inFinalWhiteList,
-                                                   is.na(inFinalWhiteList), FALSE))
+                                                   is.na(inFinalWhiteList),
+                                                   FALSE))
 
     ## Meta information and command information
-    metainfo <- rjson::fromJSON(file = file.path(baseDir, "aux_info/meta_info.json"))
+    metainfo <- rjson::fromJSON(file = file.path(baseDir,
+                                                 "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
 
     ## Create "version info" table
@@ -86,20 +89,33 @@ readAlevinQC <- function(baseDir) {
                                  check.names = FALSE))
 
     ## Create summary table
-    summarytable <- t(data.frame(`Total number of processed reads` = as.character(metainfo$num_processed),
-                                 `Number of reads with valid barcode (no Ns)` = as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
-                                 `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
-                                 `Fraction reads in whitelisted barcodes` = paste0(signif(100 * sum(quantbcs$collapsedFreq)/sum(rawcbfreq$originalFreq), 4), "%"),
-                                 `Mean reads per cell` = round(mean(quantbcs$collapsedFreq, na.rm = TRUE)),
-                                 `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq, na.rm = TRUE)),
-                                 `Median nbr detected genes` = stats::median(quantbcs$nbrGenes2, na.rm = TRUE),
-                                 `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
-                                 `Median UMI count` = stats::median(quantbcs$totalUMICount, na.rm = TRUE),
-                                 `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList, na.rm = TRUE),
-                                 `Fraction reads in final whitelisted barcodes` = paste0(signif(100 *  sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/sum(rawcbfreq$originalFreq), 4), "%"),
-                                 stringsAsFactors = FALSE,
-                                 check.names = FALSE))
+    summarytable <- t(data.frame(
+        `Total number of processed reads` =
+            as.character(metainfo$num_processed),
+        `Number of reads with valid barcode (no Ns)` =
+            as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
+        `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
+        `Fraction reads in whitelisted barcodes` =
+            paste0(signif(100 * sum(quantbcs$collapsedFreq)/
+                              sum(rawcbfreq$originalFreq), 4), "%"),
+        `Mean reads per cell` = round(mean(quantbcs$collapsedFreq,
+                                           na.rm = TRUE)),
+        `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq,
+                                                      na.rm = TRUE)),
+        `Median nbr detected genes` = stats::median(quantbcs$nbrGenes2,
+                                                    na.rm = TRUE),
+        `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
+        `Median UMI count` = stats::median(quantbcs$totalUMICount,
+                                           na.rm = TRUE),
+        `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList,
+                                               na.rm = TRUE),
+        `Fraction reads in final whitelisted barcodes` =
+            paste0(signif(100 * sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/
+                              sum(rawcbfreq$originalFreq), 4), "%"),
+        stringsAsFactors = FALSE,
+        check.names = FALSE))
 
     ## Return
-    list(cbTable = cbtable, versionTable = versiontable, summaryTable = summarytable)
+    list(cbTable = cbtable, versionTable = versiontable,
+         summaryTable = summarytable)
 }

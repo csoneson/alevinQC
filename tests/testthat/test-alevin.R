@@ -7,7 +7,8 @@ test_that("checking for input files works", {
 
     ## Remove one file - check should fail
     tmp <- tempdir()
-    file.copy(from = system.file("extdata/alevin_example", package = "alevinQC"),
+    file.copy(from = system.file("extdata/alevin_example",
+                                 package = "alevinQC"),
               to = tmp, overwrite = TRUE, recursive = TRUE)
     file.remove(file.path(tmp, "alevin_example/cmd_info.json"))
     expect_error(checkAlevinInputFiles(file.path(tmp, "alevin_example")))

@@ -30,7 +30,8 @@ plotAlevinQuantPairs <- function(cbTable) {
             GGally::ggally_points(data = data, mapping = mapping, alpha = 0.5) +
                 ggplot2::scale_color_manual(values = c("darkgreen", "red"))}),
         diag = list(continuous = function(data, mapping, ...) {
-            GGally::ggally_densityDiag(data = data, mapping = mapping, alpha = 0.5) +
+            GGally::ggally_densityDiag(data = data, mapping = mapping,
+                                       alpha = 0.5) +
                 ggplot2::scale_fill_manual(values = c("darkgreen", "red"))})
     ) +
         ggplot2::theme_bw()

@@ -26,8 +26,9 @@ alevinQCShiny <- function(baseDir, sampleId) {
         shinydashboard::dashboardPage(
             skin = "red",
 
-            shinydashboard::dashboardHeader(title = paste0("alevinQC, ", sampleId),
-                                            titleWidth = (10 + nchar(sampleId)) * 20),
+            shinydashboard::dashboardHeader(
+                title = paste0("alevinQC, ", sampleId),
+                titleWidth = (10 + nchar(sampleId)) * 20),
 
             shinydashboard::dashboardSidebar(disable = TRUE),
 
