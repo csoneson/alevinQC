@@ -17,6 +17,11 @@ Returns nothing, raises an error if any of the required files are
 \description{
 Check that all required input files are available
 }
+\examples{
+checkAlevinInputFiles(system.file("extdata/alevin_example",
+                                  package = "alevinQC"))
+
+}
 \author{
 Charlotte Soneson
 }

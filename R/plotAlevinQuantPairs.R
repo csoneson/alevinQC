@@ -12,7 +12,12 @@
 #' @importFrom ggplot2 aes scale_color_manual scale_fill_manual theme_bw
 #' @import dplyr
 #'
-#' @return A ggplot object
+#' @return A ggmatrix object
+#'
+#' @examples
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                                    package = "alevinQC"))
+#' plotAlevinQuantPairs(alevin$cbTable)
 #'
 plotAlevinQuantPairs <- function(cbTable) {
     GGally::ggpairs(

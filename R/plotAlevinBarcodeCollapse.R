@@ -20,6 +20,11 @@
 #'
 #' @return A ggplot object
 #'
+#' @examples
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                                    package = "alevinQC"))
+#' plotAlevinBarcodeCollapse(alevin$cbTable)
+#'
 plotAlevinBarcodeCollapse <- function(cbTable) {
     ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList),
                     ggplot2::aes(x = originalFreq, y = collapsedFreq,

@@ -12,10 +12,16 @@ plotAlevinQuantPairs(cbTable)
 count and the number of detected genes for each cell.}
 }
 \value{
-A ggplot object
+A ggmatrix object
 }
 \description{
 Pairs plot with quantification summary statistics
+}
+\examples{
+alevin <- readAlevinQC(system.file("extdata/alevin_example",
+                                   package = "alevinQC"))
+plotAlevinQuantPairs(alevin$cbTable)
+
 }
 \author{
 Charlotte Soneson

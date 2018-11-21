@@ -18,6 +18,11 @@ A list collecting all necessary information for generating the
 Read all Alevin output files required to generate the summary report or shiny
 app.
 }
+\examples{
+alevin <- readAlevinQC(system.file("extdata/alevin_example",
+                       package = "alevinQC"))
+
+}
 \author{
 Charlotte Soneson
 }

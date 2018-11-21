@@ -19,6 +19,11 @@ A matrix with gene counts for the whitelisted barcodes. Rows
 \description{
 Read binary Alevin quant matrix
 }
+\examples{
+mat <- readAlevin(baseDir = system.file("extdata/alevin_example",
+                                        package = "alevinQC"))
+
+}
 \author{
 Avi Srivastava
 }

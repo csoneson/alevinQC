@@ -20,6 +20,15 @@ Generate a shiny app summarizing the main aspects of an Alevin quantification
 run. The app generation assumes that Alevin has been run with the
 --dumpFeatures flag to generate the necessary output files.
 }
+\examples{
+app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example",
+                                           package = "alevinQC"),
+                     sampleId = "example")
+if (interactive()) {
+    shiny::runApp(app)
+}
+
+}
 \author{
 Charlotte Soneson
 }

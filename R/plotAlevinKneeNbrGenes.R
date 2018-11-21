@@ -15,6 +15,11 @@
 #'
 #' @return A ggplot object
 #'
+#' @examples
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                                    package = "alevinQC"))
+#' plotAlevinKneeNbrGenes(alevin$cbTable)
+#'
 plotAlevinKneeNbrGenes <- function(cbTable) {
     ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList) %>%
                         dplyr::arrange(desc(nbrGenes2)) %>%

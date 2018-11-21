@@ -62,6 +62,13 @@ When the function is called, an .Rmd template file will be copied
   the copied template in the output directory will be deleted once the report
   is generated.
 }
+\examples{
+alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                     package = "alevinQC"),
+               sampleId = "example", outputFile = "alevinReport.html",
+               outputDir = tempdir(), forceOverwrite = TRUE)
+
+}
 \author{
 Charlotte Soneson
 }

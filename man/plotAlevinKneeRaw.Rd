@@ -17,6 +17,12 @@ A ggplot object
 Plot the raw cell barcode frequencies in decreasing order, and indicate a
 predetermined breakpoint using color as well as a label.
 }
+\examples{
+alevin <- readAlevinQC(system.file("extdata/alevin_example",
+                                   package = "alevinQC"))
+plotAlevinKneeRaw(alevin$cbTable)
+
+}
 \author{
 Charlotte Soneson
 }

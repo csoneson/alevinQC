@@ -10,6 +10,10 @@
 #' @return Returns nothing, raises an error if any of the required files are
 #'   missing.
 #'
+#' @examples
+#' checkAlevinInputFiles(system.file("extdata/alevin_example",
+#'                                   package = "alevinQC"))
+#'
 checkAlevinInputFiles <- function(baseDir) {
     ## Raise an error if any of the required files is missing
     reqFiles <- c(file.path(baseDir, "alevin/raw_cb_frequency.txt"),

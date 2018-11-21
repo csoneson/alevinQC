@@ -17,6 +17,10 @@
 #' @return A list collecting all necessary information for generating the
 #'   summary report/shiny app.
 #'
+#' @examples
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                        package = "alevinQC"))
+#'
 readAlevinQC <- function(baseDir) {
     ## Check that all required files are available, stop if not
     checkAlevinInputFiles(baseDir)

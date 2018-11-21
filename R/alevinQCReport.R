@@ -49,6 +49,12 @@
 #' @return Generates a summary report in the \code{outputDir} directory, and
 #'   returns (invisibly) the name of the generated report.
 #'
+#' @examples
+#' alevinQCReport(baseDir = system.file("extdata/alevin_example",
+#'                                      package = "alevinQC"),
+#'                sampleId = "example", outputFile = "alevinReport.html",
+#'                outputDir = tempdir(), forceOverwrite = TRUE)
+#'
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,
                            forceOverwrite = FALSE, knitrProgress = FALSE,

@@ -21,6 +21,12 @@ against the frequency after collapsing similar cell barcodes. Points are
 colored based on whether the corresponding cell barcodes are retained in the
 final whitelist or not.
 }
+\examples{
+alevin <- readAlevinQC(system.file("extdata/alevin_example",
+                                   package = "alevinQC"))
+plotAlevinBarcodeCollapse(alevin$cbTable)
+
+}
 \author{
 Charlotte Soneson
 }

@@ -11,6 +11,10 @@
 #' @return A matrix with gene counts for the whitelisted barcodes. Rows
 #'   represent genes, columns cell barcodes.
 #'
+#' @examples
+#' mat <- readAlevin(baseDir = system.file("extdata/alevin_example",
+#'                                         package = "alevinQC"))
+#'
 readAlevin <- function(baseDir = NULL, quiet = TRUE) {
     if (!dir.exists(baseDir)) {
         stop("Directory provided does not exist")
@@ -43,6 +47,7 @@ readAlevin <- function(baseDir = NULL, quiet = TRUE) {
                                   n = numGenes)
         totalMolecules <- totalMolecules + sum(outMatrix[, n])
     }
+    close(con)
 
     colnames(outMatrix) <- cellNames
     rownames(outMatrix) <- geneNames
