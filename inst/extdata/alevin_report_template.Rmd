@@ -11,8 +11,14 @@ output:
 always_allow_html: yes
 editor_options: 
     chunk_output_type: console
-title: "`r paste0('Alevin report, ', sampleId)`"
+title: "`r paste0('alevinQC (v', packageVersion('alevinQC'), '), ', sampleId)`"
 ---
+
+<style>
+   tbody tr:nth-child(odd){
+    background-color: #D6E0F5;
+  }
+</style>
 
 ```{r prep, include = FALSE}
 knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
