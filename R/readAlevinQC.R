@@ -86,8 +86,8 @@ readAlevinQC <- function(baseDir) {
     versiontable <- t(data.frame(`Start time` = metainfo$start_time,
                                  `Salmon version` = metainfo$salmon_version,
                                  `Index` = cmdinfo$index,
-                                 `R1file` = cmdinfo$mates1,
-                                 `R2file` = cmdinfo$mates2,
+                                 `R1file` = paste(cmdinfo$mates1, collapse = ", "),
+                                 `R2file` = paste(cmdinfo$mates2, collapse = ", "),
                                  `tgMap` = cmdinfo$tgMap,
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
