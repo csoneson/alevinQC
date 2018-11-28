@@ -19,7 +19,8 @@ Imports:
     shinydashboard,
     DT,
     stats,
-    utils
+    utils,
+    tximport
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,

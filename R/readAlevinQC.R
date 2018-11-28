@@ -13,6 +13,7 @@
 #' @importFrom utils read.delim
 #' @import dplyr
 #' @importFrom rjson fromJSON
+#' @importFrom tximport tximport
 #'
 #' @return A list collecting all necessary information for generating the
 #'   summary report/shiny app.
@@ -54,7 +55,8 @@ readAlevinQC <- function(baseDir) {
                                  header = FALSE, as.is = TRUE)$V1
 
     ## Quantification
-    quantmat <- readAlevin(baseDir)
+    quantmat <- tximport::tximport(file.path(baseDir, "alevin/quants_mat.gz"),
+                                   type = "alevin")$counts
     quants <- data.frame(CB = colnames(quantmat),
                          totalUMICount = colSums(quantmat),
                          nbrGenes2 = colSums(quantmat >= 0.05),
