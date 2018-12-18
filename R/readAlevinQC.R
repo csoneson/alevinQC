@@ -43,7 +43,7 @@ readAlevinQC <- function(baseDir) {
     featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
                               header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, mappingRate = V2, duplicationRate = V3,
-                      unknown1 = V4, nbrGenes = V5)
+                      col4 = V4, nbrGenes = V5)
 
     ## Mapped UMI
     mappedumi <- read.delim(file.path(alevinDir, "MappedUmi.txt"),
@@ -100,7 +100,7 @@ readAlevinQC <- function(baseDir) {
             as.character(metainfo$num_processed),
         `Number of reads with valid barcode (no Ns)` =
             as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
-        `Nbr whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
+        `Number of whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
         `Fraction reads in whitelisted barcodes` =
             paste0(signif(100 * sum(quantbcs$collapsedFreq)/
                               sum(rawcbfreq$originalFreq), 4), "%"),
@@ -108,12 +108,12 @@ readAlevinQC <- function(baseDir) {
                                            na.rm = TRUE)),
         `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq,
                                                       na.rm = TRUE)),
-        `Median nbr detected genes` = stats::median(quantbcs$nbrGenes2,
+        `Median number of detected genes` = stats::median(quantbcs$nbrGenes2,
                                                     na.rm = TRUE),
-        `Total nbr detected genes` = sum(rowSums(quantmat) > 0),
+        `Total number of detected genes` = sum(rowSums(quantmat) > 0),
         `Median UMI count` = stats::median(quantbcs$totalUMICount,
                                            na.rm = TRUE),
-        `Final nbr whitelisted barcodes` = sum(quantbcs$inFinalWhiteList,
+        `Final number of whitelisted barcodes` = sum(quantbcs$inFinalWhiteList,
                                                na.rm = TRUE),
         `Fraction reads in final whitelisted barcodes` =
             paste0(signif(100 * sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/
