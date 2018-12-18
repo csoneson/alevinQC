@@ -71,10 +71,7 @@ whitelisted cell barcode, it will be corrected and the counts will be added to
 those of the whitelisted one. The figure below shows the original frequency of
 the whitelisted barcodes vs the frequency after this correction. The reads
 corresponding to cell barcodes that can not be corrected to a whitelisted
-barcode are discarded. After quantification, a refinement of the cell barcode
-whitelist is performed, with the aim to exclude low quality cells. The color in
-the figure below indicates whether a cell barcode is included in this final
-whitelist.
+barcode are discarded. 
 
 ```{r}
 if (!quiet) message("Generating barcode collapsing plot...")
