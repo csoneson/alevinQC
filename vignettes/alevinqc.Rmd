@@ -7,7 +7,8 @@ output:
     BiocStyle::html_document
 bibliography: bibliography.bib
 abstract: >
-    `r Biocpkg("alevinQC")` reads output files from Alevin and generates summary reports.
+    `r Biocpkg("alevinQC")` reads output files from Alevin and 
+    generates summary reports.
 vignette: >
     %\VignetteIndexEntry{alevinQC}
     %\VignetteEncoding{UTF-8}  
@@ -100,8 +101,8 @@ application, containing the same information as the reports.
 app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample")
 ```
 
-Once created, the app can be launched using the `runApp()` function from the `r
-CRANpkg("shiny")` package.
+Once created, the app can be launched using the `runApp()` function from the 
+`r CRANpkg("shiny")` package.
 
 ```{r v8, eval=FALSE}
 shiny::runApp(app)

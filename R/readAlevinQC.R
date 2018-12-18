@@ -88,8 +88,10 @@ readAlevinQC <- function(baseDir) {
     versiontable <- t(data.frame(`Start time` = metainfo$start_time,
                                  `Salmon version` = metainfo$salmon_version,
                                  `Index` = cmdinfo$index,
-                                 `R1file` = paste(cmdinfo$mates1, collapse = ", "),
-                                 `R2file` = paste(cmdinfo$mates2, collapse = ", "),
+                                 `R1file` = paste(cmdinfo$mates1,
+                                                  collapse = ", "),
+                                 `R2file` = paste(cmdinfo$mates2,
+                                                  collapse = ", "),
                                  `tgMap` = cmdinfo$tgMap,
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
@@ -100,7 +102,8 @@ readAlevinQC <- function(baseDir) {
             as.character(metainfo$num_processed),
         `Number of reads with valid barcode (no Ns)` =
             as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
-        `Number of whitelisted barcodes (first round)` = as.character(nrow(quantbcs)),
+        `Number of whitelisted barcodes (first round)` =
+            as.character(nrow(quantbcs)),
         `Fraction reads in whitelisted barcodes` =
             paste0(signif(100 * sum(quantbcs$collapsedFreq)/
                               sum(rawcbfreq$originalFreq), 4), "%"),
@@ -116,7 +119,8 @@ readAlevinQC <- function(baseDir) {
         `Final number of whitelisted barcodes` = sum(quantbcs$inFinalWhiteList,
                                                na.rm = TRUE),
         `Fraction reads in final whitelisted barcodes` =
-            paste0(signif(100 * sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/
+            paste0(signif(
+                100 * sum(quantbcs$collapsedFreq[quantbcs$inFinalWhiteList])/
                               sum(rawcbfreq$originalFreq), 4), "%"),
         stringsAsFactors = FALSE,
         check.names = FALSE))

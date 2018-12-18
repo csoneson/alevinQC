@@ -23,7 +23,8 @@
 #'
 plotAlevinBarcodeCollapse <- function(cbTable) {
     mrg <- cbTable %>% dplyr::filter(inFirstWhiteList) %>%
-        dplyr::summarize(mrg = signif(100 * mean(collapsedFreq/originalFreq - 1), 4)) %>%
+        dplyr::summarize(
+            mrg = signif(100 * mean(collapsedFreq/originalFreq - 1), 4)) %>%
         dplyr::pull(mrg)
     ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList),
                     ggplot2::aes(x = originalFreq, y = collapsedFreq)) +
@@ -34,5 +35,6 @@ plotAlevinBarcodeCollapse <- function(cbTable) {
         ggplot2::xlab("Cell barcode frequency, original whitelist") +
         ggplot2::ylab("Cell barcode frequency, following reassignment") +
         ggplot2::geom_label(x = -Inf, y = Inf, hjust = -0.05, vjust = 1.3,
-                            aes(label = paste0("Mean read gain per CB: ", mrg, "%")))
+                            aes(label = paste0("Mean read gain per CB: ",
+                                               mrg, "%")))
 }
