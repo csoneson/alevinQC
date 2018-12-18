@@ -80,15 +80,22 @@ plotAlevinBarcodeCollapse(alevin$cbTable)
 
 ## Quantification
 
-The plots below show the association between the cell barcode frequency (the
-number of observed reads corresponding to a cell barcode), the total UMI count
-(obtained by summing the UMI counts for the individual genes in the returned
-count matrix) and the number of detected genes (also obtained from the returned
-count matrix). The cell barcodes are colored by whether or not they are included
-in the final whitelist.
+After cell barcode collapsing, Alevin estimates the UMI count for each cell and
+gene. Following quantification, an additional cell barcode whitelisting is
+performed with the aim of retaining only good quality cells. The plots below
+show the association between the cell barcode frequency (the number of observed
+reads corresponding to a cell barcode), the total UMI count (obtained by summing
+the UMI counts for the individual genes in the returned count matrix) and the
+number of detected genes (also obtained from the returned count matrix). The
+cell barcodes are colored by whether or not they are included in the final
+whitelist.
 
 These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate and the degree of saturation.
+For many droplet data sets, the association between the barcode frequency and
+the total UMI count is rougly linear, while the association of any of these with
+the number of detected genes often deviates from linearity, if a small subset of
+the genes are assigned a large fraction of the UMI counts.
 
 ```{r}
 if (!quiet) message("Generating quantification summary plot...")
