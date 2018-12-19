@@ -95,7 +95,7 @@ alevinQCReport(baseDir = baseDir, sampleId = "testSample",
 # Create shiny app
 
 In addition to static reports, `r Biocpkg("alevinQC")` can also generate a shiny
-application, containing the same information as the reports.
+application, containing the same information as the pdf and html reports.
 
 ```{r v7, message=FALSE}
 app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample")
@@ -143,7 +143,7 @@ more information).
 ```{r v13, warning=FALSE}
 plotAlevinKneeRaw(alevin$cbTable)
 plotAlevinBarcodeCollapse(alevin$cbTable)
-plotAlevinQuantPairs(alevin$cbTable)
+plotAlevinQuant(alevin$cbTable)
 plotAlevinKneeNbrGenes(alevin$cbTable)
 ```
 

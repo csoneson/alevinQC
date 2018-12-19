@@ -8,18 +8,14 @@ plotAlevinBarcodeCollapse(cbTable)
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
-\code{readAlevinQC}) with barcode frequencies before and after collapsing,
-as well as a column indicating whether the barcode is retained in the final
-whitelist.}
+\code{readAlevinQC}) with barcode frequencies before and after collapsing.}
 }
 \value{
 A ggplot object
 }
 \description{
 Plot the original frequency of each cell barcode in the original whitelist
-against the frequency after collapsing similar cell barcodes. Points are
-colored based on whether the corresponding cell barcodes are retained in the
-final whitelist or not.
+against the frequency after collapsing similar cell barcodes.
 }
 \examples{
 alevin <- readAlevinQC(system.file("extdata/alevin_example",
