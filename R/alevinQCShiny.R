@@ -35,7 +35,8 @@ alevinQCShiny <- function(baseDir, sampleId) {
             skin = "red",
 
             shinydashboard::dashboardHeader(
-                title = paste0("alevinQC, ", sampleId),
+                title = paste0("alevinQC (v", packageVersion("alevinQC"), "), ",
+                               sampleId),
                 titleWidth = (10 + nchar(sampleId)) * 20),
 
             shinydashboard::dashboardSidebar(disable = TRUE),
@@ -43,7 +44,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
             shinydashboard::dashboardBody(
                 shiny::fluidRow(
                     shinydashboard::box(
-                        title = "Version info",
+                        title = "Version info, alevin run",
                         DT::dataTableOutput("versionTable")
                     ),
                     shinydashboard::box(
@@ -53,20 +54,24 @@ alevinQCShiny <- function(baseDir, sampleId) {
                 ),
                 shiny::fluidRow(
                     shinydashboard::box(
-                        title = "Knee plot I",
+                        width = 4,
+                        title = "Knee plot, initial whitelist determination",
                         shiny::plotOutput("rawCBKneePlot")
                     ),
                     shinydashboard::box(
+                        width = 4,
                         title = "Barcode collapsing",
                         shiny::plotOutput("barcodeCollapsePlot")
+                    ),
+                    shinydashboard::box(
+                        width = 4,
+                        title = "Knee plot, number of genes per cell",
+                        shiny::plotOutput("nbrGenesKneePlot")
                     )
                 ),
                 shiny::fluidRow(
                     shinydashboard::box(
-                        title = "Knee plot II",
-                        shiny::plotOutput("nbrGenesKneePlot")
-                    ),
-                    shinydashboard::box(
+                        width = 12,
                         title = "Quantification summary",
                         shiny::plotOutput("quantPairsPlot")
                     )
@@ -102,7 +107,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
         )
 
         output$quantPairsPlot <- shiny::renderPlot(
-            plotAlevinQuantPairs(alevin$cbTable)
+            plotAlevinQuant(alevin$cbTable)
         )
 
         output$nbrGenesKneePlot <- shiny::renderPlot(

@@ -104,17 +104,17 @@ readAlevinQC <- function(baseDir) {
             as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
         `Number of whitelisted barcodes (first round)` =
             as.character(nrow(quantbcs)),
-        `Fraction reads in whitelisted barcodes` =
+        `Fraction reads in whitelisted barcodes (first round)` =
             paste0(signif(100 * sum(quantbcs$collapsedFreq)/
                               sum(rawcbfreq$originalFreq), 4), "%"),
-        `Mean reads per cell` = round(mean(quantbcs$collapsedFreq,
+        `Mean number of reads per cell` = round(mean(quantbcs$collapsedFreq,
                                            na.rm = TRUE)),
-        `Median reads per cell` = round(stats::median(quantbcs$collapsedFreq,
+        `Median number of reads per cell` = round(stats::median(quantbcs$collapsedFreq,
                                                       na.rm = TRUE)),
-        `Median number of detected genes` = stats::median(quantbcs$nbrGenes2,
+        `Median number of detected genes per cell` = stats::median(quantbcs$nbrGenes2,
                                                     na.rm = TRUE),
         `Total number of detected genes` = sum(rowSums(quantmat) > 0),
-        `Median UMI count` = stats::median(quantbcs$totalUMICount,
+        `Median UMI count per cell` = stats::median(quantbcs$totalUMICount,
                                            na.rm = TRUE),
         `Final number of whitelisted barcodes` = sum(quantbcs$inFinalWhiteList,
                                                na.rm = TRUE),

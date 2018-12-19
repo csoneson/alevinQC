@@ -33,7 +33,7 @@ if (!quiet) message("Reading Alevin output files...")
 alevin <- readAlevinQC(baseDir)
 ```
 
-## Version info
+## Version info for alevin run
 
 ```{r}
 knitr::kable(
@@ -54,7 +54,7 @@ knitr::kable(
 
 The knee plot displays the number of times each cell barcode is observed, in
 decreasing order. By finding a 'knee' in this plot, Alevin determines a
-threshold (indicated in the figure) that defines an initial 'whitelist' - a set
+threshold (indicated in the plot) that defines an initial 'whitelist' - a set
 of cell barcodes that likely represent non-empty droplets - and distinguishes
 them from the background. For this run, the initial whitelist contains 
 `r alevin$cbTable %>% dplyr::filter(inFirstWhiteList) %>% dplyr::filter(ranking == max(ranking)) %>% dplyr::pull(ranking)` cell barcodes, each observed at least 
@@ -69,7 +69,7 @@ plotAlevinKneeRaw(alevin$cbTable)
 
 Once the initial set of whitelisted cell barcodes is defined, Alevin goes
 through the remaining cell barcodes. If a cell barcode is similar enough to a
-whitelisted cell barcode, it will be corrected and the counts will be added to
+whitelisted cell barcode, it will be corrected and the reads will be added to
 those of the whitelisted one. The figure below shows the original frequency of
 the whitelisted barcodes vs the frequency after this correction. The reads
 corresponding to cell barcodes that can not be corrected to a whitelisted
@@ -84,13 +84,14 @@ plotAlevinBarcodeCollapse(alevin$cbTable)
 
 After cell barcode collapsing, Alevin estimates the UMI count for each cell and
 gene. Following quantification, an additional cell barcode whitelisting is
-performed with the aim of retaining only good quality cells. The plots below
-show the association between the cell barcode frequency (the number of observed
-reads corresponding to a cell barcode), the total UMI count (obtained by summing
-the UMI counts for the individual genes in the returned count matrix) and the
-number of detected genes (also obtained from the returned count matrix). The
-cell barcodes are colored by whether or not they are included in the final
-whitelist.
+performed with the aim of extracting good quality cells, using not only the
+barcode frequency but also other features such as the fraction of mapped reads,
+the duplication rate and the average gene count. The plots below show the
+association between the cell barcode frequency (the number of observed reads
+corresponding to a cell barcode), the total UMI count (obtained by summing the
+UMI counts for the individual genes in the returned count matrix) and the number
+of detected genes (also obtained from the returned count matrix). The cell
+barcodes are colored by whether or not they are included in the final whitelist.
 
 These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate and the degree of saturation.
