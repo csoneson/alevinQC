@@ -20,7 +20,8 @@ Imports:
     DT,
     stats,
     utils,
-    tximport
+    tximport,
+    cowplot
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,

@@ -11,7 +11,9 @@ output:
 always_allow_html: yes
 editor_options: 
     chunk_output_type: console
-title: "`r paste0('alevinQC (v', packageVersion('alevinQC'), '), ', sampleId)`"
+title: "`r sampleId`"
+date: "`r Sys.Date()`"
+author: "`r paste0('alevinQC (v', packageVersion('alevinQC'), ')')`"
 ---
 
 <style>
@@ -97,15 +99,16 @@ the total UMI count is rougly linear, while the association of any of these with
 the number of detected genes often deviates from linearity, if a small subset of
 the genes are assigned a large fraction of the UMI counts.
 
-```{r}
+```{r fig.width = 10}
 if (!quiet) message("Generating quantification summary plot...")
-plotAlevinQuantPairs(alevin$cbTable)
+plotAlevinQuant(alevin$cbTable)
 ```
 
 ## Knee plot, number of detected genes
 
-The plot below shows the number of detected genes as a function of barcode rank,
-for the first set of whitelisted barcodes.
+Similarly to the knee plot that was used to select the initial cell barcode
+whitelist, the plot below shows the number of detected genes for each cell
+barcode included in the initial whitelist, in decreasing order.
 
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
