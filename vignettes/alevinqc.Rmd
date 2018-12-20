@@ -7,7 +7,7 @@ output:
     BiocStyle::html_document
 bibliography: bibliography.bib
 abstract: >
-    `r Biocpkg("alevinQC")` reads output files from Alevin and 
+    `r Biocpkg("alevinQC")` reads output files from alevin and 
     generates summary reports.
 vignette: >
     %\VignetteIndexEntry{alevinQC}
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 The purpose of the `r Biocpkg("alevinQC")` package is to generate a summary QC
 report based on the output of
-[Alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
+[alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
 [@Srivastava2018-fz]. The QC report can be generated as a html or pdf file, or
 launched as a shiny application.
 
@@ -39,15 +39,15 @@ library(alevinQC)
 
 # Assumed output directory structure
 
-For more information about running Alevin, we refer to the
+For more information about running alevin, we refer to the
 [documentation](https://salmon.readthedocs.io/en/latest/alevin.html). When
-invoked, Alevin generates several output files in the specified output
+invoked, alevin generates several output files in the specified output
 directory. `r Biocpkg("alevinQC")` assumes that this structure is retained, and
 will return an error if it doesn't  - thus, it is not recommended to move or
-rename the output files from Alevin. `r Biocpkg("alevinQC")` assumes that the
+rename the output files from alevin. `r Biocpkg("alevinQC")` assumes that the
 following files (in the indicated structure) are available in the provided
 `baseDir` (note that currently, in order to generate the full set of files,
-Alevin must be invoked with the `--dumpFeatures` flag).
+alevin must be invoked with the `--dumpFeatures` flag).
 
 ```{r v3, eval=FALSE, results='asis'}
 baseDir
@@ -65,7 +65,7 @@ baseDir
   |--cmd_info.json
 ```
 
-# Check that all required Alevin files are available
+# Check that all required alevin files are available
 
 The report generation functions (see below) will check that all the required
 files are available in the provided base directory. However, you can also call
@@ -80,7 +80,7 @@ checkAlevinInputFiles(baseDir = baseDir)
 
 # Generate QC report
 
-The `alevinQCReport()` function generates the QC report from the Alevin output.
+The `alevinQCReport()` function generates the QC report from the alevin output.
 Depending on the file extension of the `outputFile` argument, and the value of
 `outputFormat`, the function can generate either a html report or a pdf report.
 
@@ -111,7 +111,7 @@ shiny::runApp(app)
 # Generate individual plots
 
 The individual plots included in the QC reports can also be independently
-generated. To do so, we must first read the Alevin output into an R object.
+generated. To do so, we must first read the alevin output into an R object.
 
 ```{r v9}
 alevin <- readAlevinQC(baseDir = baseDir)
@@ -122,7 +122,7 @@ The resulting list contains three entries:
 - `cbTable`: a `data.frame` with various inferred characteristics of the
 individual cell barcodes 
 - `summaryTable`: a `data.frame` with summary information about the run 
-- `versionTable`: a `data.frame` with information about the invokation of Alevin
+- `versionTable`: a `data.frame` with information about the invokation of alevin
 
 ```{r v10}
 head(alevin$cbTable)

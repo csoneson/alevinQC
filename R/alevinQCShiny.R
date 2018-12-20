@@ -1,10 +1,10 @@
-#' Generate Alevin summary shiny app
+#' Generate alevin summary shiny app
 #'
-#' Generate a shiny app summarizing the main aspects of an Alevin quantification
-#' run. The app generation assumes that Alevin has been run with the
+#' Generate a shiny app summarizing the main aspects of an alevin quantification
+#' run. The app generation assumes that alevin has been run with the
 #' --dumpFeatures flag to generate the necessary output files.
 #'
-#' @param baseDir Path to the output directory from the Alevin run (should be
+#' @param baseDir Path to the output directory from the alevin run (should be
 #'   the directory containing the \code{alevin} directory).
 #' @param sampleId Sample ID, will be used set the title for the app.
 #'

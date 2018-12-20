@@ -1,9 +1,9 @@
-#' Read Alevin data required to generate summary report
+#' Read alevin data required to generate summary report
 #'
-#' Read all Alevin output files required to generate the summary report or shiny
+#' Read all alevin output files required to generate the summary report or shiny
 #' app.
 #'
-#' @param baseDir Path to the output directory from the Alevin run (should be
+#' @param baseDir Path to the output directory from the alevin run (should be
 #'   the directory containing the \code{alevin} directory).
 #'
 #' @author Charlotte Soneson

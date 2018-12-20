@@ -1,10 +1,10 @@
-#' Generate Alevin summary report
+#' Generate alevin summary report
 #'
-#' Generate a report summarizing the main aspects of an Alevin quantification
-#' run. The report generation assumes that Alevin has been run with the
+#' Generate a report summarizing the main aspects of an alevin quantification
+#' run. The report generation assumes that alevin has been run with the
 #' --dumpFeatures flag to generate the necessary output files.
 #'
-#' @param baseDir Path to the output directory from the Alevin run (should be
+#' @param baseDir Path to the output directory from the alevin run (should be
 #'   the directory containing the \code{alevin} directory).
 #' @param sampleId Sample ID, will be used set the title for the report.
 #' @param outputFile File name of the output report. The file name extension

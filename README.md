@@ -1,7 +1,7 @@
 ## alevinQC
 
 The `alevinQC` R package provides functionality for generating QC reports
-summarizing the output of [Alevin](https://github.com/COMBINE-lab/salmon)
+summarizing the output of [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
 ([Srivastava et al., bioRxiv doi:10.1101/335000,
 2018](https://www.biorxiv.org/content/early/2018/10/24/335000)). The reports can
 be generated in html or pdf format, or as R/Shiny applications.

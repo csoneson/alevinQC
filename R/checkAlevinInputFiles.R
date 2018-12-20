@@ -1,6 +1,6 @@
 #' Check that all required input files are available
 #'
-#' @param baseDir Path to the output directory from the Alevin run (should be
+#' @param baseDir Path to the output directory from the alevin run (should be
 #'   the directory containing the \code{alevin} directory).
 #'
 #' @author Charlotte Soneson
