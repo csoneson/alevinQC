@@ -34,12 +34,12 @@ plotAlevinQuant <- function(cbTable) {
         ggplot2::xlab("Barcode frequency") +
         ggplot2::ylab("Total UMI count")
     g2 <- ggplot2::ggplot(cbTable,
-                          ggplot2::aes(x = collapsedFreq, y = nbrGenes2,
+                          ggplot2::aes(x = collapsedFreq, y = nbrGenesAboveZero,
                                        color = inFinalWhiteList)) + gglayers +
         ggplot2::xlab("Barcode frequency") +
         ggplot2::ylab("Number of detected genes")
     g3 <- ggplot2::ggplot(cbTable,
-                          ggplot2::aes(x = totalUMICount, y = nbrGenes2,
+                          ggplot2::aes(x = totalUMICount, y = nbrGenesAboveZero,
                                        color = inFinalWhiteList)) + gglayers +
         ggplot2::xlab("Total UMI count") +
         ggplot2::ylab("Number of detected genes")

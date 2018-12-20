@@ -24,7 +24,7 @@ plotAlevinQuantPairs <- function(cbTable) {
         cbTable %>% dplyr::filter(inFirstWhiteList) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",
                           `Total UMI count` = "totalUMICount",
-                          `Nbr detected genes` = "nbrGenes2"),
+                          `Nbr detected genes` = "nbrGenesAboveZero"),
         mapping = ggplot2::aes(color = inFinalWhiteList),
         columns = c("Barcode frequency", "Total UMI count",
                     "Nbr detected genes"),

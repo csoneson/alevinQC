@@ -22,9 +22,9 @@
 #'
 plotAlevinKneeNbrGenes <- function(cbTable) {
     ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList) %>%
-                        dplyr::arrange(desc(nbrGenes2)) %>%
-                        dplyr::mutate(x = seq_along(nbrGenes2)),
-                    ggplot2::aes(x = x, y = nbrGenes2)) +
+                        dplyr::arrange(desc(nbrGenesAboveZero)) %>%
+                        dplyr::mutate(x = seq_along(nbrGenesAboveZero)),
+                    ggplot2::aes(x = x, y = nbrGenesAboveZero)) +
         ggplot2::geom_line(size = 2) +
         ggplot2::xlab("Cell barcode rank") +
         ggplot2::ylab("Number of detected genes") +

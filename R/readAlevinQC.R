@@ -40,10 +40,12 @@ readAlevinQC <- function(baseDir) {
         dplyr::rename(CB = V1, collapsedFreq = V2)
 
     ## FeatureDump
+    ## dedupRate = nbr deduplicated UMI counts/nbr mapped reads
+    ## nbrGenesAboveMean = nbr genes with count > mean gene count
     featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
                               header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, mappingRate = V2, duplicationRate = V3,
-                      col4 = V4, nbrGenes = V5)
+                      dedupRate = V4, nbrGenesAboveMean = V5)
 
     ## Mapped UMI
     mappedumi <- read.delim(file.path(alevinDir, "MappedUmi.txt"),
@@ -59,7 +61,7 @@ readAlevinQC <- function(baseDir) {
                                    type = "alevin")$counts
     quants <- data.frame(CB = colnames(quantmat),
                          totalUMICount = colSums(quantmat),
-                         nbrGenes2 = colSums(quantmat >= 0.05),
+                         nbrGenesAboveZero = colSums(quantmat >= 0.05),
                          stringsAsFactors = FALSE)
 
     ## Merge information about quantified CBs
@@ -111,7 +113,7 @@ readAlevinQC <- function(baseDir) {
                                            na.rm = TRUE)),
         `Median number of reads per cell` = round(stats::median(quantbcs$collapsedFreq,
                                                       na.rm = TRUE)),
-        `Median number of detected genes per cell` = stats::median(quantbcs$nbrGenes2,
+        `Median number of detected genes per cell` = stats::median(quantbcs$nbrGenesAboveZero,
                                                     na.rm = TRUE),
         `Total number of detected genes` = sum(rowSums(quantmat) > 0),
         `Median UMI count per cell` = stats::median(quantbcs$totalUMICount,
