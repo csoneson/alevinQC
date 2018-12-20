@@ -13,7 +13,7 @@ editor_options:
     chunk_output_type: console
 title: "`r sampleId`"
 date: "`r Sys.Date()`"
-author: "`r paste0('alevinQC (v', packageVersion('alevinQC'), ')')`"
+author: "`r paste0('alevinQC (v', utils::packageVersion('alevinQC'), ')')`"
 ---
 
 <style>

@@ -149,9 +149,9 @@ readAlevinQC <- function(baseDir) {
         `Median number of detected genes per cell (final whitelist)` =
             stats::median(cbtable$nbrGenesAboveZero[cbtable$inFinalWhiteList],
                           na.rm = TRUE),
-        `Total number of detected genes (final whitelist)` =
-            sum(rowSums(quantmat[, colnames(quantmat) %in%
-                                     cbtable$CB[cbtable$inFinalWhiteList]]) > 0),
+        `Total number of detected genes (final whitelist)` = sum(
+            rowSums(quantmat[, colnames(quantmat) %in%
+                                 cbtable$CB[cbtable$inFinalWhiteList]]) > 0),
         `Median UMI count per cell (final whitelist)` =
             stats::median(cbtable$totalUMICount[cbtable$inFinalWhiteList],
                           na.rm = TRUE),

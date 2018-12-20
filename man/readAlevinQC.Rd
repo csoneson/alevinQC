@@ -2,12 +2,12 @@
 % Please edit documentation in R/readAlevinQC.R
 \name{readAlevinQC}
 \alias{readAlevinQC}
-\title{Read Alevin data required to generate summary report}
+\title{Read alevin data required to generate summary report}
 \usage{
 readAlevinQC(baseDir)
 }
 \arguments{
-\item{baseDir}{Path to the output directory from the Alevin run (should be
+\item{baseDir}{Path to the output directory from the alevin run (should be
 the directory containing the \code{alevin} directory).}
 }
 \value{
@@ -15,7 +15,7 @@ A list collecting all necessary information for generating the
   summary report/shiny app.
 }
 \description{
-Read all Alevin output files required to generate the summary report or shiny
+Read all alevin output files required to generate the summary report or shiny
 app.
 }
 \examples{

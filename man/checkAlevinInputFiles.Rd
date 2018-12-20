@@ -7,7 +7,7 @@
 checkAlevinInputFiles(baseDir)
 }
 \arguments{
-\item{baseDir}{Path to the output directory from the Alevin run (should be
+\item{baseDir}{Path to the output directory from the alevin run (should be
 the directory containing the \code{alevin} directory).}
 }
 \value{

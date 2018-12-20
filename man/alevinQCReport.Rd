@@ -2,17 +2,17 @@
 % Please edit documentation in R/alevinQCReport.R
 \name{alevinQCReport}
 \alias{alevinQCReport}
-\title{Generate Alevin summary report}
+\title{Generate alevin summary report}
 \usage{
 alevinQCReport(baseDir, sampleId, outputFile, outputDir = "./",
   outputFormat = NULL, showCode = FALSE, forceOverwrite = FALSE,
   knitrProgress = FALSE, quiet = FALSE, ignorePandoc = FALSE, ...)
 }
 \arguments{
-\item{baseDir}{Path to the output directory from the Alevin run (should be
+\item{baseDir}{Path to the output directory from the alevin run (should be
 the directory containing the \code{alevin} directory).}
 
-\item{sampleId}{Sample ID, will be used set the title for the report.}
+\item{sampleId}{Sample ID, will be used to set the title for the report.}
 
 \item{outputFile}{File name of the output report. The file name extension
 must be either \code{.html} or \code{.pdf}, and consistent with the value
@@ -49,12 +49,12 @@ Generates a summary report in the \code{outputDir} directory, and
   returns (invisibly) the name of the generated report.
 }
 \description{
-Generate a report summarizing the main aspects of an Alevin quantification
-run. The report generation assumes that Alevin has been run with the
+Generate a report summarizing the main aspects of an alevin quantification
+run. The report generation assumes that alevin has been run with the
 --dumpFeatures flag to generate the necessary output files.
 }
 \details{
-When the function is called, an .Rmd template file will be copied
+When the function is called, a .Rmd template file will be copied
   into the output directory, and \code{rmarkdown::render} will be called to
   generate the final report. If there is already a .Rmd file with the same
   name in the output directory, the function will raise an error and stop, to

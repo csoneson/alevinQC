@@ -16,6 +16,7 @@
 #' @importFrom shiny fluidRow plotOutput renderPlot shinyApp
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar box
 #' @importFrom DT dataTableOutput datatable renderDataTable
+#' @importFrom utils packageVersion
 #'
 #' @return A shiny app.
 #'
@@ -35,7 +36,8 @@ alevinQCShiny <- function(baseDir, sampleId) {
             skin = "red",
 
             shinydashboard::dashboardHeader(
-                title = paste0("alevinQC (v", packageVersion("alevinQC"), "), ",
+                title = paste0("alevinQC (v",
+                               utils::packageVersion("alevinQC"), "), ",
                                sampleId),
                 titleWidth = (10 + nchar(sampleId)) * 20),
 

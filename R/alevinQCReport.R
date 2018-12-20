@@ -111,7 +111,9 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
 
     ## Raise an error if the output format and file name extension don't match
     if (outputFormat != paste0(tools::file_ext(outputFile), "_document")) {
-        stop(paste0("File name extension of outputFile doesn't agree with the ",
+        stop(paste0("File name extension of outputFile (.",
+                    tools::file_ext(outputFile),
+                    ") doesn't agree with the ",
                     "outputFormat, should be .",
                     gsub("_document$", "", outputFormat)), call. = FALSE)
     }
@@ -129,7 +131,8 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     outputReport <- file.path(outputDir, basename(outputFile))
     outputRmd <- file.path(
         outputDir,
-        paste0(tools::file_path_sans_ext(basename(outputFile)), ".Rmd"))
+        paste0(tools::file_path_sans_ext(basename(outputFile)), ".Rmd")
+    )
 
     ## Report
     if (file.exists(outputReport)) {
