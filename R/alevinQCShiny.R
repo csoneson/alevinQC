@@ -80,7 +80,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
                     shinydashboard::box(
                         width = 12,
                         title = "Quantification summary",
-                        shiny::plotOutput("quantPairsPlot")
+                        shiny::plotOutput("quantPlot")
                     )
                 )
 
@@ -129,7 +129,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
             plotAlevinBarcodeCollapse(alevin$cbTable)
         )
 
-        output$quantPairsPlot <- shiny::renderPlot(
+        output$quantPlot <- shiny::renderPlot(
             plotAlevinQuant(alevin$cbTable)
         )
 
