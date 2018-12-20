@@ -46,10 +46,12 @@ alevinQCShiny <- function(baseDir, sampleId) {
             shinydashboard::dashboardBody(
                 shiny::fluidRow(
                     shinydashboard::box(
+                        width = 6,
                         title = "Version info, alevin run",
                         DT::dataTableOutput("versionTable")
                     ),
                     shinydashboard::box(
+                        width = 6,
                         title = "Summary tables",
                         DT::dataTableOutput("summaryTableFull"),
                         DT::dataTableOutput("summaryTableInitialWl"),
