@@ -1,3 +1,26 @@
+.checkPandoc <- function(ignorePandoc) {
+    if (Sys.which("pandoc") == "") {
+        if (ignorePandoc) {
+            ## If ignorePandoc is TRUE, just give a warning
+            warning("pandoc is not available! ",
+                    "The final report will not be generated.")
+        } else {
+            ## If ignorePandoc is FALSE, stop
+            stop("pandoc is not available!")
+        }
+    }
+    if (Sys.which("pandoc-citeproc") == "") {
+        if (ignorePandoc) {
+            ## If ignorePandoc is TRUE, just give a warning
+            warning("pandoc-citeproc is not available! ",
+                    "The final report will not be generated.")
+        } else {
+            ## If ignorePandoc is FALSE, stop
+            stop("pandoc-citeproc is not available!")
+        }
+    }
+}
+
 #' Generate alevin summary report
 #'
 #' Generate a report summarizing the main aspects of an alevin quantification
@@ -6,7 +29,7 @@
 #'
 #' @param baseDir Path to the output directory from the alevin run (should be
 #'   the directory containing the \code{alevin} directory).
-#' @param sampleId Sample ID, will be used set the title for the report.
+#' @param sampleId Sample ID, will be used to set the title for the report.
 #' @param outputFile File name of the output report. The file name extension
 #'   must be either \code{.html} or \code{.pdf}, and consistent with the value
 #'   of \code{outputFormat}.
@@ -31,7 +54,7 @@
 #'
 #' @author Charlotte Soneson
 #'
-#' @details When the function is called, an .Rmd template file will be copied
+#' @details When the function is called, a .Rmd template file will be copied
 #'   into the output directory, and \code{rmarkdown::render} will be called to
 #'   generate the final report. If there is already a .Rmd file with the same
 #'   name in the output directory, the function will raise an error and stop, to
@@ -73,26 +96,7 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     }
 
     ## Check if pandoc and pandoc-citeproc are available
-    if (Sys.which("pandoc") == "") {
-        if (ignorePandoc) {
-            ## If ignorePandoc is TRUE, just give a warning
-            warning("pandoc is not available! ",
-                    "The final report will not be generated.")
-        } else {
-            ## If ignorePandoc is FALSE, stop
-            stop("pandoc is not available!")
-        }
-    }
-    if (Sys.which("pandoc-citeproc") == "") {
-        if (ignorePandoc) {
-            ## If ignorePandoc is TRUE, just give a warning
-            warning("pandoc-citeproc is not available! ",
-                    "The final report will not be generated.")
-        } else {
-            ## If ignorePandoc is FALSE, stop
-            stop("pandoc-citeproc is not available!")
-        }
-    }
+    .checkPandoc(ignorePandoc)
 
     ## ---------------------------------------------------------------------- ##
     ## --------------------- Check input arguments -------------------------- ##
