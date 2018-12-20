@@ -28,7 +28,7 @@ readAlevinQC <- function(baseDir) {
 
     alevinDir <- file.path(baseDir, "alevin")
 
-    ## Raw CB frequencies
+    ## Raw CB frequencies (assumed to be in descending order)
     rawcbfreq <- utils::read.delim(file.path(alevinDir, "raw_cb_frequency.txt"),
                                    header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, originalFreq = V2) %>%
@@ -61,7 +61,7 @@ readAlevinQC <- function(baseDir) {
                                    type = "alevin")$counts
     quants <- data.frame(CB = colnames(quantmat),
                          totalUMICount = colSums(quantmat),
-                         nbrGenesAboveZero = colSums(quantmat >= 0.05),
+                         nbrGenesAboveZero = colSums(quantmat > 0),
                          stringsAsFactors = FALSE)
 
     ## Merge information about quantified CBs
@@ -69,11 +69,12 @@ readAlevinQC <- function(baseDir) {
         dplyr::full_join(featuredump, by = "CB") %>%
         dplyr::full_join(mappedumi, by = "CB") %>%
         dplyr::full_join(quants, by = "CB") %>%
-        dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist)
+        dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
+        dplyr::mutate(inFirstWhiteList = TRUE)
 
     cbtable <- dplyr::full_join(
         rawcbfreq,
-        quantbcs %>% dplyr::mutate(inFirstWhiteList = TRUE)
+        quantbcs
     ) %>% dplyr::mutate(inFirstWhiteList = replace(inFirstWhiteList,
                                                    is.na(inFirstWhiteList),
                                                    FALSE),
@@ -114,47 +115,59 @@ readAlevinQC <- function(baseDir) {
         `Number of barcodes in initial whitelist` =
             as.character(sum(cbtable$inFirstWhiteList, na.rm = TRUE)),
         `Fraction reads in initial whitelist barcodes` =
-            paste0(signif(
+            as.character(paste0(signif(
                 100 * sum(cbtable$collapsedFreq[cbtable$inFirstWhiteList],
                           na.rm = TRUE)/
-                    sum(cbtable$originalFreq, na.rm = TRUE), 4), "%"),
+                    sum(cbtable$originalFreq, na.rm = TRUE), 4), "%")),
         `Mean number of reads per cell (initial whitelist)` =
-            round(mean(cbtable$collapsedFreq, na.rm = TRUE)),
+            as.character(round(mean(
+                cbtable$collapsedFreq[cbtable$inFirstWhiteList],
+                na.rm = TRUE))),
         `Median number of reads per cell (initial whitelist)` =
-            round(stats::median(cbtable$collapsedFreq, na.rm = TRUE)),
+            as.character(round(stats::median(
+                cbtable$collapsedFreq[cbtable$inFirstWhiteList],
+                na.rm = TRUE))),
         `Median number of detected genes per cell (initial whitelist)` =
-            stats::median(cbtable$nbrGenesAboveZero, na.rm = TRUE),
+            as.character(round(stats::median(
+                cbtable$nbrGenesAboveZero[cbtable$inFirstWhiteList],
+                na.rm = TRUE))),
         `Total number of detected genes (initial whitelist)` =
-            sum(rowSums(quantmat) > 0),
+            as.character(sum(rowSums(quantmat) > 0)),
         `Median UMI count per cell (initial whitelist)` =
-            stats::median(cbtable$totalUMICount, na.rm = TRUE),
+            as.character(round(stats::median(
+                cbtable$totalUMICount[cbtable$inFirstWhiteList],
+                na.rm = TRUE))),
         stringsAsFactors = FALSE,
         check.names = FALSE
     ))
 
     summarytable_finalwl <- t(data.frame(
         `Number of barcodes in final whitelist` =
-            sum(cbtable$inFinalWhiteList, na.rm = TRUE),
+            as.character(sum(cbtable$inFinalWhiteList, na.rm = TRUE)),
         `Fraction reads in final whitelist barcodes` =
-            paste0(signif(
+            as.character(paste0(signif(
                 100 * sum(cbtable$collapsedFreq[cbtable$inFinalWhiteList],
                           na.rm = TRUE)/
-                    sum(cbtable$originalFreq, na.rm = TRUE), 4), "%"),
+                    sum(cbtable$originalFreq, na.rm = TRUE), 4), "%")),
         `Mean number of reads per cell (final whitelist)` =
-            round(mean(cbtable$collapsedFreq[cbtable$inFinalWhiteList],
-                       na.rm = TRUE)),
+            as.character(round(mean(
+                cbtable$collapsedFreq[cbtable$inFinalWhiteList],
+                na.rm = TRUE))),
         `Median number of reads per cell (final whitelist)` =
-            round(stats::median(cbtable$collapsedFreq[cbtable$inFinalWhiteList],
-                                na.rm = TRUE)),
+            as.character(round(stats::median(
+                cbtable$collapsedFreq[cbtable$inFinalWhiteList],
+                na.rm = TRUE))),
         `Median number of detected genes per cell (final whitelist)` =
-            stats::median(cbtable$nbrGenesAboveZero[cbtable$inFinalWhiteList],
-                          na.rm = TRUE),
-        `Total number of detected genes (final whitelist)` = sum(
+            as.character(round(stats::median(
+                cbtable$nbrGenesAboveZero[cbtable$inFinalWhiteList],
+                na.rm = TRUE))),
+        `Total number of detected genes (final whitelist)` = as.character(sum(
             rowSums(quantmat[, colnames(quantmat) %in%
-                                 cbtable$CB[cbtable$inFinalWhiteList]]) > 0),
+                                 cbtable$CB[cbtable$inFinalWhiteList]]) > 0)),
         `Median UMI count per cell (final whitelist)` =
-            stats::median(cbtable$totalUMICount[cbtable$inFinalWhiteList],
-                          na.rm = TRUE),
+            as.character(round(stats::median(
+                cbtable$totalUMICount[cbtable$inFinalWhiteList],
+                na.rm = TRUE))),
         stringsAsFactors = FALSE,
         check.names = FALSE
     ))
