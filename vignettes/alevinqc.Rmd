@@ -121,7 +121,8 @@ The resulting list contains three entries:
 
 - `cbTable`: a `data.frame` with various inferred characteristics of the
 individual cell barcodes 
-- `summaryTable`: a `data.frame` with summary information about the run 
+- `summaryTables`: a list of `data.frame`s with summary information about the
+run
 - `versionTable`: a `data.frame` with information about the invokation of alevin
 
 ```{r v10}
@@ -129,7 +130,9 @@ head(alevin$cbTable)
 ```
 
 ```{r v11}
-knitr::kable(alevin$summaryTable)
+knitr::kable(alevin$summaryTables$fullDataset)
+knitr::kable(alevin$summaryTables$initialWhitelist)
+knitr::kable(alevin$summaryTables$finalWhitelist)
 ```
 
 ```{r v12}
