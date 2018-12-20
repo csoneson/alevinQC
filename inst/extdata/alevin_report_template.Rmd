@@ -41,12 +41,30 @@ knitr::kable(
 )
 ```
 
-## Summary table
+## Summary tables
+
+#### Full set of cell barcodes
 
 ```{r}
-if (!quiet) message("Generating summary table...")
+if (!quiet) message("Generating summary tables...")
 knitr::kable(
-    alevin$summaryTable
+    alevin$summaryTables$fullDataset
+)
+```
+
+#### Initial whitelist
+
+```{r}
+knitr::kable(
+    alevin$summaryTables$initialWhitelist
+)
+```
+
+#### Final whitelist
+
+```{r}
+knitr::kable(
+    alevin$summaryTables$finalWhitelist
 )
 ```
 

@@ -48,9 +48,12 @@ alevinQCShiny <- function(baseDir, sampleId) {
                         DT::dataTableOutput("versionTable")
                     ),
                     shinydashboard::box(
-                        title = "Summary table",
-                        DT::dataTableOutput("summaryTable")
+                        title = "Summary tables",
+                        DT::dataTableOutput("summaryTableFull"),
+                        DT::dataTableOutput("summaryTableInitialWl"),
+                        DT::dataTableOutput("summaryTableFinalWl")
                     )
+
                 ),
                 shiny::fluidRow(
                     shinydashboard::box(
@@ -90,9 +93,25 @@ alevinQCShiny <- function(baseDir, sampleId) {
             )
         )
 
-        output$summaryTable <- DT::renderDataTable(
+        output$summaryTableFull <- DT::renderDataTable(
             DT::datatable(
-                alevin$summaryTable,
+                alevin$summaryTables$fullDataset,
+                colnames = "",
+                options = list(scrollX = TRUE)
+            )
+        )
+
+        output$summaryTableInitialWl <- DT::renderDataTable(
+            DT::datatable(
+                alevin$summaryTables$initialWhitelist,
+                colnames = "",
+                options = list(scrollX = TRUE)
+            )
+        )
+
+        output$summaryTableFinalWl <- DT::renderDataTable(
+            DT::datatable(
+                alevin$summaryTables$finalWhitelist,
                 colnames = "",
                 options = list(scrollX = TRUE)
             )
