@@ -31,62 +31,60 @@
 alevinQCShiny <- function(baseDir, sampleId) {
     alevin <- readAlevinQC(baseDir)
 
-    pLayout <- function() {
-        shinydashboard::dashboardPage(
-            skin = "red",
+    pLayout <- shinydashboard::dashboardPage(
+        skin = "red",
 
-            shinydashboard::dashboardHeader(
-                title = paste0("alevinQC (v",
-                               utils::packageVersion("alevinQC"), "), ",
-                               sampleId),
-                titleWidth = (10 + nchar(sampleId)) * 20),
+        shinydashboard::dashboardHeader(
+            title = paste0("alevinQC (v",
+                           utils::packageVersion("alevinQC"), "), ",
+                           sampleId),
+            titleWidth = (10 + nchar(sampleId)) * 20),
 
-            shinydashboard::dashboardSidebar(disable = TRUE),
+        shinydashboard::dashboardSidebar(disable = TRUE),
 
-            shinydashboard::dashboardBody(
-                shiny::fluidRow(
-                    shinydashboard::box(
-                        width = 6,
-                        title = "Version info, alevin run",
-                        DT::dataTableOutput("versionTable")
-                    ),
-                    shinydashboard::box(
-                        width = 6,
-                        title = "Summary tables",
-                        DT::dataTableOutput("summaryTableFull"),
-                        DT::dataTableOutput("summaryTableInitialWl"),
-                        DT::dataTableOutput("summaryTableFinalWl")
-                    )
-
+        shinydashboard::dashboardBody(
+            shiny::fluidRow(
+                shinydashboard::box(
+                    width = 6,
+                    title = "Version info, alevin run",
+                    DT::dataTableOutput("versionTable")
                 ),
-                shiny::fluidRow(
-                    shinydashboard::box(
-                        width = 4,
-                        title = "Knee plot, initial whitelist determination",
-                        shiny::plotOutput("rawCBKneePlot")
-                    ),
-                    shinydashboard::box(
-                        width = 4,
-                        title = "Barcode collapsing",
-                        shiny::plotOutput("barcodeCollapsePlot")
-                    ),
-                    shinydashboard::box(
-                        width = 4,
-                        title = "Knee plot, number of genes per cell",
-                        shiny::plotOutput("nbrGenesKneePlot")
-                    )
-                ),
-                shiny::fluidRow(
-                    shinydashboard::box(
-                        width = 12,
-                        title = "Quantification summary",
-                        shiny::plotOutput("quantPlot")
-                    )
+                shinydashboard::box(
+                    width = 6,
+                    title = "Summary tables",
+                    DT::dataTableOutput("summaryTableFull"),
+                    DT::dataTableOutput("summaryTableInitialWl"),
+                    DT::dataTableOutput("summaryTableFinalWl")
                 )
 
+            ),
+            shiny::fluidRow(
+                shinydashboard::box(
+                    width = 4,
+                    title = "Knee plot, initial whitelist determination",
+                    shiny::plotOutput("rawCBKneePlot")
+                ),
+                shinydashboard::box(
+                    width = 4,
+                    title = "Barcode collapsing",
+                    shiny::plotOutput("barcodeCollapsePlot")
+                ),
+                shinydashboard::box(
+                    width = 4,
+                    title = "Knee plot, number of genes per cell",
+                    shiny::plotOutput("nbrGenesKneePlot")
+                )
+            ),
+            shiny::fluidRow(
+                shinydashboard::box(
+                    width = 12,
+                    title = "Quantification summary",
+                    shiny::plotOutput("quantPlot")
+                )
             )
+
         )
-    }
+    )
 
     server_function <- function(input, output, session) {
         output$versionTable <- DT::renderDataTable(
