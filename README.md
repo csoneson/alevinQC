@@ -12,12 +12,14 @@ be generated in html or pdf format, or as R/Shiny applications.
 BiocManager::install("csoneson/alevinQC")
 ```
 
-### Basic usage:
+### Example usage:
 
 ```
-alevinQCReport(baseDir = "<path_to_salmon_dir>", 
-               sampleId = "<sample_name>", 
-               outputFile = "myTestReport.html")
+alevinQCReport(baseDir = system.file("extdata/alevin_example", package = "alevinQC"),
+               sampleId = "testSample", 
+               outputFile = "alevinReport.html", 
+               outputFormat = "html_document",
+               outputDir = tempdir(), forceOverwrite = TRUE)
 ```
 
 For more information, we refer to the package vignette.
