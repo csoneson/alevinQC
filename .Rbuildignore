@@ -1,0 +1,7 @@
+^LICENSE\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
+^.Rbuildignore$
+^.travis.yml$
+^.gitignore$
+
