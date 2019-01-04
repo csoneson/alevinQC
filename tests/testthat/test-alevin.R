@@ -84,3 +84,9 @@ test_that("report generation works", {
                                 outputDir = tempDir, outputFormat = NULL,
                                 forceOverwrite = TRUE))
 })
+
+test_that("app generation works", {
+    app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example",
+                                               package = "alevinQC"),
+                         sampleId = "test")
+})
