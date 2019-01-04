@@ -89,4 +89,5 @@ test_that("app generation works", {
     app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example",
                                                package = "alevinQC"),
                          sampleId = "test")
+    expect_s3_class(app, "shiny.appobj")
 })
