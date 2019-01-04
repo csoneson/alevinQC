@@ -35,3 +35,52 @@ test_that("plots are generated", {
     expect_is(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
     expect_is(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
 })
+
+tempDir <- tempdir()
+if (file.exists(file.path(tempDir, "tmp.Rmd"))) {
+    file.remove(file.path(tempDir, "tmp.Rmd"))
+}
+if (file.exists(file.path(tempDir, "tmp.html"))) {
+    file.remove(file.path(tempDir, "tmp.html"))
+}
+if (file.exists(file.path(tempDir, "tmp.pdf"))) {
+    file.remove(file.path(tempDir, "tmp.pdf"))
+}
+
+test_that("input arguments are processed correctly", {
+    ## outputFormat
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                      package = "alevinQC"),
+                                outputFormat = "html", outputFile = "tmp.html",
+                                outputDir = tempDir, sampleId = "test"))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                      package = "alevinQC"),
+                                outputFormat = "html_document", outputFile = "tmp.pdf",
+                                outputDir = tempDir, sampleId = "test"))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                      package = "alevinQC"),
+                                outputFormat = "html_document", outputFile = "tmp.html",
+                                outputDir = tempDir, sampleId = c("s1", "s2")))
+})
+
+test_that("report generation works", {
+    rpt <- alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                package = "alevinQC"),
+                          sampleId = "test", outputFile = "tmp.html",
+                          outputDir = tempDir, outputFormat = NULL,
+                          forceOverwrite = FALSE)
+    expect_equal(basename(rpt), "tmp.html")
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                      package = "alevinQC"),
+                                sampleId = "test", outputFile = "tmp.html",
+                                outputDir = tempDir, outputFormat = NULL,
+                                forceOverwrite = FALSE))
+    file.copy(system.file("extdata/alevin_report_template.Rmd",
+                          package = "alevinQC"),
+              file.path(tempDir, "tmp.Rmd"))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example",
+                                                      package = "alevinQC"),
+                                sampleId = "test", outputFile = "tmp.html",
+                                outputDir = tempDir, outputFormat = NULL,
+                                forceOverwrite = TRUE))
+})
