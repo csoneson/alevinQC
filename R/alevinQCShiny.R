@@ -86,7 +86,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
         )
     )
 
-    server_function <- function(input, output, session) {
+    server_function <- function(input, output, session) { # nocov start
         output$versionTable <- DT::renderDataTable(
             DT::datatable(
                 alevin$versionTable,
@@ -134,7 +134,7 @@ alevinQCShiny <- function(baseDir, sampleId) {
         output$nbrGenesKneePlot <- shiny::renderPlot(
             plotAlevinKneeNbrGenes(alevin$cbTable)
         )
-    }
+    } # nocov end
 
     shiny::shinyApp(ui = pLayout, server = server_function)
 }
