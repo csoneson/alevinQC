@@ -26,3 +26,6 @@ alevinQCReport(baseDir = system.file("extdata/alevin_example", package = "alevin
 ```
 
 For more information, we refer to the package vignette.
+
+![](inst/extdata/alevinQC_screenshot1.png)
+![](inst/extdata/alevinQC_screenshot2.png)
