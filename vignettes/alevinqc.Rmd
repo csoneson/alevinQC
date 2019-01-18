@@ -43,7 +43,7 @@ For more information about running alevin, we refer to the
 [documentation](https://salmon.readthedocs.io/en/latest/alevin.html). When
 invoked, alevin generates several output files in the specified output
 directory. `r Biocpkg("alevinQC")` assumes that this structure is retained, and
-will return an error if it doesn't  - thus, it is not recommended to move or
+will return an error if it isn't  - thus, it is not recommended to move or
 rename the output files from alevin. `r Biocpkg("alevinQC")` assumes that the
 following files (in the indicated structure) are available in the provided
 `baseDir` (note that currently, in order to generate the full set of files,
