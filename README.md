@@ -12,6 +12,7 @@ be generated in html or pdf format, or as R/Shiny applications.
 ### Installation:
 
 ```
+install.packages("BiocManager")
 BiocManager::install("csoneson/alevinQC")
 ```
 
