@@ -128,11 +128,8 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     }
 
     ## ------------------------- output files ------------------------------- ##
-    outputReport <- file.path(outputDir, basename(outputFile))
-    outputRmd <- file.path(
-        outputDir,
-        paste0(tools::file_path_sans_ext(basename(outputFile)), ".Rmd")
-    )
+    outputReport <- basename(outputFile)
+    outputRmd <- paste0(tools::file_path_sans_ext(basename(outputFile)), ".Rmd")
 
     ## Report
     if (file.exists(outputReport)) {
@@ -177,6 +174,7 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     args$input <- outputRmd
     args$output_format <- outputFormat
     args$output_file <- outputFile
+    args$output_dir <- outputDir
     args$quiet <- !knitrProgress
 
     ## ---------------------------------------------------------------------- ##
