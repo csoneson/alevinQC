@@ -71,7 +71,7 @@ The report generation functions (see below) will check that all the required
 files are available in the provided base directory. However, you can also call
 the function `checkAlevinInputFiles()` to run the check manually. If all files
 are available, this function returns nothing. If one or more files are missing,
-the function will raise an error indicating the missing files.
+the function will raise an error indicating the missing file(s).
 
 ```{r v4}
 baseDir <- system.file("extdata/alevin_example", package = "alevinQC")

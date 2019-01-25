@@ -1,3 +1,12 @@
+#' Check whether pandoc and pandoc-citeproc is available
+#'
+#' @author Charlotte Soneson
+#'
+#' @param ignorePandoc logical. If TRUE, just give a warning if pandoc or
+#'   pandoc-citeproc is not available. If FALSE, stop.
+#'
+#' @keywords internal
+#'
 .checkPandoc <- function(ignorePandoc) {
     if (Sys.which("pandoc") == "") {
         if (ignorePandoc) {
@@ -119,6 +128,9 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     }
 
     ## ----------------------- input directory ------------------------------ ##
+    ## Normalize base directory path
+    baseDir <- normalizePath(baseDir)
+
     ## Check that all required input files are available
     checkAlevinInputFiles(baseDir)
 
