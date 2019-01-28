@@ -35,26 +35,27 @@ readAlevinQC <- function(baseDir) {
         dplyr::mutate(ranking = seq_len(length(CB)))
 
     ## First set of whitelisted CBs (quantified)
-    filtcbfreq <- read.delim(file.path(alevinDir, "filtered_cb_frequency.txt"),
-                             header = FALSE, as.is = TRUE) %>%
+    filtcbfreq <- utils::read.delim(file.path(alevinDir,
+                                              "filtered_cb_frequency.txt"),
+                                    header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, collapsedFreq = V2)
 
     ## FeatureDump
     ## dedupRate = nbr deduplicated UMI counts/nbr mapped reads
     ## nbrGenesAboveMean = nbr genes with count > mean gene count
-    featuredump <- read.delim(file.path(alevinDir, "featureDump.txt"),
-                              header = FALSE, as.is = TRUE) %>%
+    featuredump <- utils::read.delim(file.path(alevinDir, "featureDump.txt"),
+                                     header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, mappingRate = V2, duplicationRate = V3,
                       dedupRate = V4, nbrGenesAboveMean = V5)
 
     ## Mapped UMI
-    mappedumi <- read.delim(file.path(alevinDir, "MappedUmi.txt"),
-                            header = FALSE, as.is = TRUE) %>%
+    mappedumi <- utils::read.delim(file.path(alevinDir, "MappedUmi.txt"),
+                                   header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, nbrMappedUMI = V2)
 
     ## Final set of whitelisted CBs
-    finalwhitelist <- read.delim(file.path(alevinDir, "whitelist.txt"),
-                                 header = FALSE, as.is = TRUE)$V1
+    finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
+                                        header = FALSE, as.is = TRUE)$V1
 
     ## Quantification
     quantmat <- tximport::tximport(file.path(baseDir, "alevin/quants_mat.gz"),
@@ -88,16 +89,18 @@ readAlevinQC <- function(baseDir) {
     cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
 
     ## Create "version info" table
-    versiontable <- t(data.frame(`Start time` = metainfo$start_time,
-                                 `Salmon version` = metainfo$salmon_version,
-                                 `Index` = cmdinfo$index,
-                                 `R1file` = paste(cmdinfo$mates1,
-                                                  collapse = ", "),
-                                 `R2file` = paste(cmdinfo$mates2,
-                                                  collapse = ", "),
-                                 `tgMap` = cmdinfo$tgMap,
-                                 stringsAsFactors = FALSE,
-                                 check.names = FALSE))
+    versiontable <- t(data.frame(
+        `Start time` = metainfo$start_time,
+        `Salmon version` = metainfo$salmon_version,
+        `Index` = cmdinfo$index,
+        `R1file` = paste(cmdinfo$mates1,
+                         collapse = ", "),
+        `R2file` = paste(cmdinfo$mates2,
+                         collapse = ", "),
+        `tgMap` = cmdinfo$tgMap,
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+    ))
 
     ## Create summary tables
     summarytable_full <- t(data.frame(
