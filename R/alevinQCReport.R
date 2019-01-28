@@ -8,7 +8,7 @@
 #' @keywords internal
 #'
 #' @return No value is returned. Either a warning or an error (depending on the
-#'   value of \code{ignorePandoc} is raised if pandoc or pandoc-citeproc is not
+#'   value of \code{ignorePandoc}) is raised if pandoc or pandoc-citeproc is not
 #'   available.
 #'
 .checkPandoc <- function(ignorePandoc) {
