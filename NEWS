@@ -2,6 +2,7 @@ CHANGES IN VERSION 0.99.0
 -------------------------
 
     o Preparation for Bioconductor submission
+    o Swap internal example data for data from tximportData
 
 CHANGES IN VERSION 0.1.0
 ------------------------
