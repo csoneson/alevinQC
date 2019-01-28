@@ -69,9 +69,9 @@ baseDir
 
 The report generation functions (see below) will check that all the required
 files are available in the provided base directory. However, you can also call
-the function `checkAlevinInputFiles()` to run the check manually. If all files
-are available, this function returns nothing. If one or more files are missing,
-the function will raise an error indicating the missing file(s).
+the function `checkAlevinInputFiles()` to run the check manually. If one or more
+files are missing, the function will raise an error indicating the missing
+file(s).
 
 ```{r v4}
 baseDir <- system.file("extdata/alevin/neurons_900", package = "tximportData")
@@ -82,7 +82,7 @@ checkAlevinInputFiles(baseDir = baseDir)
 
 The `alevinQCReport()` function generates the QC report from the alevin output.
 Depending on the file extension of the `outputFile` argument, and the value of
-`outputFormat`, the function can generate either a html report or a pdf report.
+`outputFormat`, the function can generate either an html report or a pdf report.
 
 ```{r v5, message=FALSE, warning=FALSE}
 outputDir <- tempdir()
@@ -122,8 +122,9 @@ The resulting list contains three entries:
 - `cbTable`: a `data.frame` with various inferred characteristics of the
 individual cell barcodes 
 - `summaryTables`: a list of `data.frame`s with summary information about the
-run
-- `versionTable`: a `data.frame` with information about the invokation of alevin
+full data set, the initial set of whitelisted cells and the final set of
+whitelisted cells, respectively
+- `versionTable`: a `matrix` with information about the invokation of alevin
 
 ```{r v10}
 head(alevin$cbTable)
