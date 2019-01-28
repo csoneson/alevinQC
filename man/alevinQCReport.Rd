@@ -63,10 +63,12 @@ When the function is called, a .Rmd template file will be copied
   is generated.
 }
 \examples{
-alevinQCReport(baseDir = system.file("extdata/alevin_example",
-                                     package = "alevinQC"),
+\dontrun{
+alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900",
+                                     package = "tximportData"),
                sampleId = "example", outputFile = "alevinReport.html",
                outputDir = tempdir(), forceOverwrite = TRUE)
+}
 
 }
 \author{

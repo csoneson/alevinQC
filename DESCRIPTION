@@ -5,7 +5,6 @@ Version: 0.99.0
 Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), email = "charlottesoneson@gmail.com"),
     person("Avi", "Srivastava", role = "aut"))
 Description: Generate QC report for alevin output.
-License: MIT + file LICENSE.md
 Encoding: UTF-8
 Imports: 
     rmarkdown,
@@ -26,8 +25,10 @@ RoxygenNote: 6.1.1
 Suggests: 
     knitr,
     BiocStyle,
-    testthat
+    testthat,
+    tximportData (>= 1.11.3)
 VignetteBuilder: knitr
 biocViews: QualityControl, SingleCell
 URL: https://github.com/csoneson/alevinQC
 BugReports: https://github.com/csoneson/alevinQC/issues
+License: MIT + file LICENSE

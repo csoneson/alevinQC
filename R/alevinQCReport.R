@@ -7,6 +7,10 @@
 #'
 #' @keywords internal
 #'
+#' @return No value is returned. Either a warning or an error (depending on the
+#'   value of \code{ignorePandoc} is raised if pandoc or pandoc-citeproc is not
+#'   available.
+#'
 .checkPandoc <- function(ignorePandoc) {
     if (Sys.which("pandoc") == "") {
         if (ignorePandoc) {
@@ -82,10 +86,12 @@
 #'   returns (invisibly) the name of the generated report.
 #'
 #' @examples
-#' alevinQCReport(baseDir = system.file("extdata/alevin_example",
-#'                                      package = "alevinQC"),
+#' \dontrun{
+#' alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900",
+#'                                      package = "tximportData"),
 #'                sampleId = "example", outputFile = "alevinReport.html",
 #'                outputDir = tempdir(), forceOverwrite = TRUE)
+#' }
 #'
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,

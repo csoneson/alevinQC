@@ -11,8 +11,8 @@
 #'   missing.
 #'
 #' @examples
-#' checkAlevinInputFiles(system.file("extdata/alevin_example",
-#'                                   package = "alevinQC"))
+#' checkAlevinInputFiles(system.file("extdata/alevin/neurons_900",
+#'                                   package = "tximportData"))
 #'
 checkAlevinInputFiles <- function(baseDir) {
     ## Raise an error if any of the required files is missing

@@ -17,8 +17,8 @@ A ggplot object
 Plot the number of detected genes per cell in decreasing order.
 }
 \examples{
-alevin <- readAlevinQC(system.file("extdata/alevin_example",
-                                   package = "alevinQC"))
+alevin <- readAlevinQC(system.file("extdata/alevin/neurons_900",
+                                   package = "tximportData"))
 plotAlevinKneeNbrGenes(alevin$cbTable)
 
 }

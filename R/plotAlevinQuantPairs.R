@@ -15,8 +15,8 @@
 #' @return A ggmatrix object
 #'
 #' @examples
-#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
-#'                                    package = "alevinQC"))
+#' alevin <- readAlevinQC(system.file("extdata/alevin/neurons_900",
+#'                                    package = "tximportData"))
 #' plotAlevinQuantPairs(alevin$cbTable)
 #'
 plotAlevinQuantPairs <- function(cbTable) {

@@ -74,7 +74,7 @@ are available, this function returns nothing. If one or more files are missing,
 the function will raise an error indicating the missing file(s).
 
 ```{r v4}
-baseDir <- system.file("extdata/alevin_example", package = "alevinQC")
+baseDir <- system.file("extdata/alevin/neurons_900", package = "tximportData")
 checkAlevinInputFiles(baseDir = baseDir)
 ```
 

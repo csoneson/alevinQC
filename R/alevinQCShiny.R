@@ -21,8 +21,8 @@
 #' @return A shiny app.
 #'
 #' @examples
-#' app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example",
-#'                                            package = "alevinQC"),
+#' app <- alevinQCShiny(baseDir = system.file("extdata/alevin/neurons_900",
+#'                                            package = "tximportData"),
 #'                      sampleId = "example")
 #' if (interactive()) {
 #'     shiny::runApp(app)

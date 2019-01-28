@@ -21,8 +21,8 @@ run. The app generation assumes that alevin has been run with the
 --dumpFeatures flag to generate the necessary output files.
 }
 \examples{
-app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example",
-                                           package = "alevinQC"),
+app <- alevinQCShiny(baseDir = system.file("extdata/alevin/neurons_900",
+                                           package = "tximportData"),
                      sampleId = "example")
 if (interactive()) {
     shiny::runApp(app)
