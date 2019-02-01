@@ -11,8 +11,12 @@ be generated in html or pdf format, or as R/Shiny applications.
 
 ### Installation:
 
+Currently, the development version of `alevinQC` can be installed from GitHub,
+e.g. using the `BiocManager` CRAN package:
+
 ```
-install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 BiocManager::install("csoneson/alevinQC")
 ```
 
