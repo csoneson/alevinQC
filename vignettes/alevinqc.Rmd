@@ -35,7 +35,8 @@ or launched as a shiny application.
 
 # Installation
 
-Currently, `alevinQC` can be installed from GitHub, using e.g. the `BiocManager` CRAN package. 
+Currently, `alevinQC` can be installed from GitHub, using e.g. the `BiocManager`
+CRAN package.
 
 ```{r install}
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -43,7 +44,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("csoneson/alevinQC")
 ```
 
-After installation, load the package into your R session.
+After installation, load the package into the R session.
 
 ```{r v2, message=FALSE}
 library(alevinQC)
