@@ -1,0 +1,27 @@
+authors:
+  Charlotte Soneson:
+    href: https://csoneson.github.io
+
+url: http://csoneson.github.io/alevinQC
+
+template:
+  params:
+    bootswatch: cosmo
+
+reference:
+- title: Functions for reading alevin output data
+  contents:
+    - '`checkAlevinInputFiles`'
+    - '`readAlevinQC`'
+- title: Functions for generating QC reports
+  contents:
+    - '`alevinQCReport`'
+    - '`alevinQCShiny`'
+- title: Plot functions
+  contents:
+    - '`plotAlevinKneeRaw`'
+    - '`plotAlevinBarcodeCollapse`'
+    - '`plotAlevinQuant`'
+    - '`plotAlevinQuatPairs`'
+    - '`plotAlevinKneeNbrGenes`'
+
