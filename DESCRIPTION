@@ -6,7 +6,7 @@ Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), email = "cha
     person("Avi", "Srivastava", role = "aut"))
 Description: Generate QC report for alevin output.
 Encoding: UTF-8
-Depends: R (>=3.6)
+Depends: R (>= 3.6)
 Imports: 
     rmarkdown,
     tools,
