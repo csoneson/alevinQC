@@ -86,12 +86,10 @@
 #'   returns (invisibly) the name of the generated report.
 #'
 #' @examples
-#' \dontrun{
 #' alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900",
 #'                                      package = "tximportData"),
 #'                sampleId = "example", outputFile = "alevinReport.html",
 #'                outputDir = tempdir(), forceOverwrite = TRUE)
-#' }
 #'
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,
