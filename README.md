@@ -34,5 +34,5 @@ alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900",
 
 For more information, we refer to the package vignette.
 
-![](inst/extdata/alevinQC_screenshot1.png)
-![](inst/extdata/alevinQC_screenshot2.png)
+![](https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot1.png)
+![](https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot2.png)
