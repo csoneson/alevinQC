@@ -38,7 +38,7 @@ or launched as a shiny application.
 Currently, `alevinQC` can be installed from GitHub, using e.g. the `BiocManager`
 CRAN package.
 
-```{r install}
+```{r install, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("csoneson/alevinQC")
