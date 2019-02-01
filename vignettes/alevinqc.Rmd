@@ -28,10 +28,22 @@ knitr::opts_chunk$set(
 # Introduction
 
 The purpose of the `r Biocpkg("alevinQC")` package is to generate a summary QC
-report based on the output of
+report based on the output of an
 [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
-[@Srivastava2018-fz]. The QC report can be generated as a html or pdf file, or
-launched as a shiny application.
+[@Srivastava2018-fz] run. The QC report can be generated as a html or pdf file,
+or launched as a shiny application.
+
+# Installation
+
+Currently, `alevinQC` can be installed from GitHub, using e.g. the `BiocManager` CRAN package. 
+
+```{r install}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("csoneson/alevinQC")
+```
+
+After installation, load the package into your R session.
 
 ```{r v2, message=FALSE}
 library(alevinQC)
@@ -95,7 +107,7 @@ alevinQCReport(baseDir = baseDir, sampleId = "testSample",
 # Create shiny app
 
 In addition to static reports, `r Biocpkg("alevinQC")` can also generate a shiny
-application, containing the same information as the pdf and html reports.
+application, containing the same summary figures as the pdf and html reports.
 
 ```{r v7, message=FALSE}
 app <- alevinQCShiny(baseDir = baseDir, sampleId = "testSample")
