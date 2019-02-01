@@ -17,15 +17,16 @@ install:
 # Build cache to preserve files/folders between builds
 cache:
   - C:\RLibrary
+  - C:\Program Files (x86)\Pandoc\
 
 ## From https://github.com/krlmlr/r-appveyor/issues/82
 before_test:
   - ps: >-
       if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
         cinst pandoc
-        cinst pandoc-citeproc
       }
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+  - Rscript -e "install.packages('installr'); installr::install.pandoc()"
   - pandoc -v
   - pandoc-citeproc -V
 
