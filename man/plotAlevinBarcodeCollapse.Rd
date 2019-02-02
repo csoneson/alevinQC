@@ -18,8 +18,8 @@ Plot the original frequency of each cell barcode in the original whitelist
 against the frequency after collapsing similar cell barcodes.
 }
 \examples{
-alevin <- readAlevinQC(system.file("extdata/alevin/neurons_900",
-                                   package = "tximportData"))
+alevin <- readAlevinQC(system.file("extdata/alevin_example",
+                                   package = "alevinQC"))
 plotAlevinBarcodeCollapse(alevin$cbTable)
 
 }

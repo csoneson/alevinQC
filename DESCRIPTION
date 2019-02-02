@@ -28,7 +28,6 @@ Suggests:
     knitr,
     BiocStyle,
     testthat,
-    tximportData (>= 1.11.3)
 VignetteBuilder: knitr
 biocViews: QualityControl, SingleCell
 URL: https://github.com/csoneson/alevinQC

@@ -87,7 +87,7 @@ files are missing, the function will raise an error indicating the missing
 file(s).
 
 ```{r v4}
-baseDir <- system.file("extdata/alevin/neurons_900", package = "tximportData")
+baseDir <- system.file("extdata/alevin_example", package = "alevinQC")
 checkAlevinInputFiles(baseDir = baseDir)
 ```
 

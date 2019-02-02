@@ -16,8 +16,8 @@
 #' @return A ggplot object
 #'
 #' @examples
-#' alevin <- readAlevinQC(system.file("extdata/alevin/neurons_900",
-#'                                    package = "tximportData"))
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                                    package = "alevinQC"))
 #' plotAlevinQuant(alevin$cbTable)
 #'
 plotAlevinQuant <- function(cbTable) {

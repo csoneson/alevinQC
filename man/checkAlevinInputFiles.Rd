@@ -18,8 +18,8 @@ Returns nothing, raises an error if any of the required files are
 Check that all required input files are available
 }
 \examples{
-checkAlevinInputFiles(system.file("extdata/alevin/neurons_900",
-                                  package = "tximportData"))
+checkAlevinInputFiles(system.file("extdata/alevin_example",
+                                  package = "alevinQC"))
 
 }
 \author{

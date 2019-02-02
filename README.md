@@ -23,9 +23,8 @@ BiocManager::install("csoneson/alevinQC")
 ### Example usage:
 
 ```
-library(tximportData)  ## version >= 1.11.3
-alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900", 
-                                     package = "tximportData"),
+alevinQCReport(baseDir = system.file("extdata/alevin_example", 
+                                     package = "alevinQC"),
                sampleId = "testSample", 
                outputFile = "alevinReport.html", 
                outputFormat = "html_document",

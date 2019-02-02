@@ -19,8 +19,8 @@
 #'   summary report/shiny app.
 #'
 #' @examples
-#' alevin <- readAlevinQC(system.file("extdata/alevin/neurons_900",
-#'                        package = "tximportData"))
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#'                        package = "alevinQC"))
 #'
 readAlevinQC <- function(baseDir) {
     ## Check that all required files are available, stop if not
