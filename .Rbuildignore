@@ -6,5 +6,5 @@
 ^.gitignore$
 ^appveyor.yml$
 ^_pkgdown.yml$
-docs/
+docs/*
 
