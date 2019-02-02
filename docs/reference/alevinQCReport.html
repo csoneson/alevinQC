@@ -65,7 +65,7 @@ run. The report generation assumes that alevin has been run with the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -212,12 +212,10 @@ stops immediately.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>alevinQCReport</span>(<span class='kw'>baseDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata/alevin/neurons_900"</span>,
-                                     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tximportData"</span>),
+    <pre class="examples"><div class='input'><span class='fu'>alevinQCReport</span>(<span class='kw'>baseDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata/alevin_example"</span>,
+                                     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"alevinQC"</span>),
                <span class='kw'>sampleId</span> <span class='kw'>=</span> <span class='st'>"example"</span>, <span class='kw'>outputFile</span> <span class='kw'>=</span> <span class='st'>"alevinReport.html"</span>,
-               <span class='kw'>outputDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='kw'>forceOverwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
+               <span class='kw'>outputDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='kw'>forceOverwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Reading Alevin output files...</span></div><div class='output co'>#&gt; <span class='message'>reading in alevin gene-level counts across cells</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "CB"</span></div><div class='output co'>#&gt; <span class='message'>Generating summary tables...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating barcode collapsing plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating quantification summary plot...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot for nbr genes...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_path).</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

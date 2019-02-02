@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
       <h1>alevinQC</h1>
                         <h4 class="author">Charlotte Soneson</h4>
             
-            <h4 class="date">2019-02-01</h4>
+            <h4 class="date">2019-02-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/alevinQC/blob/master/vignettes/alevinqc.Rmd"><code>vignettes/alevinqc.Rmd</code></a></small>
       <div class="hidden name"><code>alevinqc.Rmd</code></div>
@@ -133,7 +133,7 @@
 <h1 class="hasAnchor">
 <a href="#check-that-all-required-alevin-files-are-available" class="anchor"></a>Check that all required alevin files are available</h1>
 <p>The report generation functions (see below) will check that all the required files are available in the provided base directory. However, you can also call the function <code><a href="../reference/checkAlevinInputFiles.html">checkAlevinInputFiles()</a></code> to run the check manually. If one or more files are missing, the function will raise an error indicating the missing file(s).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">baseDir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata/alevin/neurons_900"</span>, <span class="dt">package =</span> <span class="st">"tximportData"</span>)</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">baseDir &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata/alevin_example"</span>, <span class="dt">package =</span> <span class="st">"alevinQC"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/checkAlevinInputFiles.html">checkAlevinInputFiles</a></span>(<span class="dt">baseDir =</span> baseDir)</a></code></pre></div>
 </div>
 <div id="generate-qc-report" class="section level1">
@@ -159,7 +159,7 @@
 <a href="#generate-individual-plots" class="anchor"></a>Generate individual plots</h1>
 <p>The individual plots included in the QC reports can also be independently generated. To do so, we must first read the alevin output into an R object.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">alevin &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readAlevinQC.html">readAlevinQC</a></span>(<span class="dt">baseDir =</span> baseDir)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; reading in alevin gene-level counts and inferential variance across cells</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; reading in alevin gene-level counts across cells</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; Joining, by = "CB"</span></a></code></pre></div>
 <p>The resulting list contains three entries:</p>
 <ul>
@@ -172,128 +172,128 @@
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(alevin<span class="op">$</span>cbTable)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;                 CB originalFreq ranking collapsedFreq mappingRate</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; 1 TGGTTCCAGTCCATAC       294486       1        299998    0.705001</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; 2 TGCTACCCACCAGCAC       236420       2        244868    0.698152</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 3 TTCTTAGGTGAAGGCT       215630       3        219506    0.713876</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 4 TGATTTCCAATAACGA       208554       4        210984    0.715746</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 5 ATGCGATTCACCCTCA       207135       5        211894    0.641656</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; 6 CACACAAAGTCAAGCG       189231       6        193700    0.699179</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; 1 GACTGCGAGGGCATGT       121577       1        123419    0.853256</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; 2 GGTGCGTAGGCTACGA       110467       2        111987    0.844339</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 3 ATGAGGGAGTAGTGCG       106446       3        108173    0.826177</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 4 ACTGTCCTCATGCTCC       104794       4        106085    0.778442</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 5 CGAACATTCTGATACG       104616       5        106072    0.802634</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; 6 ACTGTCCCATATGGTC        99208       6        100776    0.811999</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   duplicationRate dedupRate nbrGenesAboveMean nbrMappedUMI totalUMICount</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 1      0.00207650  0.591592              5963       211499      86377.79</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 2      0.00232080  0.599421              5431       170955      68480.92</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 3      0.00141115  0.546762              5336       156700      71022.42</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; 4      0.00140541  0.580716              4974       151011      63316.44</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 5      0.00107668  0.584400              5168       135963      56506.21</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; 6      0.00137204  0.595003              4822       135431      54849.20</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 1     0.000510955  0.293416              7345       105308         74409</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 2     0.000541694  0.292190              7306        94555         66927</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 3     0.000541090  0.294305              6876        89370         63068</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; 4     0.000393819  0.299899              6733        82581         57815</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 5     0.000501289  0.303393              7142        85137         59307</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; 6     0.000597173  0.300086              6637        81830         57274</span></a>
 <a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;   nbrGenesAboveZero inFinalWhiteList inFirstWhiteList</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; 1              8779             TRUE             TRUE</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; 2              8199             TRUE             TRUE</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 3              8088             TRUE             TRUE</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 4              7716             TRUE             TRUE</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 5              7841             TRUE             TRUE</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 6              7478             TRUE             TRUE</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; 1              7532             TRUE             TRUE</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; 2              7520             TRUE             TRUE</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 3              7078             TRUE             TRUE</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 4              6925             TRUE             TRUE</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 5              7344             TRUE             TRUE</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 6              6831             TRUE             TRUE</span></a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(alevin<span class="op">$</span>summaryTables<span class="op">$</span>fullDataset)</a></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
 <td align="left">Total number of processed reads</td>
-<td align="left">52805264</td>
+<td align="left">7197662</td>
 </tr>
 <tr class="even">
 <td align="left">Number of reads with valid cell barcode (no Ns)</td>
-<td align="left">52653685</td>
+<td align="left">7162300</td>
 </tr>
 <tr class="odd">
 <td align="left">Total number of observed cell barcodes</td>
-<td align="left">657180</td>
+<td align="left">188613</td>
 </tr>
 </tbody></table>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(alevin<span class="op">$</span>summaryTables<span class="op">$</span>initialWhitelist)</a></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
 <td align="left">Number of barcodes in initial whitelist</td>
-<td align="left">2138</td>
+<td align="left">299</td>
 </tr>
 <tr class="even">
 <td align="left">Fraction reads in initial whitelist barcodes</td>
-<td align="left">88.93%</td>
+<td align="left">87.41%</td>
 </tr>
 <tr class="odd">
 <td align="left">Mean number of reads per cell (initial whitelist)</td>
-<td align="left">21901</td>
+<td align="left">20939</td>
 </tr>
 <tr class="even">
 <td align="left">Median number of reads per cell (initial whitelist)</td>
-<td align="left">12868</td>
+<td align="left">342</td>
 </tr>
 <tr class="odd">
 <td align="left">Median number of detected genes per cell (initial whitelist)</td>
-<td align="left">1362</td>
+<td align="left">205</td>
 </tr>
 <tr class="even">
 <td align="left">Total number of detected genes (initial whitelist)</td>
-<td align="left">22415</td>
+<td align="left">31396</td>
 </tr>
 <tr class="odd">
 <td align="left">Median UMI count per cell (initial whitelist)</td>
-<td align="left">3073</td>
+<td align="left">212</td>
 </tr>
 </tbody></table>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(alevin<span class="op">$</span>summaryTables<span class="op">$</span>finalWhitelist)</a></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
 <td align="left">Number of barcodes in final whitelist</td>
-<td align="left">1302</td>
+<td align="left">98</td>
 </tr>
 <tr class="even">
 <td align="left">Fraction reads in final whitelist barcodes</td>
-<td align="left">85.52%</td>
+<td align="left">83.8%</td>
 </tr>
 <tr class="odd">
 <td align="left">Mean number of reads per cell (final whitelist)</td>
-<td align="left">34584</td>
+<td align="left">61242</td>
 </tr>
 <tr class="even">
 <td align="left">Median number of reads per cell (final whitelist)</td>
-<td align="left">25712</td>
+<td align="left">58349</td>
 </tr>
 <tr class="odd">
 <td align="left">Median number of detected genes per cell (final whitelist)</td>
-<td align="left">2506</td>
+<td align="left">5269</td>
 </tr>
 <tr class="even">
 <td align="left">Total number of detected genes (final whitelist)</td>
-<td align="left">22286</td>
+<td align="left">31050</td>
 </tr>
 <tr class="odd">
 <td align="left">Median UMI count per cell (final whitelist)</td>
-<td align="left">6807</td>
+<td align="left">31939</td>
 </tr>
 </tbody></table>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(alevin<span class="op">$</span>versionTable)</a></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
 <td align="left">Start time</td>
-<td align="left">Thu Jan 24 12:13:05 2019</td>
+<td align="left">Tue Nov 20 15:43:04 2018</td>
 </tr>
 <tr class="even">
 <td align="left">Salmon version</td>
-<td align="left">0.12.1</td>
+<td align="left">0.11.4</td>
 </tr>
 <tr class="odd">
 <td align="left">Index</td>
-<td align="left">/mnt/scratch6/avi/data/cgat/index/salmon/mm_transcriptome.salmon.index</td>
+<td align="left">/mnt/scratch5/avi/alevin/data/mohu/salmon_index/</td>
 </tr>
 <tr class="even">
 <td align="left">R1file</td>
-<td align="left">/mnt/scratch6/avi/data/cgat/fastqs/neurons_900.fastq.1.gz</td>
+<td align="left">/mnt/scratch5/avi/alevin/data/10x/mohu/100/all_bcs.fq</td>
 </tr>
 <tr class="odd">
 <td align="left">R2file</td>
-<td align="left">/mnt/scratch6/avi/data/cgat/fastqs/neurons_900.fastq.2.gz</td>
+<td align="left">/mnt/scratch5/avi/alevin/data/10x/mohu/100/all_reads.fq</td>
 </tr>
 <tr class="even">
 <td align="left">tgMap</td>
-<td align="left">/mnt/scratch6/avi/data/cgat/references/metadata/mm_t2g.tsv</td>
+<td align="left">/mnt/scratch5/avi/alevin/data/mohu/gtf/txp2gene.tsv</td>
 </tr>
 </tbody></table>
 <p>The plots can now be generated using the dedicated plotting functions provided with <em><a href="https://bioconductor.org/packages/3.9/alevinQC">alevinQC</a></em> (see the help file for the respective function for more information).</p>
@@ -325,7 +325,7 @@
 <a class="sourceLine" id="cb18-14" data-line-number="14"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
 <a class="sourceLine" id="cb18-15" data-line-number="15"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb18-16" data-line-number="16"><span class="co">#&gt; other attached packages:</span></a>
-<a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co">#&gt; [1] bindrcpp_0.2.2   alevinQC_0.99.0  BiocStyle_2.11.0</span></a>
+<a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co">#&gt; [1] bindrcpp_0.2.2   alevinQC_0.99.1  BiocStyle_2.11.0</span></a>
 <a class="sourceLine" id="cb18-18" data-line-number="18"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb18-19" data-line-number="19"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
 <a class="sourceLine" id="cb18-20" data-line-number="20"><span class="co">#&gt;  [1] tximport_1.11.6      tidyselect_0.2.5     xfun_0.4            </span></a>

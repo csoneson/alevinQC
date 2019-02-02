@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -144,8 +144,8 @@ count and the number of detected genes for each cell.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>alevin</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readAlevinQC.html'>readAlevinQC</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata/alevin/neurons_900"</span>,
-                                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tximportData"</span>))</div><div class='output co'>#&gt; <span class='message'>reading in alevin gene-level counts and inferential variance across cells</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "CB"</span></div><div class='input'><span class='fu'>plotAlevinQuantPairs</span>(<span class='no'>alevin</span>$<span class='no'>cbTable</span>)</div><div class='img'><img src='plotAlevinQuantPairs-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>alevin</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readAlevinQC.html'>readAlevinQC</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata/alevin_example"</span>,
+                                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"alevinQC"</span>))</div><div class='output co'>#&gt; <span class='message'>reading in alevin gene-level counts across cells</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "CB"</span></div><div class='input'><span class='fu'>plotAlevinQuantPairs</span>(<span class='no'>alevin</span>$<span class='no'>cbTable</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removing 1 row that contained a missing value</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removing 1 row that contained a missing value</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removing 1 row that contained a missing value</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='plotAlevinQuantPairs-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

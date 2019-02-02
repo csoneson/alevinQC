@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -96,9 +96,8 @@ BiocManager::install("csoneson/alevinQC")</code></pre>
 <div id="example-usage" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-usage" class="anchor"></a>Example usage:</h3>
-<pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(tximportData)  ## version &gt;= 1.11.3
-alevinQCReport(baseDir = system.file("extdata/alevin/neurons_900", 
-                                     package = "tximportData"),
+<pre><code><a href="reference/alevinQCReport.html">alevinQCReport(baseDir = system.file("extdata/alevin_example", 
+                                     package = "alevinQC"),
                sampleId = "testSample", 
                outputFile = "alevinReport.html", 
                outputFormat = "html_document",

@@ -22,6 +22,6 @@ reference:
     - '`plotAlevinKneeRaw`'
     - '`plotAlevinBarcodeCollapse`'
     - '`plotAlevinQuant`'
-    - '`plotAlevinQuatPairs`'
+    - '`plotAlevinQuantPairs`'
     - '`plotAlevinKneeNbrGenes`'
 
