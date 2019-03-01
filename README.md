@@ -11,14 +11,18 @@ be generated in html or pdf format, or as R/Shiny applications.
 
 ### Installation:
 
-Currently, the development version of `alevinQC` can be installed from GitHub,
-e.g. using the `BiocManager` CRAN package:
+`alevinQC` is available from
+[Bioconductor](https://bioconductor.org/packages/alevinQC/), and can be
+installed using the `BiocManager` CRAN package:
 
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("csoneson/alevinQC")
+BiocManager::install("alevinQC")
 ```
+
+Note that currently, you need the development version of Bioconductor to use
+`alevinQC`.
 
 ### Example usage:
 
