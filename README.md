@@ -21,9 +21,6 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("alevinQC")
 ```
 
-Note that currently, you need the development version of Bioconductor to use
-`alevinQC`.
-
 ### Example usage:
 
 ```
