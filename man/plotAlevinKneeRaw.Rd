@@ -18,7 +18,7 @@ Plot the raw cell barcode frequencies in decreasing order, and indicate a
 predetermined breakpoint using color as well as a label.
 }
 \examples{
-alevin <- readAlevinQC(system.file("extdata/alevin_example",
+alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
                                    package = "alevinQC"))
 plotAlevinKneeRaw(alevin$cbTable)
 

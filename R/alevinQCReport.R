@@ -86,7 +86,7 @@
 #'   returns (invisibly) the name of the generated report.
 #'
 #' @examples
-#' alevinQCReport(baseDir = system.file("extdata/alevin_example",
+#' alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
 #'                                      package = "alevinQC"),
 #'                sampleId = "example", outputFile = "alevinReport.html",
 #'                outputDir = tempdir(), forceOverwrite = TRUE)
