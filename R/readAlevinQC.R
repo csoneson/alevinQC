@@ -218,21 +218,21 @@ readAlevinQC <- function(baseDir) {
     finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
                                         header = FALSE, as.is = TRUE)$V1
 
-    ## Merge information about quantified CBs
-    quantbcs <- featuredump %>%
-        dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
-        dplyr::mutate(inFirstWhiteList = TRUE)
+    ## Meta information and command information
+    metainfo <- rjson::fromJSON(file = file.path(baseDir,
+                                                 "aux_info/meta_info.json"))
+    cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
+    alevinmetainfo <- rjson::fromJSON(file = file.path(baseDir,
+                                                       "aux_info/alevin_meta_info.json"))
 
+    ## Merge information about quantified CBs
     cbtable <- dplyr::full_join(
         rawcbfreq,
-        quantbcs,
+        featuredump,
         by = "CB"
-    ) %>% dplyr::mutate(inFirstWhiteList = replace(inFirstWhiteList,
-                                                   is.na(inFirstWhiteList),
-                                                   FALSE),
-                        inFinalWhiteList = replace(inFinalWhiteList,
-                                                   is.na(inFinalWhiteList),
-                                                   FALSE))
+    )  %>%
+        dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
+        dplyr::mutate(inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist)
 
     ## Check if there is any barcode that is not in the first whitelist,
     ## but which has an original ranking lower than any barcode that is
@@ -248,13 +248,6 @@ readAlevinQC <- function(baseDir) {
                 paste0(cbtable$CB[toremove], collapse = ", "))
         cbtable <- cbtable[!toremove, ]
     }
-
-    ## Meta information and command information
-    metainfo <- rjson::fromJSON(file = file.path(baseDir,
-                                                 "aux_info/meta_info.json"))
-    cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
-    alevinmetainfo <- rjson::fromJSON(file = file.path(baseDir,
-                                                       "aux_info/alevin_meta_info.json"))
 
     ## Create "version info" table
     versiontable <- t(data.frame(

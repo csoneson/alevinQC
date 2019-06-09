@@ -24,8 +24,8 @@ test_that("reading input files works", {
     expect_is(alevin, "list")
     expect_named(alevin, c("cbTable", "versionTable", "summaryTables"))
 
-    expect_equal(nrow(alevin$cbTable), 188612)
-    expect_equal(sum(alevin$cbTable$inFirstWhiteList), 298)
+    expect_equal(nrow(alevin$cbTable), 188613)
+    expect_equal(sum(alevin$cbTable$inFirstWhiteList), 100)
     expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
     expect_equal(sum(alevin$cbTable$inFinalWhiteList), 95)
 })
