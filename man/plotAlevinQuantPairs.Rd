@@ -18,7 +18,7 @@ A ggmatrix object
 Pairs plot with quantification summary statistics
 }
 \examples{
-alevin <- readAlevinQC(system.file("extdata/alevin_example",
+alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
                                    package = "alevinQC"))
 plotAlevinQuantPairs(alevin$cbTable)
 

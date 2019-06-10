@@ -1,0 +1,12 @@
+{
+    "salmon_version": "0.14.0",
+    "libType": "ISR",
+    "chromium": [],
+    "mates1": "/mnt/scratch5/avi/alevin/data/10x/v2/mohu/100/all_bcs.fq",
+    "mates2": "/mnt/scratch5/avi/alevin/data/10x/v2/mohu/100/all_reads.fq",
+    "output": "/mnt/scratch5/avi/alevin/bin/salmon/tests/prediction",
+    "index": "/mnt/scratch5/avi/alevin/data/mohu/salmon_index",
+    "threads": "10",
+    "tgMap": "/mnt/scratch5/avi/alevin/data/mohu/gtf/txp2gene.tsv",
+    "auxDir": "aux_info"
+}

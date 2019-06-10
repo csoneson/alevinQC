@@ -18,7 +18,7 @@ Returns nothing, raises an error if any of the required files are
 Check that all required input files are available
 }
 \examples{
-checkAlevinInputFiles(system.file("extdata/alevin_example",
+checkAlevinInputFiles(system.file("extdata/alevin_example_v0.14",
                                   package = "alevinQC"))
 
 }

@@ -17,7 +17,7 @@
 #' @return A ggplot object
 #'
 #' @examples
-#' alevin <- readAlevinQC(system.file("extdata/alevin_example",
+#' alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
 #'                                    package = "alevinQC"))
 #' plotAlevinKneeRaw(alevin$cbTable)
 #'

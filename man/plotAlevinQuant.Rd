@@ -18,7 +18,7 @@ A ggplot object
 Panel of plots with quantification summary statistics
 }
 \examples{
-alevin <- readAlevinQC(system.file("extdata/alevin_example",
+alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
                                    package = "alevinQC"))
 plotAlevinQuant(alevin$cbTable)
 
