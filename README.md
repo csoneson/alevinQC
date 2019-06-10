@@ -21,6 +21,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("alevinQC")
 ```
 
+Note that the development version of `alevinQC` is required to process output from Salmon v > 0.14.0.
+
 ### Example usage:
 
 ```
