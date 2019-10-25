@@ -49,6 +49,9 @@ After installation, load the package into the R session.
 library(alevinQC)
 ```
 
+Note that in order to process output from Salmon v0.14 or later, you need 
+Alevin v1.1 or later. 
+
 # Assumed output directory structure
 
 For more information about running alevin, we refer to the

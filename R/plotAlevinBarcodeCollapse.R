@@ -24,7 +24,8 @@
 plotAlevinBarcodeCollapse <- function(cbTable) {
     mrg <- cbTable %>% dplyr::filter(inFirstWhiteList) %>%
         dplyr::summarize(
-            mrg = signif(100 * mean(collapsedFreq/originalFreq - 1), 4)) %>%
+            mrg = signif(100 * mean(collapsedFreq/originalFreq - 1,
+                                    na.rm = TRUE), 4)) %>%
         dplyr::pull(mrg)
     ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList),
                     ggplot2::aes(x = originalFreq, y = collapsedFreq)) +
