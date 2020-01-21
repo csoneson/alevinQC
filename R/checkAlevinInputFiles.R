@@ -22,7 +22,7 @@ checkAlevinInputFiles <- function(baseDir) {
         return("v0.14")
     } else {
         msg <- c(msg,
-                 "Input directory not compatible with Salmon v0.14, ",
+                 "Input directory not compatible with Salmon v0.14 or newer, ",
                  "the following required file(s) are missing or malformed:\n",
                  paste(v0.14, collapse = "\n"), "\n\n")
     }
