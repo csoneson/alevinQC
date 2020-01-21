@@ -17,7 +17,10 @@ test_that("checking for input files works", {
 
 ## Read provided example input files for tests of file reading/plotting
 alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
-                                   package = "alevinQC"))
+                                   package = "alevinQC"),
+                       customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                    "ATGAGGGAGTAGTGCG"),
+                                           set2 = c("CGAACATTCTGATACG")))
 
 test_that("reading input files works", {
     expect_length(alevin, 3)
@@ -28,6 +31,11 @@ test_that("reading input files works", {
     expect_equal(sum(alevin$cbTable$inFirstWhiteList), 100)
     expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
     expect_equal(sum(alevin$cbTable$inFinalWhiteList), 95)
+
+    expect_equal(sum(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set1]),
+                 95259 + 108173)
+    expect_equal(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set2],
+                 106072)
 })
 
 test_that("plots are generated", {
