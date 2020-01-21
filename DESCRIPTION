@@ -23,7 +23,7 @@ Imports:
     utils,
     tximport (>= 1.11.5),
     cowplot
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     BiocStyle,

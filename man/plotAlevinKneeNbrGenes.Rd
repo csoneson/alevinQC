@@ -15,6 +15,7 @@ A ggplot object
 }
 \description{
 Plot the number of detected genes per cell in decreasing order.
+Only cells contained in the original whitelist are considered.
 }
 \examples{
 alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
