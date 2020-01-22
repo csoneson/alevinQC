@@ -28,6 +28,7 @@ Suggests:
     knitr,
     BiocStyle,
     testthat,
+    magick
 VignetteBuilder: knitr
 biocViews: QualityControl, SingleCell
 URL: https://github.com/csoneson/alevinQC
