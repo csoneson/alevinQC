@@ -4,12 +4,15 @@
 \alias{plotAlevinQuantPairs}
 \title{Pairs plot with quantification summary statistics}
 \usage{
-plotAlevinQuantPairs(cbTable)
+plotAlevinQuantPairs(cbTable, colName = "inFinalWhiteList")
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
 \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 count and the number of detected genes for each cell.}
+
+\item{colName}{Character scalar giving the name of a column of
+\code{cbTable} to use for coloring the points.}
 }
 \value{
 A ggmatrix object
@@ -20,7 +23,7 @@ Pairs plot with quantification summary statistics
 \examples{
 alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
                                    package = "alevinQC"))
-plotAlevinQuantPairs(alevin$cbTable)
+plotAlevinQuantPairs(alevin$cbTable, colName = "inFinalWhiteList")
 
 }
 \author{

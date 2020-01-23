@@ -4,12 +4,22 @@
 \alias{plotAlevinQuant}
 \title{Panel of plots with quantification summary statistics}
 \usage{
-plotAlevinQuant(cbTable)
+plotAlevinQuant(
+  cbTable,
+  colName = "inFinalWhiteList",
+  cbName = "final whitelist"
+)
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
 \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 count and the number of detected genes for each cell.}
+
+\item{colName}{Character scalar giving the name of a column of
+\code{cbTable} to use for coloring the points.}
+
+\item{cbName}{Character scalar giving the name of the set of barcodes
+defined by \code{colName}, used for labelling the plot legend.}
 }
 \value{
 A ggplot object
@@ -20,7 +30,8 @@ Panel of plots with quantification summary statistics
 \examples{
 alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
                                    package = "alevinQC"))
-plotAlevinQuant(alevin$cbTable)
+plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
+                cbName = "final whitelist")
 
 }
 \author{

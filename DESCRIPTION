@@ -22,7 +22,8 @@ Imports:
     stats,
     utils,
     tximport (>= 1.11.5),
-    cowplot
+    cowplot,
+    rlang
 RoxygenNote: 7.0.2
 Suggests: 
     knitr,

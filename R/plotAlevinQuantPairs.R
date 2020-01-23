@@ -22,7 +22,7 @@
 #'                                    package = "alevinQC"))
 #' plotAlevinQuantPairs(alevin$cbTable, colName = "inFinalWhiteList")
 #'
-plotAlevinQuantPairs <- function(cbTable, colName) {
+plotAlevinQuantPairs <- function(cbTable, colName = "inFinalWhiteList") {
     GGally::ggpairs(
         cbTable %>% dplyr::filter(inFirstWhiteList) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",
