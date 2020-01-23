@@ -1,0 +1,13 @@
+#' alevinQC
+#'
+#' @name alevinQC-pkg
+#' @docType package
+NULL
+
+globalVariables(c("V1", "V2", "V3", "V4", "V5", "CB",
+                  "inFirstWhiteList", "inFinalWhiteList",
+                  "MappingRate", "CorrectedReads",
+                  "DedupRate", "NumGenesOverMean", "MappedReads",
+                  "DeduplicatedReads", "NumGenesExpressed",
+                  "collapsedFreq", "originalFreq", "nbrGenesAboveZero",
+                  "totalUMICount", "ranking", "x"))

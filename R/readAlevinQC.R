@@ -1,4 +1,11 @@
+# Make a summary table for a selection of barcodes in cbtable
+# colName should be the name of a logical column in cbtable, indicating
+# inclusion/exclusion with respect to the barcode collection
+# cbName will be used for display purposes, to identify the barcode collection
 .makeSummaryTable <- function(cbtable, colName, cbName = "", quantmat = NULL) {
+    stopifnot(colName %in% colnames(cbtable))
+    stopifnot(is.logical(cbtable[[colName]]))
+
     df <- list()
     df[[paste0("Number of barcodes", cbName)]] <-
         as.character(sum(cbtable[[colName]], na.rm = TRUE))
@@ -23,7 +30,8 @@
         df[[paste0("Total number of detected genes", cbName)]] <-
             as.character(sum(
                 rowSums(quantmat[, colnames(quantmat) %in%
-                                     cbtable$CB[cbtable[[colName]]]]) > 0))
+                                     cbtable$CB[cbtable[[colName]]],
+                                 drop = FALSE]) > 0))
     }
     df[[paste0("Median UMI count per cell", cbName)]] <-
         as.character(round(stats::median(
@@ -64,6 +72,13 @@
 #'                        package = "alevinQC"))
 #'
 readAlevinQC <- function(baseDir, customCBList = list()) {
+    if (!is.list(customCBList)) {
+        stop("'customCBList' must be a list")
+    }
+    if (length(customCBList) > 0 && (any(is.null(names(customCBList))) ||
+                                     any(names(customCBList) == ""))) {
+        stop("'customCBList' must be a named list")
+    }
     ## Check that all required files are available, stop if not
     infversion <- checkAlevinInputFiles(baseDir)
 
@@ -140,6 +155,9 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
     for (i in seq_along(customCBList)) {
         nm <- paste0("customCB__", names(customCBList)[i])
         cbtable[[nm]] <- cbtable$CB %in% customCBList[[i]]
+        message(signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4),
+                "% of barcodes in custom barcode set ", names(customCBList)[i],
+                " were found in the data set")
         customCBsummary[[nm]] <- .makeSummaryTable(
             cbtable = cbtable,
             colName = nm,
@@ -226,13 +244,12 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
     finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
                                         header = FALSE, as.is = TRUE)$V1
 
-
     ## Meta information and command information
     metainfo <- rjson::fromJSON(file = file.path(baseDir,
                                                  "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(baseDir, "cmd_info.json"))
-    alevinmetainfo <- rjson::fromJSON(file = file.path(baseDir,
-                                                       "aux_info/alevin_meta_info.json"))
+    alevinmetainfo <- rjson::fromJSON(
+        file = file.path(baseDir, "aux_info/alevin_meta_info.json"))
 
     ## Merge information about quantified CBs
     cbtable <- dplyr::full_join(
@@ -241,7 +258,9 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         by = "CB"
     )  %>%
         dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
-        dplyr::mutate(inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist)
+        dplyr::mutate(
+            inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist
+        )
 
     ## Check if there is any barcode that is not in the first whitelist,
     ## but which has an original ranking lower than any barcode that is
@@ -263,6 +282,9 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
     for (i in seq_along(customCBList)) {
         nm <- paste0("customCB__", names(customCBList)[i])
         cbtable[[nm]] <- cbtable$CB %in% customCBList[[i]]
+        message(signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4),
+                "% of barcodes in custom barcode set ", names(customCBList)[i],
+                " were found in the data set")
         customCBsummary[[nm]] <- .makeSummaryTable(
             cbtable = cbtable,
             colName = nm,

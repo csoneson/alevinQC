@@ -16,11 +16,12 @@ test_that("checking for input files works", {
 })
 
 ## Read provided example input files for tests of file reading/plotting
-alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
-                                   package = "alevinQC"),
-                       customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                                    "ATGAGGGAGTAGTGCG"),
-                                           set2 = c("CGAACATTCTGATACG")))
+expect_message(alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
+                                                  package = "alevinQC"),
+                                      customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                                   "ATGAGGGAGTAGTGCG"),
+                                                          set2 = c("CGAACATTCTGATACG"))),
+               "100% of barcodes in custom barcode set set1 were found in the data set")
 
 test_that("reading input files works", {
     expect_length(alevin, 3)
@@ -32,10 +33,15 @@ test_that("reading input files works", {
     expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
     expect_equal(sum(alevin$cbTable$inFinalWhiteList), 95)
 
+    expect_equivalent(alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1], "1")
+    expect_equivalent(alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1], "106072")
+
     expect_equal(sum(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set1]),
                  95259 + 108173)
     expect_equal(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set2],
                  106072)
+    expect_error(.makeSummaryTable(alevin$cbTable, colName = "collapsedFreq"))
+    expect_error(.makeSummaryTable(alevin$cbTable, colName = "missingCol"))
 })
 
 test_that("plots are generated", {
@@ -51,6 +57,9 @@ if (file.exists(file.path(tempDir, "tmp.Rmd"))) {
 }
 if (file.exists(file.path(tempDir, "tmp.html"))) {
     file.remove(file.path(tempDir, "tmp.html"))
+}
+if (file.exists(file.path(tempDir, "tmp2.html"))) {
+    file.remove(file.path(tempDir, "tmp2.html"))
 }
 if (file.exists(file.path(tempDir, "tmp.pdf"))) {
     file.remove(file.path(tempDir, "tmp.pdf"))
@@ -70,6 +79,16 @@ test_that("input arguments are processed correctly", {
                                                       package = "alevinQC"),
                                 outputFormat = "html_document", outputFile = "tmp.html",
                                 outputDir = tempDir, sampleId = c("s1", "s2")))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                      package = "alevinQC"),
+                                outputFormat = "html_document", outputFile = "tmp.html",
+                                outputDir = tempDir, sampleId = "s1",
+                                customCBList = c("A", "B")))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                      package = "alevinQC"),
+                                outputFormat = "html_document", outputFile = "tmp.html",
+                                outputDir = tempDir, sampleId = "s1",
+                                customCBList = list(c("A", "B"), c("C", "D"))))
 })
 
 test_that("report generation works", {
@@ -77,13 +96,19 @@ test_that("report generation works", {
                                                 package = "alevinQC"),
                           sampleId = "test", outputFile = "tmp.html",
                           outputDir = tempDir, outputFormat = NULL,
-                          forceOverwrite = FALSE)
+                          forceOverwrite = FALSE,
+                          customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                       "ATGAGGGAGTAGTGCG"),
+                                              set2 = c("CGAACATTCTGATACG")))
     expect_equal(basename(rpt), "tmp.html")
     expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
                                                       package = "alevinQC"),
                                 sampleId = "test", outputFile = "tmp.html",
                                 outputDir = tempDir, outputFormat = NULL,
-                                forceOverwrite = FALSE))
+                                forceOverwrite = FALSE,
+                                customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                             "ATGAGGGAGTAGTGCG"),
+                                                    set2 = c("CGAACATTCTGATACG"))))
     file.copy(system.file("extdata/alevin_report_template.Rmd",
                           package = "alevinQC"),
               file.path(tempDir, "tmp.Rmd"))
@@ -91,12 +116,28 @@ test_that("report generation works", {
                                                       package = "alevinQC"),
                                 sampleId = "test", outputFile = "tmp.html",
                                 outputDir = tempDir, outputFormat = NULL,
-                                forceOverwrite = TRUE))
+                                forceOverwrite = TRUE,
+                                customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                             "ATGAGGGAGTAGTGCG"),
+                                                    set2 = c("CGAACATTCTGATACG"))))
+    rpt <- alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                package = "alevinQC"),
+                          sampleId = "test", outputFile = "tmp2.html",
+                          outputDir = tempDir, outputFormat = NULL,
+                          forceOverwrite = FALSE)
+    expect_equal(basename(rpt), "tmp2.html")
 })
 
 test_that("app generation works", {
     app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example_v0.14",
                                                package = "alevinQC"),
                          sampleId = "test")
+    expect_s3_class(app, "shiny.appobj")
+    app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example_v0.14",
+                                               package = "alevinQC"),
+                         sampleId = "test",
+                         customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                      "ATGAGGGAGTAGTGCG"),
+                                             set2 = c("CGAACATTCTGATACG")))
     expect_s3_class(app, "shiny.appobj")
 })

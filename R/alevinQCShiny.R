@@ -32,7 +32,7 @@
 #' }
 #'
 alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
-    alevin <- readAlevinQC(baseDir)
+    alevin <- readAlevinQC(baseDir, customCBList = customCBList)
 
     pLayout <- shinydashboard::dashboardPage(
         skin = "red",
@@ -57,7 +57,8 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
                     title = "Summary tables",
                     DT::dataTableOutput("summaryTableFull"),
                     DT::dataTableOutput("summaryTableInitialWl"),
-                    DT::dataTableOutput("summaryTableFinalWl")
+                    DT::dataTableOutput("summaryTableFinalWl"),
+                    shiny::uiOutput("summaryTablesCustomCBs")
                 )
 
             ),
@@ -82,7 +83,8 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
                 shinydashboard::box(
                     width = 12,
                     title = "Quantification summary",
-                    shiny::plotOutput("quantPlot")
+                    shiny::plotOutput("quantPlot"),
+                    shiny::uiOutput("quantPlotsCustomCBs")
                 )
             )
 
@@ -90,6 +92,9 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
     )
 
     server_function <- function(input, output, session) { # nocov start
+        ## ----------------------------------------------------------------- ##
+        ## Version table
+        ## ----------------------------------------------------------------- ##
         output$versionTable <- DT::renderDataTable(
             DT::datatable(
                 alevin$versionTable,
@@ -98,6 +103,9 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             )
         )
 
+        ## ----------------------------------------------------------------- ##
+        ## Standard summary tables
+        ## ----------------------------------------------------------------- ##
         output$summaryTableFull <- DT::renderDataTable(
             DT::datatable(
                 alevin$summaryTables$fullDataset,
@@ -122,6 +130,30 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             )
         )
 
+        ## ----------------------------------------------------------------- ##
+        ## Custom CB summary tables
+        ## ----------------------------------------------------------------- ##
+        lapply(seq_along(customCBList), function(i) {
+            id <- paste0("dt", i)
+            output[[id]] <- DT::renderDataTable(
+                DT::datatable(
+                    alevin$summaryTables[[paste0("customCB__", names(customCBList)[i])]],
+                    colnames = "",
+                    options = list(scrollX = TRUE)
+                )
+            )
+        })
+
+        output$summaryTablesCustomCBs <- shiny::renderUI({
+            lapply(as.list(seq_along(customCBList)), function(i) {
+                id <- paste0("dt", i)
+                DT::dataTableOutput(id)
+            })
+        })
+
+        ## ----------------------------------------------------------------- ##
+        ## Standard plots
+        ## ----------------------------------------------------------------- ##
         output$rawCBKneePlot <- shiny::renderPlot(
             plotAlevinKneeRaw(alevin$cbTable)
         )
@@ -130,13 +162,38 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             plotAlevinBarcodeCollapse(alevin$cbTable)
         )
 
-        output$quantPlot <- shiny::renderPlot(
-            plotAlevinQuant(alevin$cbTable)
-        )
-
         output$nbrGenesKneePlot <- shiny::renderPlot(
             plotAlevinKneeNbrGenes(alevin$cbTable)
         )
+
+        ## ----------------------------------------------------------------- ##
+        ## Standard quant plots
+        ## ----------------------------------------------------------------- ##
+        output$quantPlot <- shiny::renderPlot(
+            plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
+                            cbName = "final whitelist")
+        )
+
+        ## ----------------------------------------------------------------- ##
+        ## Custom CB quant plots
+        ## ----------------------------------------------------------------- ##
+        lapply(seq_along(customCBList), function(i) {
+            id <- paste0("qpl", i)
+            output[[id]] <- shiny::renderPlot(
+                plotAlevinQuant(alevin$cbTable,
+                                colName = paste0("customCB__",
+                                                 names(customCBList)[i]),
+                                cbName = names(customCBList)[i])
+            )
+        })
+
+        output$quantPlotsCustomCBs <- shiny::renderUI({
+            lapply(as.list(seq_along(customCBList)), function(i) {
+                id <- paste0("qpl", i)
+                shiny::plotOutput(id)
+            })
+        })
+
     } # nocov end
 
     shiny::shinyApp(ui = pLayout, server = server_function)
