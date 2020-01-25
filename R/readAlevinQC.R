@@ -234,24 +234,28 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                                           header = TRUE, as.is = TRUE, sep = "\t")},
                        silent = TRUE)
     if (is(featuredump, "try-error")) {
-        warning("The 'featureDump.txt' file could not be cleanly read. ",
-                "Please check results carefully (e.g. by reading the ",
-                "input manually and checking the 'cbTable' output.")
-        ## In alevin 1.0.0 (fixed in 1.1.0), with certain flags,
-        ## the ArborescenceCount column could be split over multiple columns
-        tmpcn <- unlist(utils::read.delim(
-            file.path(alevinDir, "featureDump.txt"),
-            header = FALSE, as.is = TRUE, sep = "\t", nrows = 1
-        ))
-        tmpdt <- utils::read.delim(
-            file.path(alevinDir, "featureDump.txt"),
-            header = FALSE, as.is = TRUE, sep = "\t", skip = 1
-        )
-        if (length(tmpcn) != ncol(tmpdt)) {
-            tmpdt <- tmpdt[, seq_len(length(tmpcn)), drop = FALSE]
+        if (grepl("more columns than column names", featuredump)) {
+            warning("The 'featureDump.txt' file could not be cleanly read. ",
+                    "Please check results carefully (e.g. by reading the ",
+                    "input manually and checking the 'cbTable' output.")
+            ## In alevin 1.0.0 (fixed in 1.1.0), with certain flags,
+            ## the ArborescenceCount column could be split over multiple columns
+            tmpcn <- unlist(utils::read.delim(
+                file.path(alevinDir, "featureDump.txt"),
+                header = FALSE, as.is = TRUE, sep = "\t", nrows = 1
+            ))
+            tmpdt <- utils::read.delim(
+                file.path(alevinDir, "featureDump.txt"),
+                header = FALSE, as.is = TRUE, sep = "\t", skip = 1
+            )
+            if (length(tmpcn) != ncol(tmpdt)) {
+                tmpdt <- tmpdt[, seq_len(length(tmpcn)), drop = FALSE]
+            }
+            colnames(tmpdt) <- tmpcn
+            featuredump <- tmpdt
+        } else {
+            stop("The 'featureDump.txt' file could not be read.")
         }
-        colnames(tmpdt) <- tmpcn
-        featuredump <- tmpdt
     }
     featuredump <- featuredump %>%
         dplyr::rename(mappingRate = MappingRate,
