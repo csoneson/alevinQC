@@ -64,7 +64,9 @@ following files (in the indicated structure) are available in the provided
 `baseDir` (note that currently, in order to generate the full set of files,
 alevin must be invoked with the `--dumpFeatures` flag).
 
-```{r v3, eval=FALSE, results='asis'}
+For alevin versions before 0.14:
+
+```{r v3a, eval=FALSE, results='asis'}
 baseDir
   |--alevin
   |    |--featureDump.txt
@@ -77,6 +79,20 @@ baseDir
   |    |--whitelist.txt
   |--aux_info
   |    |--meta_info.json
+  |--cmd_info.json
+```
+
+For alevin version 0.14 and later:
+
+```{r v3b, eval=FALSE, results='asis'}
+baseDir
+  |--alevin
+  |    |--featureDump.txt
+  |    |--raw_cb_frequency.txt
+  |    |--whitelist.txt
+  |--aux_info
+  |    |--meta_info.json
+  |    |--alevin_meta_info.json
   |--cmd_info.json
 ```
 
