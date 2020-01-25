@@ -5,7 +5,7 @@
 #' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
 #'   \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 #'   count and the number of detected genes for each cell.
-#' @param colName Character scalar giving the name of a column of
+#' @param colName Character scalar giving the name of a logical column of
 #'   \code{cbTable} to use for coloring the points.
 #'
 #' @export
@@ -23,6 +23,8 @@
 #' plotAlevinQuantPairs(alevin$cbTable, colName = "inFinalWhiteList")
 #'
 plotAlevinQuantPairs <- function(cbTable, colName = "inFinalWhiteList") {
+    stopifnot(is.logical(cbTable[[colName]]))
+
     GGally::ggpairs(
         cbTable %>% dplyr::filter(inFirstWhiteList) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",

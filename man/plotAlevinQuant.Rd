@@ -15,7 +15,7 @@ plotAlevinQuant(
 \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 count and the number of detected genes for each cell.}
 
-\item{colName}{Character scalar giving the name of a column of
+\item{colName}{Character scalar giving the name of a logical column of
 \code{cbTable} to use for coloring the points.}
 
 \item{cbName}{Character scalar giving the name of the set of barcodes

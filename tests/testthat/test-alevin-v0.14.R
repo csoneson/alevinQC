@@ -49,6 +49,11 @@ test_that("plots are generated", {
     expect_is(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
     expect_is(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
     expect_is(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
+
+    expect_error(plotAlevinQuantPairs(alevin$cbTable,
+                                      colName = "nbrGenesAboveMean"))
+    expect_error(plotAlevinQuant(alevin$cbTable,
+                                 colName = "nbrGenesAboveMean"))
 })
 
 tempDir <- tempdir()

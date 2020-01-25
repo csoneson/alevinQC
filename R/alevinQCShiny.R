@@ -137,7 +137,8 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             id <- paste0("dt", i)
             output[[id]] <- DT::renderDataTable(
                 DT::datatable(
-                    alevin$summaryTables[[paste0("customCB__", names(customCBList)[i])]],
+                    alevin$summaryTables[[paste0("customCB__",
+                                                 names(customCBList)[i])]],
                     colnames = "",
                     options = list(scrollX = TRUE)
                 )

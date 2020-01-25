@@ -5,7 +5,7 @@
 #' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
 #'   \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 #'   count and the number of detected genes for each cell.
-#' @param colName Character scalar giving the name of a column of
+#' @param colName Character scalar giving the name of a logical column of
 #'   \code{cbTable} to use for coloring the points.
 #' @param cbName Character scalar giving the name of the set of barcodes
 #'   defined by \code{colName}, used for labelling the plot legend.
@@ -28,6 +28,8 @@
 #'
 plotAlevinQuant <- function(cbTable, colName = "inFinalWhiteList",
                             cbName = "final whitelist") {
+    stopifnot(is.logical(cbTable[[colName]]))
+
     cbTable <- cbTable %>% dplyr::filter(inFirstWhiteList)
     gglayers <- list(
         ggplot2::geom_point(alpha = 0.5),
@@ -35,19 +37,25 @@ plotAlevinQuant <- function(cbTable, colName = "inFinalWhiteList",
                                                `FALSE` = "darkgreen")),
         ggplot2::theme_bw()
     )
-    g1 <- ggplot2::ggplot(cbTable,
-                          ggplot2::aes(x = collapsedFreq, y = totalUMICount,
-                                       color = !!rlang::sym(colName))) + gglayers +
+    g1 <- ggplot2::ggplot(
+        cbTable,
+        ggplot2::aes(x = collapsedFreq, y = totalUMICount,
+                     color = !!rlang::sym(colName))
+    ) + gglayers +
         ggplot2::xlab("Barcode frequency") +
         ggplot2::ylab("Total UMI count")
-    g2 <- ggplot2::ggplot(cbTable,
-                          ggplot2::aes(x = collapsedFreq, y = nbrGenesAboveZero,
-                                       color = !!rlang::sym(colName))) + gglayers +
+    g2 <- ggplot2::ggplot(
+        cbTable,
+        ggplot2::aes(x = collapsedFreq, y = nbrGenesAboveZero,
+                     color = !!rlang::sym(colName))
+    ) + gglayers +
         ggplot2::xlab("Barcode frequency") +
         ggplot2::ylab("Number of detected genes")
-    g3 <- ggplot2::ggplot(cbTable,
-                          ggplot2::aes(x = totalUMICount, y = nbrGenesAboveZero,
-                                       color = !!rlang::sym(colName))) + gglayers +
+    g3 <- ggplot2::ggplot(
+        cbTable,
+        ggplot2::aes(x = totalUMICount, y = nbrGenesAboveZero,
+                     color = !!rlang::sym(colName))
+    ) + gglayers +
         ggplot2::xlab("Total UMI count") +
         ggplot2::ylab("Number of detected genes")
 
