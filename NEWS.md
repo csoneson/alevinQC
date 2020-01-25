@@ -1,3 +1,7 @@
+# alevinQC 1.3.1
+
+* Added the possibility of providing custom cell barcode sets
+
 # alevinQC 1.1
 
 * Added ability to process output from Salmon v0.14 or later
