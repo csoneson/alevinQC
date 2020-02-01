@@ -21,7 +21,8 @@ editor_options:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = TRUE
+  eval = TRUE,
+  crop = NULL
 )
 ```
 

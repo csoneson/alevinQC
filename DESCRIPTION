@@ -28,8 +28,7 @@ RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     BiocStyle,
-    testthat,
-    magick
+    testthat
 VignetteBuilder: knitr
 biocViews: QualityControl, SingleCell
 URL: https://github.com/csoneson/alevinQC
