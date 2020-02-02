@@ -7,6 +7,8 @@
 #'
 #' @export
 #'
+#' @importFrom utils read.delim
+#'
 #' @return Returns nothing, raises an error if any of the required files are
 #'   missing.
 #'
@@ -22,7 +24,7 @@ checkAlevinInputFiles <- function(baseDir) {
         return("v0.14")
     } else {
         msg <- c(msg,
-                 "Input directory not compatible with Salmon v0.14, ",
+                 "Input directory not compatible with Salmon v0.14 or newer, ",
                  "the following required file(s) are missing or malformed:\n",
                  paste(v0.14, collapse = "\n"), "\n\n")
     }
@@ -83,7 +85,7 @@ checkAlevinInputFiles <- function(baseDir) {
     }
 
     ## Check that all required columns in featureDump.txt are present
-    coln <- unlist(read.delim(
+    coln <- unlist(utils::read.delim(
         file.path(baseDir, "alevin/featureDump.txt"),
         header = FALSE, as.is = TRUE, sep = "\t", nrows = 1))
     if (!(all(c("CorrectedReads", "MappingRate", "DedupRate",

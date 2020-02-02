@@ -1,6 +1,7 @@
 #' Knee plot of the number of detected genes per cell
 #'
 #' Plot the number of detected genes per cell in decreasing order.
+#' Only cells contained in the original whitelist are considered.
 #'
 #' @author Charlotte Soneson
 #'

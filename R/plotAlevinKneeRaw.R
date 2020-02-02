@@ -1,7 +1,8 @@
 #' Knee plot of raw cell barcode frequencies
 #'
 #' Plot the raw cell barcode frequencies in decreasing order, and indicate a
-#' predetermined breakpoint using color as well as a label.
+#' predetermined breakpoint (indicating barcodes included in the original
+#' whitelist) using color as well as a label.
 #'
 #' @author Charlotte Soneson
 #'

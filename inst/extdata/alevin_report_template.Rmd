@@ -30,7 +30,7 @@ knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```{r setup}
 ## Read input files
 if (!quiet) message("Reading Alevin output files...")
-alevin <- readAlevinQC(baseDir)
+alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
 ```
 
 ## Version info for alevin run
@@ -43,7 +43,7 @@ knitr::kable(
 
 ## Summary tables
 
-#### Full set of cell barcodes
+### Full set of cell barcodes
 
 ```{r}
 if (!quiet) message("Generating summary tables...")
@@ -52,7 +52,7 @@ knitr::kable(
 )
 ```
 
-#### Initial whitelist
+### Initial whitelist
 
 ```{r}
 knitr::kable(
@@ -60,12 +60,26 @@ knitr::kable(
 )
 ```
 
-#### Final whitelist
+### Final whitelist
 
 ```{r}
 knitr::kable(
     alevin$summaryTables$finalWhitelist
 )
+```
+
+```{r custom-cb-tables-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
+cat("### Custom cell barcode set(s)")
+```
+
+```{r custom-cb-tables, echo = showCode && (length(customCBList) > 0), results = "asis", eval = (length(customCBList) > 0)}
+for (cbl in names(customCBList)) {
+  cat(paste0("#### ", cbl))
+  print(knitr::kable(
+    alevin$summaryTables[[paste0("customCB__", cbl)]]
+  ))
+  cat("\n")
+}
 ```
 
 ## Knee plot
@@ -118,9 +132,21 @@ the total UMI count is rougly linear, while the association of any of these with
 the number of detected genes often deviates from linearity, if a small subset of
 the genes are assigned a large fraction of the UMI counts.
 
-```{r fig.width = 10}
+```{r fig.width = 10, fig.height = 4}
 if (!quiet) message("Generating quantification summary plot...")
-plotAlevinQuant(alevin$cbTable)
+plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
+                cbName = "final whitelist")
+```
+
+```{r custom-cb-plots-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
+cat("### Custom cell barcode set(s)")
+```
+
+```{r custom-cb-plots, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
+for (cbl in names(customCBList)) {
+  print(plotAlevinQuant(alevin$cbTable, colName = paste0("customCB__", cbl),
+                        cbName = cbl))
+}
 ```
 
 ## Knee plot, number of detected genes

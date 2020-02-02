@@ -5,27 +5,32 @@
 #' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
 #'   \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
 #'   count and the number of detected genes for each cell.
+#' @param colName Character scalar giving the name of a logical column of
+#'   \code{cbTable} to use for coloring the points.
 #'
 #' @export
 #'
 #' @importFrom GGally ggpairs ggally_cor ggally_points ggally_densityDiag
 #' @importFrom ggplot2 aes scale_color_manual scale_fill_manual theme_bw
 #' @import dplyr
+#' @import rlang
 #'
 #' @return A ggmatrix object
 #'
 #' @examples
 #' alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
 #'                                    package = "alevinQC"))
-#' plotAlevinQuantPairs(alevin$cbTable)
+#' plotAlevinQuantPairs(alevin$cbTable, colName = "inFinalWhiteList")
 #'
-plotAlevinQuantPairs <- function(cbTable) {
+plotAlevinQuantPairs <- function(cbTable, colName = "inFinalWhiteList") {
+    stopifnot(is.logical(cbTable[[colName]]))
+
     GGally::ggpairs(
         cbTable %>% dplyr::filter(inFirstWhiteList) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",
                           `Total UMI count` = "totalUMICount",
                           `Nbr detected genes` = "nbrGenesAboveZero"),
-        mapping = ggplot2::aes(color = inFinalWhiteList),
+        mapping = ggplot2::aes(color = !!rlang::sym(colName)),
         columns = c("Barcode frequency", "Total UMI count",
                     "Nbr detected genes"),
         upper = list(continuous = function(data, mapping, ...) {
