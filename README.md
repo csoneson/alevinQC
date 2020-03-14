@@ -2,6 +2,7 @@
 
 [![Travis CI build status](https://travis-ci.com/csoneson/alevinQC.svg?branch=master)](https://travis-ci.com/csoneson/alevinQC)
 [![Codecov.io coverage status](https://codecov.io/github/csoneson/alevinQC/coverage.svg?branch=master)](https://codecov.io/github/csoneson/alevinQC)
+[![R build status](https://github.com/csoneson/alevinQC/workflows/R-CMD-check/badge.svg)](https://github.com/csoneson/alevinQC/actions)
 
 The `alevinQC` R package provides functionality for generating QC reports
 summarizing the output of [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
