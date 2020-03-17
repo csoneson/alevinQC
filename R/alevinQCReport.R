@@ -121,13 +121,16 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
 
     ## ------------------------ outputFormat -------------------------------- ##
     ## Raise an error if outputFormat is not one of the allowed
-    if (!(outputFormat %in% c("pdf_document", "html_document"))) {
+    if (!(outputFormat %in% c("pdf_document", "html_document",
+                              "BiocStyle::html_document",
+                              "BiocStyle::pdf_document"))) {
         stop("The provided outputFormat is currently not supported. Please ",
              "use either 'html_document' or 'pdf_document'.", call. = FALSE)
     }
 
     ## Raise an error if the output format and file name extension don't match
-    if (outputFormat != paste0(tools::file_ext(outputFile), "_document")) {
+    if (gsub("BiocStyle::", "", outputFormat) !=
+        paste0(tools::file_ext(outputFile), "_document")) {
         stop(paste0("File name extension of outputFile (.",
                     tools::file_ext(outputFile),
                     ") doesn't agree with the ",

@@ -1,5 +1,7 @@
 #' alevinQC
 #'
+#' alevinQC
+#'
 #' @name alevinQC-pkg
 #' @docType package
 NULL

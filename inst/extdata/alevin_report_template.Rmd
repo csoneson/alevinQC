@@ -8,6 +8,10 @@ output:
         code_folding: show
     pdf_document:
         toc: true
+    BiocStyle::html_document:
+        toc: true
+    BiocStyle::pdf_document:
+        toc: true
 always_allow_html: yes
 editor_options: 
     chunk_output_type: console
@@ -33,7 +37,7 @@ if (!quiet) message("Reading Alevin output files...")
 alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
 ```
 
-## Version info for alevin run
+# Version info for alevin run
 
 ```{r}
 knitr::kable(
@@ -41,9 +45,9 @@ knitr::kable(
 )
 ```
 
-## Summary tables
+# Summary tables
 
-### Full set of cell barcodes
+## Full set of cell barcodes
 
 ```{r}
 if (!quiet) message("Generating summary tables...")
@@ -52,7 +56,7 @@ knitr::kable(
 )
 ```
 
-### Initial whitelist
+## Initial whitelist
 
 ```{r}
 knitr::kable(
@@ -60,7 +64,7 @@ knitr::kable(
 )
 ```
 
-### Final whitelist
+## Final whitelist
 
 ```{r}
 knitr::kable(
@@ -69,12 +73,12 @@ knitr::kable(
 ```
 
 ```{r custom-cb-tables-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
-cat("### Custom cell barcode set(s)")
+cat("## Custom cell barcode set(s)")
 ```
 
 ```{r custom-cb-tables, echo = showCode && (length(customCBList) > 0), results = "asis", eval = (length(customCBList) > 0)}
 for (cbl in names(customCBList)) {
-  cat(paste0("#### ", cbl))
+  cat(paste0("### ", cbl))
   print(knitr::kable(
     alevin$summaryTables[[paste0("customCB__", cbl)]]
   ))
@@ -82,7 +86,7 @@ for (cbl in names(customCBList)) {
 }
 ```
 
-## Knee plot
+# Knee plot
 
 The knee plot displays the number of times each cell barcode is observed, in
 decreasing order. By finding a 'knee' in this plot, Alevin determines a
@@ -97,7 +101,7 @@ if (!quiet) message("Generating knee plot...")
 plotAlevinKneeRaw(alevin$cbTable)
 ```
 
-## Cell barcode error correction and merging with initial whitelist
+# Cell barcode error correction and merging with initial whitelist
 
 Once the initial set of whitelisted cell barcodes is defined, Alevin goes
 through the remaining cell barcodes. If a cell barcode is similar enough to a
@@ -112,7 +116,7 @@ if (!quiet) message("Generating barcode collapsing plot...")
 plotAlevinBarcodeCollapse(alevin$cbTable)
 ```
 
-## Quantification
+# Quantification
 
 After cell barcode collapsing, Alevin estimates the UMI count for each cell and
 gene. Following quantification, an additional cell barcode whitelisting is
@@ -139,7 +143,7 @@ plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
 ```
 
 ```{r custom-cb-plots-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
-cat("### Custom cell barcode set(s)")
+cat("## Custom cell barcode set(s)")
 ```
 
 ```{r custom-cb-plots, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
@@ -149,7 +153,7 @@ for (cbl in names(customCBList)) {
 }
 ```
 
-## Knee plot, number of detected genes
+# Knee plot, number of detected genes
 
 Similarly to the knee plot that was used to select the initial cell barcode
 whitelist, the plot below shows the number of detected genes for each cell
@@ -161,7 +165,7 @@ plotAlevinKneeNbrGenes(alevin$cbTable)
 ```
 
 
-## Session info
+# Session info
 
 ```{r}
 sessionInfo()
