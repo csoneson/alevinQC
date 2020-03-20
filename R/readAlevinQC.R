@@ -79,13 +79,26 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                                      any(names(customCBList) == ""))) {
         stop("'customCBList' must be a named list")
     }
+
     ## Check that all required files are available, stop if not
     infversion <- checkAlevinInputFiles(baseDir)
 
+    ## Depending on the inferred version, read alevin output files
     if (infversion == "pre0.14") {
+        ## pre-v0.14
         .readAlevinQC_pre0.14(baseDir = baseDir, customCBList = customCBList)
     } else if (infversion == "v0.14") {
-        .readAlevinQC_v0.14(baseDir = baseDir, customCBList = customCBList)
+        ## v0.14 or newer, final whitelist inferred from data
+        .readAlevinQC_v0.14(baseDir = baseDir, customCBList = customCBList,
+                            type = "standard")
+    } else if (infversion == "v0.14extwl") {
+        ## v0.14 or newer, external whitelist provided
+        .readAlevinQC_v0.14(baseDir = baseDir, customCBList = customCBList,
+                            type = "extwl")
+    } else if (infversion == "v0.14nowl") {
+        ## v0.14 or newer, no whitelist.txt file but no external whitelist
+        .readAlevinQC_v0.14(baseDir = baseDir, customCBList = customCBList,
+                            type = "nowl")
     } else {
         stop("Unidentifiable alevin output")
     }
@@ -218,11 +231,12 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
          summaryTables = c(list(fullDataset = summarytable_full,
                                 initialWhitelist = summarytable_initialwl,
                                 finalWhitelist = summarytable_finalwl),
-                           customCBsummary)
+                           customCBsummary),
+         type = "pre0.14"
     )
 }
 
-.readAlevinQC_v0.14 <- function(baseDir, customCBList = list()) {
+.readAlevinQC_v0.14 <- function(baseDir, customCBList = list(), type = "standard") {
 
     alevinDir <- file.path(baseDir, "alevin")
 
@@ -269,9 +283,11 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                       totalUMICount = DeduplicatedReads,
                       nbrGenesAboveZero = NumGenesExpressed)
 
-    ## Final set of whitelisted CBs
-    finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
-                                        header = FALSE, as.is = TRUE)$V1
+    if (type == "standard") {
+        ## Final set of whitelisted CBs
+        finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
+                                            header = FALSE, as.is = TRUE)$V1
+    }
 
     ## Meta information and command information
     metainfo <- rjson::fromJSON(file = file.path(baseDir,
@@ -285,25 +301,43 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         rawcbfreq,
         featuredump,
         by = "CB"
-    )  %>%
-        dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
-        dplyr::mutate(
-            inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist
-        )
-
-    ## Check if there is any barcode that is not in the first whitelist,
-    ## but which has an original ranking lower than any barcode that is
-    ## in the first whitelist, and remove it.
-    toremove <-
-        !cbtable$inFirstWhiteList &
-        cbtable$ranking <= max(cbtable$ranking[cbtable$inFirstWhiteList])
-    if (any(toremove)) {
-        warning("Excluding ", sum(toremove), " unquantified barcode",
-                ifelse(sum(toremove) > 1, "s", ""),
-                " with higher original frequency than barcodes ",
-                "included in the first whitelist: ",
-                paste0(cbtable$CB[toremove], collapse = ", "))
-        cbtable <- cbtable[!toremove, ]
+    )
+    if (type == "standard") {
+        ## we have a whitelist.txt file representing the final whitelist
+        cbtable <- cbtable %>%
+            dplyr::mutate(inFinalWhiteList = CB %in% finalwhitelist) %>%
+            dplyr::mutate(
+                inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist
+            )
+        ## Check if there is any barcode that is not in the first whitelist,
+        ## but which has an original ranking lower than any barcode that is
+        ## in the first whitelist, and remove it.
+        toremove <-
+            !cbtable$inFirstWhiteList &
+            cbtable$ranking <= max(cbtable$ranking[cbtable$inFirstWhiteList])
+        if (any(toremove)) {
+            warning("Excluding ", sum(toremove), " unquantified barcode",
+                    ifelse(sum(toremove) > 1, "s", ""),
+                    " with higher original frequency than barcodes ",
+                    "included in the first whitelist: ",
+                    paste0(cbtable$CB[toremove], collapse = ", "))
+            cbtable <- cbtable[!toremove, ]
+        }
+    } else {
+        ## we don't have a whitelist.txt file representing the final whitelist
+        ## alevinmetainfo$final_num_cbs represents the number of entries in
+        ## the external whitelist if such a file is provided.
+        ## If not (whitelisting did not work), alevinmetainfo$final_num_cbs
+        ## still represents the number of CBs that are quantified
+        ## (corresponding to the initial whitelist for type = "standard").
+        ## In both cases, the final whitelist is set to equal the
+        ## initial whitelist.
+        ## However, these final_num_cbs barcodes don't have to be the most
+        ## frequent ones (at least not for the external whitelist). However,
+        ## they are the ones included in the featuredump file
+        cbtable <- cbtable %>%
+            dplyr::mutate(inFirstWhiteList = CB %in% featuredump$CB) %>%
+            dplyr::mutate(inFinalWhiteList = inFirstWhiteList)
     }
 
     ## Add information from custom barcode sets
@@ -335,6 +369,36 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         stringsAsFactors = FALSE,
         check.names = FALSE
     ))
+    if (type == "extwl") {
+        versiontable <- rbind(
+            versiontable,
+            t(data.frame(
+                `External whitelist` = cmdinfo$whitelist,
+                stringsAsFactors = FALSE,
+                check.names = FALSE
+            ))
+        )
+    }
+    if ("expectCells" %in% names(cmdinfo)) {
+        versiontable <- rbind(
+            versiontable,
+            t(data.frame(
+                `Expected number of cells` = cmdinfo$expectCells,
+                stringsAsFactors = FALSE,
+                check.names = FALSE
+            ))
+        )
+    }
+    if ("forceCells" %in% names(cmdinfo)) {
+        versiontable <- rbind(
+            versiontable,
+            t(data.frame(
+                `Forced number of cells` = cmdinfo$forceCells,
+                stringsAsFactors = FALSE,
+                check.names = FALSE
+            ))
+        )
+    }
 
     ## Create summary tables
     summarytable_full <- t(data.frame(
@@ -375,6 +439,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
          summaryTables = c(list(fullDataset = summarytable_full,
                                 initialWhitelist = summarytable_initialwl,
                                 finalWhitelist = summarytable_finalwl),
-                           customCBsummary)
+                           customCBsummary),
+         type = type
     )
 }
