@@ -24,9 +24,10 @@ expect_message(alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14"
                "100% of barcodes in custom barcode set set1 were found in the data set")
 
 test_that("reading input files works", {
-    expect_length(alevin, 3)
+    expect_length(alevin, 4)
     expect_is(alevin, "list")
-    expect_named(alevin, c("cbTable", "versionTable", "summaryTables"))
+    expect_named(alevin, c("cbTable", "versionTable", "summaryTables", "type"))
+    expect_equal(alevin$type, "standard")
 
     expect_equal(nrow(alevin$cbTable), 188613)
     expect_equal(sum(alevin$cbTable$inFirstWhiteList), 100)
