@@ -6,8 +6,7 @@
 
 The `alevinQC` R package provides functionality for generating QC reports
 summarizing the output of [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
-([Srivastava et al., bioRxiv doi:10.1101/335000,
-2018](https://www.biorxiv.org/content/early/2018/10/24/335000)). The reports can
+([Srivastava et al., Genome Biology 20:65 (2019)](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1670-y)). The reports can
 be generated in html or pdf format, or as R/Shiny applications.
 
 ### Installation:
