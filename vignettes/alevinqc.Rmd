@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 The purpose of the `r Biocpkg("alevinQC")` package is to generate a summary QC
 report based on the output of an
 [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
-[@Srivastava2018-fz] run. The QC report can be generated as a html or pdf file,
+[@Srivastava2019-fz] run. The QC report can be generated as a html or pdf file,
 or launched as a shiny application.
 
 # Installation
