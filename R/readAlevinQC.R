@@ -9,6 +9,9 @@
     df <- list()
     df[[paste0("Number of barcodes", cbName)]] <-
         as.character(sum(cbtable[[colName]], na.rm = TRUE))
+    df[[paste0("Number of barcodes with quantification", cbName)]] <-
+        as.character(sum(cbtable[[colName]] & !is.na(cbtable$mappingRate),
+                         na.rm = TRUE))
     df[[paste0("Fraction reads in barcodes", cbName)]] <-
         as.character(paste0(signif(
             100 * sum(cbtable$collapsedFreq[cbtable[[colName]]],
@@ -176,9 +179,12 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
     for (i in seq_along(customCBList)) {
         nm <- paste0("customCB__", names(customCBList)[i])
         cbtable[[nm]] <- cbtable$CB %in% customCBList[[i]]
-        message(signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4),
-                "% of barcodes in custom barcode set ", names(customCBList)[i],
-                " were found in the data set")
+        efr <- signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4)
+        qfr <- signif(100 * sum(cbtable[[nm]] & !is.na(cbtable$mappingRate))/
+                          length(customCBList[[i]]), 4)
+        message(efr, "% of barcodes in custom barcode set ",
+                names(customCBList)[i], " were found in the data set (",
+                qfr, "% were quantified)")
         customCBsummary[[nm]] <- .makeSummaryTable(
             cbtable = cbtable,
             colName = nm,
@@ -253,11 +259,15 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                                    header = FALSE, as.is = TRUE) %>%
         dplyr::rename(CB = V1, originalFreq = V2) %>%
         dplyr::mutate(ranking = seq_len(length(CB)))
+    if (!all(diff(rawcbfreq$originalFreq) <= 0)) {
+        warning("The raw CB frequencies are not sorted in decreasing order")
+    }
 
     ## FeatureDump
-    featuredump <- try({utils::read.delim(file.path(alevinDir, "featureDump.txt"),
-                                          header = TRUE, as.is = TRUE, sep = "\t")},
-                       silent = TRUE)
+    featuredump <- try({
+        utils::read.delim(file.path(alevinDir, "featureDump.txt"),
+                          header = TRUE, as.is = TRUE, sep = "\t")
+    }, silent = TRUE)
     if (is(featuredump, "try-error")) {
         if (grepl("more columns than column names", featuredump)) {
             warning("The 'featureDump.txt' file could not be cleanly read. ",
@@ -293,8 +303,9 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
 
     if (type == "standard") {
         ## Final set of whitelisted CBs
-        finalwhitelist <- utils::read.delim(file.path(alevinDir, "whitelist.txt"),
-                                            header = FALSE, as.is = TRUE)$V1
+        finalwhitelist <- utils::read.delim(
+            file.path(alevinDir, "whitelist.txt"),
+            header = FALSE, as.is = TRUE)$V1
     }
 
     ## Meta information and command information
@@ -331,18 +342,19 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                     paste0(cbtable$CB[toremove], collapse = ", "))
             cbtable <- cbtable[!toremove, ]
         }
-    } else {
-        ## we don't have a whitelist.txt file representing the final whitelist
-        ## alevinmetainfo$final_num_cbs represents the number of entries in
-        ## the external whitelist if such a file is provided.
-        ## If not (whitelisting did not work), alevinmetainfo$final_num_cbs
-        ## still represents the number of CBs that are quantified
-        ## (corresponding to the initial whitelist for type = "standard").
-        ## In both cases, the final whitelist is set to equal the
-        ## initial whitelist.
-        ## However, these final_num_cbs barcodes don't have to be the most
-        ## frequent ones (at least not for the external whitelist). However,
-        ## they are the ones included in the featuredump file
+    } else if (type == "nowl") {
+        ## we have an indication of the size of the initial whitelist, but
+        ## no final whitelist (and no whitelist.txt file).
+        ## the final number of considered CBs should be those in the initial
+        ## whitelist
+        cbtable <- cbtable %>%
+            dplyr::mutate(
+                inFirstWhiteList = ranking <= alevinmetainfo$initial_whitelist
+            ) %>%
+            dplyr::mutate(inFinalWhiteList = inFirstWhiteList)
+    } else if (type == "extwl") {
+        ## the CBs included in the featureDump file are the ones included
+        ## in the external whitelist. There is no initial whitelisting step
         cbtable <- cbtable %>%
             dplyr::mutate(inFirstWhiteList = CB %in% featuredump$CB) %>%
             dplyr::mutate(inFinalWhiteList = inFirstWhiteList)
@@ -353,9 +365,12 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
     for (i in seq_along(customCBList)) {
         nm <- paste0("customCB__", names(customCBList)[i])
         cbtable[[nm]] <- cbtable$CB %in% customCBList[[i]]
-        message(signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4),
-                "% of barcodes in custom barcode set ", names(customCBList)[i],
-                " were found in the data set")
+        efr <- signif(100 * sum(cbtable[[nm]])/length(customCBList[[i]]), 4)
+        qfr <- signif(100 * sum(cbtable[[nm]] & !is.na(cbtable$mappingRate))/
+                          length(customCBList[[i]]), 4)
+        message(efr, "% of barcodes in custom barcode set ",
+                names(customCBList)[i], " were found in the data set (",
+                qfr, "% were quantified)")
         customCBsummary[[nm]] <- .makeSummaryTable(
             cbtable = cbtable,
             colName = nm,
@@ -416,8 +431,11 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
             as.character(alevinmetainfo$reads_with_N),
         `Number of reads with valid cell barcode (no Ns)` =
             as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
-        `Number of mapped reads` = metainfo$num_mapped,
-        `Percent mapped` = metainfo$percent_mapped,
+        `Number of used reads` = alevinmetainfo$used_reads,
+        `Number of mapped reads` = alevinmetainfo$reads_in_eqclasses,
+        `Percent mapped (of used reads)` = 100 * alevinmetainfo$reads_in_eqclasses/
+            alevinmetainfo$used_reads,
+        `Percent mapped` = alevinmetainfo$mapping_rate,
         `Number of noisy CB reads` =
             as.character(alevinmetainfo$noisy_cb_reads),
         `Number of noisy UMI reads` =
