@@ -13,6 +13,20 @@ test_that("checking for input files works", {
               to = tmp, overwrite = TRUE, recursive = TRUE)
     file.remove(file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
     expect_error(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")))
+
+    ## Remove whitelist file - should be read differently
+    tmp <- tempdir()
+    file.copy(from = system.file("extdata/alevin_example_v0.14",
+                                 package = "alevinQC"),
+              to = tmp, overwrite = TRUE, recursive = TRUE)
+    file.remove(file.path(tmp, "alevin_example_v0.14/alevin/whitelist.txt"))
+    expect_equal(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")), "v0.14nowl")
+
+    ## Add whitelist entry to json - should be read differently
+    a <- rjson::fromJSON(file = file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
+    a$whitelist = "whitelist.txt"
+    write(rjson::toJSON(a), file = file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
+    expect_equal(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")), "v0.14extwl")
 })
 
 ## Read provided example input files for tests of file reading/plotting
