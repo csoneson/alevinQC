@@ -36,8 +36,8 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+          install.packages(c('remotes', 'BiocManager'), Ncpu = 2L)
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = c(getOption('repos'), BiocManager::repositories())), 'depends.Rds', version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
@@ -59,7 +59,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
+          install.packages("Rcpp", repos="https://rcppcore.github.io/drat", Ncpu = 2L)
+          remotes::install_deps(dependencies = TRUE, repos = c(getOption('repos'), BiocManager::repositories()), Ncpu = 2L)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
@@ -85,6 +86,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.config.os == 'macOS-latest' && matrix.config.r == '3.6'
         run: |
           R CMD INSTALL .
+          install.packages("Rcpp", repos="https://rcppcore.github.io/drat", Ncpu = 2L)
           Rscript -e "install.packages(c('remotes', 'BiocManager'))"
           Rscript -e "remotes::install_dev('pkgdown'); pkgdown::deploy_to_branch(new_process = FALSE)"
 
