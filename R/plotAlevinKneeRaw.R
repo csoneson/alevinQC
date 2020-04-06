@@ -26,8 +26,8 @@ plotAlevinKneeRaw <- function(cbTable) {
     ## If all the barcodes in the first white list are in the top of the ranking,
     ## make a line plot. Otherwise, indicate the barcodes in the first whitelist
     ## with a rug
-    if (all(cbTable$ranking[cbTable$inFirstWhiteList] <
-            cbTable$ranking[!cbTable$inFirstWhiteList])) {
+    if (max(cbTable$ranking[cbTable$inFirstWhiteList], na.rm = TRUE) <
+        min(cbTable$ranking[!cbTable$inFirstWhiteList], na.rm = TRUE)) {
         ggplot2::ggplot(cbTable,
                         ggplot2::aes(x = ranking, y = originalFreq)) +
             ggplot2::geom_line(size = 2, ggplot2::aes(color = inFirstWhiteList)) +
