@@ -22,6 +22,10 @@
         as.character(round(stats::median(
             cbtable$collapsedFreq[cbtable[[colName]]],
             na.rm = TRUE)))
+    df[[paste0("Mean number of detected genes per cell", cbName)]] <-
+        as.character(round(mean(
+            cbtable$nbrGenesAboveZero[cbtable[[colName]]],
+            na.rm = TRUE)))
     df[[paste0("Median number of detected genes per cell", cbName)]] <-
         as.character(round(stats::median(
             cbtable$nbrGenesAboveZero[cbtable[[colName]]],
@@ -33,6 +37,10 @@
                                      cbtable$CB[cbtable[[colName]]],
                                  drop = FALSE]) > 0))
     }
+    df[[paste0("Mean UMI count per cell", cbName)]] <-
+        as.character(round(mean(
+            cbtable$totalUMICount[cbtable[[colName]]],
+            na.rm = TRUE)))
     df[[paste0("Median UMI count per cell", cbName)]] <-
         as.character(round(stats::median(
             cbtable$totalUMICount[cbtable[[colName]]],
