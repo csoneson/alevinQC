@@ -13,6 +13,20 @@ test_that("checking for input files works", {
               to = tmp, overwrite = TRUE, recursive = TRUE)
     file.remove(file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
     expect_error(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")))
+
+    ## Remove whitelist file - should be read differently
+    tmp <- tempdir()
+    file.copy(from = system.file("extdata/alevin_example_v0.14",
+                                 package = "alevinQC"),
+              to = tmp, overwrite = TRUE, recursive = TRUE)
+    file.remove(file.path(tmp, "alevin_example_v0.14/alevin/whitelist.txt"))
+    expect_equal(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")), "v0.14nowl")
+
+    ## Add whitelist entry to json - should be read differently
+    a <- rjson::fromJSON(file = file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
+    a$whitelist = "whitelist.txt"
+    write(rjson::toJSON(a), file = file.path(tmp, "alevin_example_v0.14/cmd_info.json"))
+    expect_equal(checkAlevinInputFiles(file.path(tmp, "alevin_example_v0.14")), "v0.14extwl")
 })
 
 ## Read provided example input files for tests of file reading/plotting
@@ -24,9 +38,10 @@ expect_message(alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14"
                "100% of barcodes in custom barcode set set1 were found in the data set")
 
 test_that("reading input files works", {
-    expect_length(alevin, 3)
+    expect_length(alevin, 4)
     expect_is(alevin, "list")
-    expect_named(alevin, c("cbTable", "versionTable", "summaryTables"))
+    expect_named(alevin, c("cbTable", "versionTable", "summaryTables", "type"))
+    expect_equal(alevin$type, "standard")
 
     expect_equal(nrow(alevin$cbTable), 188613)
     expect_equal(sum(alevin$cbTable$inFirstWhiteList), 100)
@@ -55,6 +70,41 @@ test_that("plots are generated", {
     expect_error(plotAlevinQuant(alevin$cbTable,
                                  colName = "nbrGenesAboveMean"))
 })
+
+## Read provided example input files for tests of file reading/plotting, after removing whitelist
+tmp <- tempdir()
+file.copy(from = system.file("extdata/alevin_example_v0.14",
+                             package = "alevinQC"),
+          to = tmp, overwrite = TRUE, recursive = TRUE)
+file.remove(file.path(tmp, "alevin_example_v0.14/alevin/whitelist.txt"))
+expect_message(alevin <- readAlevinQC(file.path(tmp, "alevin_example_v0.14"),
+                                      customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                                   "ATGAGGGAGTAGTGCG"),
+                                                          set2 = c("CGAACATTCTGATACG"))),
+               "100% of barcodes in custom barcode set set1 were found in the data set")
+
+test_that("reading input files works", {
+    expect_length(alevin, 4)
+    expect_is(alevin, "list")
+    expect_named(alevin, c("cbTable", "versionTable", "summaryTables", "type"))
+    expect_equal(alevin$type, "nowl")
+
+    expect_equal(nrow(alevin$cbTable), 188613)
+    expect_equal(sum(alevin$cbTable$inFirstWhiteList), 100)
+    expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
+    expect_equal(sum(alevin$cbTable$inFinalWhiteList), 100)
+
+    expect_equivalent(alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1], "1")
+    expect_equivalent(alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1], "106072")
+
+    expect_equal(sum(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set1]),
+                 95259 + 108173)
+    expect_equal(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set2],
+                 106072)
+    expect_error(.makeSummaryTable(alevin$cbTable, colName = "collapsedFreq"))
+    expect_error(.makeSummaryTable(alevin$cbTable, colName = "missingCol"))
+})
+
 
 tempDir <- tempdir()
 if (file.exists(file.path(tempDir, "tmp.Rmd"))) {

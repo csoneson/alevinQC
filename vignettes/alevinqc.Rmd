@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 The purpose of the `r Biocpkg("alevinQC")` package is to generate a summary QC
 report based on the output of an
 [alevin](https://salmon.readthedocs.io/en/latest/alevin.html)
-[@Srivastava2018-fz] run. The QC report can be generated as a html or pdf file,
+[@Srivastava2019-fz] run. The QC report can be generated as a html or pdf file,
 or launched as a shiny application.
 
 # Installation
@@ -90,7 +90,7 @@ baseDir
   |--alevin
   |    |--featureDump.txt
   |    |--raw_cb_frequency.txt
-  |    |--whitelist.txt
+  |    |--whitelist.txt  (depending on how alevin was run)
   |--aux_info
   |    |--meta_info.json
   |    |--alevin_meta_info.json
@@ -149,14 +149,16 @@ generated. To do so, we must first read the alevin output into an R object.
 alevin <- readAlevinQC(baseDir = baseDir)
 ```
 
-The resulting list contains three entries:
+The resulting list contains four entries:
 
 - `cbTable`: a `data.frame` with various inferred characteristics of the
-individual cell barcodes 
+individual cell barcodes.
 - `summaryTables`: a list of `data.frame`s with summary information about the
 full data set, the initial set of whitelisted cells and the final set of
-whitelisted cells, respectively
-- `versionTable`: a `matrix` with information about the invokation of alevin
+whitelisted cells, respectively.
+- `versionTable`: a `matrix` with information about the invokation of alevin.
+- `type`: a `character` scalar indicating how alevinQC interpreted the alevin
+output directory.
 
 ```{r v10}
 head(alevin$cbTable)
