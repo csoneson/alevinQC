@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @importFrom ggplot2 ggplot geom_line aes scale_x_log10 xlab ylab theme_bw
-#'   theme scale_color_manual geom_label element_text
+#'   theme scale_color_manual geom_label element_text geom_rug
 #' @import dplyr
 #'
 #' @return A ggplot object
