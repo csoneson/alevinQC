@@ -92,9 +92,10 @@ The knee plot displays the number of times each cell barcode is observed, in
 decreasing order. By finding a 'knee' in this plot, Alevin determines a
 threshold (indicated in the plot) that defines an initial 'whitelist' - a set
 of cell barcodes that likely represent non-empty droplets - and distinguishes
-them from the background. For this run, the initial whitelist contains 
-`r alevin$cbTable %>% dplyr::filter(inFirstWhiteList) %>% dplyr::filter(ranking == max(ranking)) %>% dplyr::pull(ranking)` cell barcodes, each observed at least 
-`r alevin$cbTable %>% dplyr::filter(inFirstWhiteList) %>% dplyr::filter(ranking == max(ranking)) %>% dplyr::pull(originalFreq)` times. 
+them from the background. The initial whitelisting is only performed if no 
+external whitelist is provided when running alevin. In the figure below, red 
+indicates cell barcodes in the initial whitelist, black indicates all other 
+cell barcodes. 
 
 ```{r}
 if (!quiet) message("Generating knee plot...")
