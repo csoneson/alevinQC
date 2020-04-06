@@ -23,22 +23,42 @@
 #' plotAlevinKneeRaw(alevin$cbTable)
 #'
 plotAlevinKneeRaw <- function(cbTable) {
-    ggplot2::ggplot(cbTable,
-                    ggplot2::aes(x = ranking, y = originalFreq)) +
-        ggplot2::geom_line(size = 2, ggplot2::aes(color = inFirstWhiteList)) +
-        ggplot2::scale_x_log10() +
-        ggplot2::scale_y_log10() +
-        ggplot2::xlab("Cell barcode rank") +
-        ggplot2::ylab("Cell barcode frequency") +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = "none",
-                       axis.title = ggplot2::element_text(size = 12)) +
-        ggplot2::scale_color_manual(values = c(`TRUE` = "red",
-                                               `FALSE` = "black")) +
-        ggplot2::geom_label(data = cbTable %>%
-                                dplyr::filter(inFirstWhiteList) %>%
-                                dplyr::filter(ranking == max(ranking)),
-                            ggplot2::aes(label = paste0("(", ranking, ", ",
-                                                        originalFreq, ")")),
-                            hjust = 0, nudge_x = 0.1)
+    ## If all the barcodes in the first white list are in the top of the ranking,
+    ## make a line plot. Otherwise, indicate the barcodes in the first whitelist
+    ## with a rug
+    if (all(cbTable$ranking[cbTable$inFirstWhiteList] <
+            cbTable$ranking[!cbTable$inFirstWhiteList])) {
+        ggplot2::ggplot(cbTable,
+                        ggplot2::aes(x = ranking, y = originalFreq)) +
+            ggplot2::geom_line(size = 2, ggplot2::aes(color = inFirstWhiteList)) +
+            ggplot2::scale_x_log10() +
+            ggplot2::scale_y_log10() +
+            ggplot2::xlab("Cell barcode rank") +
+            ggplot2::ylab("Cell barcode frequency") +
+            ggplot2::theme_bw() +
+            ggplot2::theme(legend.position = "none",
+                           axis.title = ggplot2::element_text(size = 12)) +
+            ggplot2::scale_color_manual(values = c(`TRUE` = "red",
+                                                   `FALSE` = "black")) +
+            ggplot2::geom_label(data = cbTable %>%
+                                    dplyr::filter(inFirstWhiteList) %>%
+                                    dplyr::filter(ranking == max(ranking)),
+                                ggplot2::aes(label = paste0("(", ranking, ", ",
+                                                            originalFreq, ")")),
+                                hjust = 0, nudge_x = 0.1)
+    } else {
+        ggplot2::ggplot(cbTable,
+                        ggplot2::aes(x = ranking, y = originalFreq)) +
+            ggplot2::geom_line(size = 2, color = "black") +
+            ggplot2::scale_x_log10() +
+            ggplot2::scale_y_log10() +
+            ggplot2::xlab("Cell barcode rank") +
+            ggplot2::ylab("Cell barcode frequency") +
+            ggplot2::theme_bw() +
+            ggplot2::theme(legend.position = "none",
+                           axis.title = ggplot2::element_text(size = 12)) +
+            ggplot2::geom_rug(data = cbTable %>%
+                                  dplyr::filter(inFirstWhiteList),
+                              color = "red")
+    }
 }
