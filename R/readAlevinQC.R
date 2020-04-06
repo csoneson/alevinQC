@@ -435,7 +435,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         `Number of mapped reads` = alevinmetainfo$reads_in_eqclasses,
         `Percent mapped (of used reads)` = 100 * alevinmetainfo$reads_in_eqclasses/
             alevinmetainfo$used_reads,
-        `Percent mapped` = alevinmetainfo$mapping_rate,
+        `Percent mapped (of all reads)` = alevinmetainfo$mapping_rate,
         `Number of noisy CB reads` =
             as.character(alevinmetainfo$noisy_cb_reads),
         `Number of noisy UMI reads` =
