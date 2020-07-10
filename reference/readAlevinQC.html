@@ -134,7 +134,7 @@ app." />
 app.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readAlevinQC</span>(<span class='no'>baseDir</span>, <span class='kw'>customCBList</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+    <pre class="usage"><span class='fu'>readAlevinQC</span>(<span class='kw'>baseDir</span>, customCBList = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,10 +156,14 @@ alevin.</p></td>
 
     <p>A list collecting all necessary information for generating the
   summary report/shiny app.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>alevin</span> <span class='kw'>&lt;-</span> <span class='fu'>readAlevinQC</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
-                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"alevinQC"</span>))</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>alevin</span> <span class='op'>&lt;-</span> <span class='fu'>readAlevinQC</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
+                       package = <span class='st'>"alevinQC"</span>))
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

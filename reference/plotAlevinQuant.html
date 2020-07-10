@@ -133,9 +133,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>plotAlevinQuant</span>(
-  <span class='no'>cbTable</span>,
-  <span class='kw'>colName</span> <span class='kw'>=</span> <span class='st'>"inFinalWhiteList"</span>,
-  <span class='kw'>cbName</span> <span class='kw'>=</span> <span class='st'>"final whitelist"</span>
+  <span class='kw'>cbTable</span>,
+  colName = <span class='st'>"inFinalWhiteList"</span>,
+  cbName = <span class='st'>"final whitelist"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,13 +162,15 @@ defined by <code>colName</code>, used for labelling the plot legend.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>alevin</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readAlevinQC.html'>readAlevinQC</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
-                                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"alevinQC"</span>))
-<span class='fu'>plotAlevinQuant</span>(<span class='no'>alevin</span>$<span class='no'>cbTable</span>, <span class='kw'>colName</span> <span class='kw'>=</span> <span class='st'>"inFinalWhiteList"</span>,
-                <span class='kw'>cbName</span> <span class='kw'>=</span> <span class='st'>"final whitelist"</span>)</div><div class='img'><img src='plotAlevinQuant-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>alevin</span> <span class='op'>&lt;-</span> <span class='fu'>readAlevinQC</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
+                                   package = <span class='st'>"alevinQC"</span>))
+<span class='fu'>plotAlevinQuant</span>(<span class='kw'>alevin</span><span class='op'>$</span><span class='kw'>cbTable</span>, colName = <span class='st'>"inFinalWhiteList"</span>,
+                cbName = <span class='st'>"final whitelist"</span>)</div><div class='img'><img src='plotAlevinQuant-1.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

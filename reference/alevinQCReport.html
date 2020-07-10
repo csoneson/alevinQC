@@ -137,18 +137,18 @@ run. The report generation assumes that alevin has been run with the
     </div>
 
     <pre class="usage"><span class='fu'>alevinQCReport</span>(
-  <span class='no'>baseDir</span>,
-  <span class='no'>sampleId</span>,
-  <span class='no'>outputFile</span>,
-  <span class='kw'>outputDir</span> <span class='kw'>=</span> <span class='st'>"./"</span>,
-  <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>showCode</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>forceOverwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>knitrProgress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ignorePandoc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>customCBList</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>
+  <span class='kw'>baseDir</span>,
+  <span class='kw'>sampleId</span>,
+  <span class='kw'>outputFile</span>,
+  outputDir = <span class='st'>"./"</span>,
+  outputFormat = <span class='kw'>NULL</span>,
+  showCode = <span class='fl'>FALSE</span>,
+  forceOverwrite = <span class='fl'>FALSE</span>,
+  knitrProgress = <span class='fl'>FALSE</span>,
+  quiet = <span class='fl'>FALSE</span>,
+  ignorePandoc = <span class='fl'>FALSE</span>,
+  customCBList = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -232,13 +232,15 @@ alevin.</p></td>
   avoid overwriting the existing file. The reason for this behaviour is that
   the copied template in the output directory will be deleted once the report
   is generated.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>alevinQCReport</span>(<span class='kw'>baseDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
-                                     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"alevinQC"</span>),
-               <span class='kw'>sampleId</span> <span class='kw'>=</span> <span class='st'>"example"</span>, <span class='kw'>outputFile</span> <span class='kw'>=</span> <span class='st'>"alevinReport.html"</span>,
-               <span class='kw'>outputDir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>forceOverwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Reading Alevin output files...</span></div><div class='output co'>#&gt; <span class='message'>Generating summary tables...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating barcode collapsing plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating quantification summary plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot for nbr genes...</span></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>alevinQCReport</span>(baseDir = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/alevin_example_v0.14"</span>,
+                                     package = <span class='st'>"alevinQC"</span>),
+               sampleId = <span class='st'>"example"</span>, outputFile = <span class='st'>"alevinReport.html"</span>,
+               outputDir = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), forceOverwrite = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Reading Alevin output files...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The table should have a header (column names)</span></div><div class='output co'>#&gt; <span class='message'>Generating summary tables...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The table should have a header (column names)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The table should have a header (column names)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The table should have a header (column names)</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating barcode collapsing plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating quantification summary plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot for nbr genes...</span></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
