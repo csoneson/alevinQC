@@ -165,6 +165,23 @@ if (!quiet) message("Generating knee plot for nbr genes...")
 plotAlevinKneeNbrGenes(alevin$cbTable)
 ```
 
+# Selected summary distributions
+
+The histograms below show the distributions of the deduplication rates 
+(the number of deduplicated UMI counts/the number of mapped reads) and the 
+mapping rates, across the cells retained in the final whitelist.
+
+```{r}
+if (!quiet) message("Generating summary distribution plots...")
+cowplot::plot_grid(
+  plotAlevinHistogram(alevin$cbTable, colName = "dedupRate",
+                      axisLabel = "Deduplication rate"),
+  plotAlevinHistogram(alevin$cbTable, colName = "mappingRate",
+                      axisLabel = "Mapping rate"),
+  nrow = 1
+)
+```
+
 
 # Session info
 

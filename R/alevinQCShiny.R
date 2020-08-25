@@ -86,6 +86,13 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
                     shiny::plotOutput("quantPlot"),
                     shiny::uiOutput("quantPlotsCustomCBs")
                 )
+            ),
+            shiny::fluidRow(
+                shinydashboard::box(
+                    width = 12,
+                    title = "Selected summary distributions (final whitelist)",
+                    shiny::plotOutput("histPlot")
+                )
             )
 
         )
@@ -194,6 +201,18 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
                 shiny::plotOutput(id)
             })
         })
+
+        ## ----------------------------------------------------------------- ##
+        ## Standard distribution plots
+        ## ----------------------------------------------------------------- ##
+        output$histPlot <- shiny::renderPlot(
+            cowplot::plot_grid(
+                plotAlevinHistogram(alevin$cbTable, colName = "dedupRate",
+                                    axisLabel = "Deduplication rate"),
+                plotAlevinHistogram(alevin$cbTable, colName = "mappingRate",
+                                    axisLabel = "Mapping rate")
+            )
+        )
 
     } # nocov end
 

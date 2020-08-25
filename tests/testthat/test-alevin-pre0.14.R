@@ -16,12 +16,13 @@ test_that("checking for input files works", {
 })
 
 ## Read provided example input files for tests of file reading/plotting
-expect_message(alevin <- readAlevinQC(system.file("extdata/alevin_example_pre0.14",
-                                                  package = "alevinQC"),
-                                      customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                                                   "ATGAGGGAGTAGTGCG"),
-                                                          set2 = c("CGAACATTCTGATACG"))),
-               "100% of barcodes in custom barcode set set1 were found in the data set")
+expect_message(alevin <- readAlevinQC(
+    system.file("extdata/alevin_example_pre0.14",
+                package = "alevinQC"),
+    customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                 "ATGAGGGAGTAGTGCG"),
+                        set2 = c("CGAACATTCTGATACG"))),
+    "100% of barcodes in custom barcode set set1 were found in the data set")
 
 test_that("reading input files works", {
     expect_length(alevin, 4)
@@ -50,6 +51,7 @@ test_that("plots are generated", {
     expect_is(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
     expect_is(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
     expect_is(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
+    expect_is(plotAlevinHistogram(alevin$cbTable), "ggplot")
 })
 
 tempDir <- tempdir()
