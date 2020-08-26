@@ -82,7 +82,7 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             shiny::fluidRow(
                 shinydashboard::box(
                     width = 12,
-                    title = "Quantification summary",
+                    title = "Quantification summary (initial whitelist)",
                     shiny::plotOutput("quantPlot"),
                     shiny::uiOutput("quantPlotsCustomCBs")
                 )
@@ -90,8 +90,9 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
             shiny::fluidRow(
                 shinydashboard::box(
                     width = 12,
-                    title = "Selected summary distributions (final whitelist)",
-                    shiny::plotOutput("histPlot")
+                    title = "Selected summary distributions (initial whitelist)",
+                    shiny::plotOutput("histPlot"),
+                    shiny::uiOutput("histPlotsCustomCBs")
                 )
             )
 
@@ -207,12 +208,44 @@ alevinQCShiny <- function(baseDir, sampleId, customCBList = list()) {
         ## ----------------------------------------------------------------- ##
         output$histPlot <- shiny::renderPlot(
             cowplot::plot_grid(
-                plotAlevinHistogram(alevin$cbTable, colName = "dedupRate",
-                                    axisLabel = "Deduplication rate"),
-                plotAlevinHistogram(alevin$cbTable, colName = "mappingRate",
-                                    axisLabel = "Mapping rate")
+                plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                                    axisLabel = "Deduplication rate",
+                                    colName = "inFinalWhiteList",
+                                    cbName = "final whitelist"),
+                plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                                    axisLabel = "Mapping rate",
+                                    colName = "inFinalWhiteList",
+                                    cbName = "final whitelist")
             )
         )
+
+        ## ----------------------------------------------------------------- ##
+        ## Custom CB distribution plots
+        ## ----------------------------------------------------------------- ##
+        lapply(seq_along(customCBList), function(i) {
+            id <- paste0("hpl", i)
+            output[[id]] <- shiny::renderPlot(
+                cowplot::plot_grid(
+                    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                                        axisLabel = "Deduplication rate",
+                                        colName = paste0("customCB__",
+                                                         names(customCBList)[i]),
+                                        cbName = names(customCBList)[i]),
+                    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                                        axisLabel = "Mapping rate",
+                                        colName = paste0("customCB__",
+                                                         names(customCBList)[i]),
+                                        cbName = names(customCBList)[i])
+                )
+            )
+        })
+
+        output$histPlotsCustomCBs <- shiny::renderUI({
+            lapply(as.list(seq_along(customCBList)), function(i) {
+                id <- paste0("hpl", i)
+                shiny::plotOutput(id)
+            })
+        })
 
     } # nocov end
 

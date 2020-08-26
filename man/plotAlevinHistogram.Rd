@@ -4,18 +4,30 @@
 \alias{plotAlevinHistogram}
 \title{Histogram of selected summary statistic}
 \usage{
-plotAlevinHistogram(cbTable, colName = "dedupRate", axisLabel = colName)
+plotAlevinHistogram(
+  cbTable,
+  plotVar = "dedupRate",
+  axisLabel = plotVar,
+  colName = "inFinalWhiteList",
+  cbName = "final whitelist"
+)
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
 \code{readAlevinQC}) containing the desired summary statistic in a
 column.}
 
-\item{colName}{Character scalar giving the name of a numeric column of
+\item{plotVar}{Character scalar giving the name of a numeric column of
 \code{cbTable} to plot.}
 
 \item{axisLabel}{Character scalar giving the label of the selected
 statistic (will be displayed as the axis label in the plot).}
+
+\item{colName}{Character scalar giving the name of a logical column of
+\code{cbTable} to use for filling the bars in the histogram.}
+
+\item{cbName}{Character scalar giving the name of the set of barcodes
+defined by \code{colName}, used for labelling the plot legend.}
 }
 \value{
 A ggplot object
@@ -26,8 +38,10 @@ Histogram of selected summary statistic
 \examples{
 alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
                                    package = "alevinQC"))
-plotAlevinHistogram(alevin$cbTable, colName = "dedupRate",
-                    axisLabel = "Deduplication rate")
+plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                    axisLabel = "Deduplication rate",
+                    colName = "inFinalWhiteList",
+                    cbName = "final whitelist")
 
 }
 \author{
