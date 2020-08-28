@@ -39,7 +39,7 @@ alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
 
 # Version info for alevin run
 
-```{r}
+```{r, warning = FALSE}
 knitr::kable(
     alevin$versionTable
 )
@@ -49,7 +49,7 @@ knitr::kable(
 
 ## Full set of cell barcodes
 
-```{r}
+```{r, warning = FALSE}
 if (!quiet) message("Generating summary tables...")
 knitr::kable(
     alevin$summaryTables$fullDataset
@@ -58,7 +58,7 @@ knitr::kable(
 
 ## Initial whitelist
 
-```{r}
+```{r, warning = FALSE}
 knitr::kable(
     alevin$summaryTables$initialWhitelist
 )
@@ -66,7 +66,7 @@ knitr::kable(
 
 ## Final whitelist
 
-```{r}
+```{r, warning = FALSE}
 knitr::kable(
     alevin$summaryTables$finalWhitelist
 )
@@ -125,10 +125,9 @@ performed with the aim of extracting good quality cells, using not only the
 barcode frequency but also other features such as the fraction of mapped reads,
 the duplication rate and the average gene count. The plots below show the
 association between the cell barcode frequency (the number of observed reads
-corresponding to a cell barcode), the total UMI count (obtained by summing the
-UMI counts for the individual genes in the returned count matrix) and the number
-of detected genes (also obtained from the returned count matrix). The cell
-barcodes are colored by whether or not they are included in the final whitelist.
+corresponding to a cell barcode), the total UMI count and the number
+of detected genes. The cell barcodes are colored by whether or not they 
+are included in the final whitelist.
 
 These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate and the degree of saturation.
@@ -163,6 +162,47 @@ barcode included in the initial whitelist, in decreasing order.
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
 plotAlevinKneeNbrGenes(alevin$cbTable)
+```
+
+# Selected summary distributions
+
+The histograms below show the distributions of the deduplication rates 
+(number of deduplicated UMI counts/number of mapped reads) and the 
+mapping rates, across the cells retained in the initial whitelist.
+
+```{r, fig.width = 10, fig.height = 4}
+if (!quiet) message("Generating summary distribution plots...")
+cowplot::plot_grid(
+  plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                      axisLabel = "Deduplication rate",
+                      colName = "inFinalWhiteList",
+                      cbName = "final whitelist"),
+  plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                      axisLabel = "Mapping rate",
+                      colName = "inFinalWhiteList",
+                      cbName = "final whitelist"),
+  nrow = 1
+)
+```
+
+```{r custom-cb-hists-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
+cat("## Custom cell barcode set(s)")
+```
+
+```{r custom-cb-hists, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
+for (cbl in names(customCBList)) {
+  print(cowplot::plot_grid(
+    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                        axisLabel = "Deduplication rate",
+                        colName = paste0("customCB__", cbl),
+                        cbName = cbl),
+    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                        axisLabel = "Mapping rate",
+                        colName = paste0("customCB__", cbl),
+                        cbName = cbl),
+    nrow = 1
+  ))
+}
 ```
 
 

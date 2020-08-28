@@ -1,3 +1,7 @@
+# alevinQC 1.5.2
+
+* Added selected summary distributions to the reports, and a function to plot histograms of arbitrary numeric columns of the cbTable
+
 # alevinQC 1.3.1
 
 * Added the possibility of providing custom cell barcode sets
