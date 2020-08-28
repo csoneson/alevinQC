@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>alevinQC</h1>
                         <h4 class="author">Charlotte Soneson</h4>
             
-            <h4 class="date">2020-07-10</h4>
+            <h4 class="date">2020-08-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/alevinQC/blob/master/vignettes/alevinqc.Rmd"><code>vignettes/alevinqc.Rmd</code></a></small>
       <div class="hidden name"><code>alevinqc.Rmd</code></div>
@@ -178,7 +178,7 @@
 </pre></div>
 <p>Once created, the app can be launched using the <code>runApp()</code> function from the <em><a href="https://CRAN.R-project.org/package=shiny">shiny</a></em> package.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html">runApp</a></span>(<span class="kw">app</span>)
+<span class="kw">shiny</span>::<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html">runApp</a></span>(<span class="kw">app</span>)
 </pre></div>
 </div>
 <div id="generate-individual-plots" class="section level1">
@@ -408,7 +408,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
 <span class="co">#&gt; R version 4.0.2 (2020-06-22)</span>
 <span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
-<span class="co">#&gt; Running under: macOS Catalina 10.15.5</span>
+<span class="co">#&gt; Running under: macOS Catalina 10.15.6</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Matrix products: default</span>
 <span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span>
@@ -421,30 +421,31 @@
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] alevinQC_1.5.1   BiocStyle_2.17.0</span>
+<span class="co">#&gt; [1] alevinQC_1.5.2   BiocStyle_2.17.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_1.0.5           highr_0.8            later_1.1.0.1       </span>
-<span class="co">#&gt;  [4] plyr_1.8.6           compiler_4.0.2       pillar_1.4.5        </span>
-<span class="co">#&gt;  [7] BiocManager_1.30.10  RColorBrewer_1.1-2   tools_4.0.2         </span>
-<span class="co">#&gt; [10] digest_0.6.25        evaluate_0.14        memoise_1.1.0       </span>
-<span class="co">#&gt; [13] lifecycle_0.2.0      tibble_3.0.2         gtable_0.3.0        </span>
-<span class="co">#&gt; [16] pkgconfig_2.0.3      rlang_0.4.7          shiny_1.5.0         </span>
-<span class="co">#&gt; [19] GGally_2.0.0         crosstalk_1.1.0.1    yaml_2.2.1          </span>
-<span class="co">#&gt; [22] pkgdown_1.5.1.9000   xfun_0.15            fastmap_1.0.1       </span>
-<span class="co">#&gt; [25] dplyr_1.0.0          stringr_1.4.0        knitr_1.29          </span>
-<span class="co">#&gt; [28] generics_0.0.2       desc_1.2.0           fs_1.4.2            </span>
-<span class="co">#&gt; [31] vctrs_0.3.1          htmlwidgets_1.5.1    shinydashboard_0.7.1</span>
-<span class="co">#&gt; [34] cowplot_1.0.0        rprojroot_1.3-2      DT_0.14             </span>
-<span class="co">#&gt; [37] grid_4.0.2           tidyselect_1.1.0     reshape_0.8.8       </span>
-<span class="co">#&gt; [40] glue_1.4.1           R6_2.4.1             rmarkdown_2.3.2     </span>
-<span class="co">#&gt; [43] bookdown_0.20        farver_2.0.3         purrr_0.3.4         </span>
-<span class="co">#&gt; [46] ggplot2_3.3.2        magrittr_1.5         promises_1.1.1      </span>
-<span class="co">#&gt; [49] backports_1.1.8      scales_1.1.1         htmltools_0.5.0     </span>
-<span class="co">#&gt; [52] ellipsis_0.3.1       tximport_1.17.2      assertthat_0.2.1    </span>
-<span class="co">#&gt; [55] xtable_1.8-4         mime_0.9             colorspace_1.4-1    </span>
-<span class="co">#&gt; [58] httpuv_1.5.4         labeling_0.3         stringi_1.4.6       </span>
-<span class="co">#&gt; [61] munsell_0.5.0        rjson_0.2.20         crayon_1.3.4</span>
+<span class="co">#&gt;  [1] tximport_1.17.4      tidyselect_1.1.0     xfun_0.16           </span>
+<span class="co">#&gt;  [4] purrr_0.3.4          colorspace_1.4-1     vctrs_0.3.3         </span>
+<span class="co">#&gt;  [7] generics_0.0.2       htmltools_0.5.0      yaml_2.2.1          </span>
+<span class="co">#&gt; [10] rlang_0.4.7          pkgdown_1.5.1.9000   pillar_1.4.6        </span>
+<span class="co">#&gt; [13] later_1.1.0.1        glue_1.4.2           RColorBrewer_1.1-2  </span>
+<span class="co">#&gt; [16] lifecycle_0.2.0      plyr_1.8.6           stringr_1.4.0       </span>
+<span class="co">#&gt; [19] munsell_0.5.0        gtable_0.3.0         ragg_0.3.1          </span>
+<span class="co">#&gt; [22] htmlwidgets_1.5.1    memoise_1.1.0        evaluate_0.14       </span>
+<span class="co">#&gt; [25] labeling_0.3         knitr_1.29           GGally_2.0.0        </span>
+<span class="co">#&gt; [28] fastmap_1.0.1        httpuv_1.5.4         crosstalk_1.1.0.1   </span>
+<span class="co">#&gt; [31] highr_0.8            Rcpp_1.0.5           xtable_1.8-4        </span>
+<span class="co">#&gt; [34] scales_1.1.1         backports_1.1.9      promises_1.1.1      </span>
+<span class="co">#&gt; [37] DT_0.15              BiocManager_1.30.10  desc_1.2.0          </span>
+<span class="co">#&gt; [40] mime_0.9             farver_2.0.3         systemfonts_0.2.3   </span>
+<span class="co">#&gt; [43] fs_1.5.0             rjson_0.2.20         ggplot2_3.3.2       </span>
+<span class="co">#&gt; [46] digest_0.6.25        stringi_1.4.6        bookdown_0.20       </span>
+<span class="co">#&gt; [49] dplyr_1.0.2          shiny_1.5.0          grid_4.0.2          </span>
+<span class="co">#&gt; [52] rprojroot_1.3-2      cowplot_1.0.0        tools_4.0.2         </span>
+<span class="co">#&gt; [55] magrittr_1.5         tibble_3.0.3         crayon_1.3.4        </span>
+<span class="co">#&gt; [58] pkgconfig_2.0.3      ellipsis_0.3.1       shinydashboard_0.7.1</span>
+<span class="co">#&gt; [61] assertthat_0.2.1     rmarkdown_2.3        reshape_0.8.8       </span>
+<span class="co">#&gt; [64] R6_2.4.1             compiler_4.0.2</span>
 </pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
