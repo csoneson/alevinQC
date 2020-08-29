@@ -432,7 +432,8 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         `Number of reads with valid cell barcode (no Ns)` =
             as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
         `Number of mapped reads` = alevinmetainfo$reads_in_eqclasses,
-        `Percent mapped (of all reads)` = alevinmetainfo$mapping_rate,
+        `Percent mapped (of all reads)` =
+            paste0(signif(as.numeric(alevinmetainfo$mapping_rate), 4), "%"),
         `Number of noisy CB reads` =
             as.character(alevinmetainfo$noisy_cb_reads),
         `Number of noisy UMI reads` =
@@ -450,8 +451,8 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
             t(data.frame(
                 `Number of used reads` = alevinmetainfo$used_reads,
                 `Percent mapped (of used reads)` =
-                    100 * alevinmetainfo$reads_in_eqclasses/
-                    alevinmetainfo$used_reads,
+                    paste0(signif(100 * alevinmetainfo$reads_in_eqclasses /
+                    alevinmetainfo$used_reads, 4), "%"),
                 stringsAsFactors = FALSE,
                 check.names = FALSE
             ))

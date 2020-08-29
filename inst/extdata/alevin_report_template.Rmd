@@ -40,9 +40,11 @@ alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
 # Version info for alevin run
 
 ```{r, warning = FALSE}
-knitr::kable(
+suppressWarnings({
+  knitr::kable(
     alevin$versionTable
-)
+  )
+})
 ```
 
 # Summary tables
@@ -51,25 +53,31 @@ knitr::kable(
 
 ```{r, warning = FALSE}
 if (!quiet) message("Generating summary tables...")
-knitr::kable(
+suppressWarnings({
+  knitr::kable(
     alevin$summaryTables$fullDataset
-)
+  )
+})
 ```
 
 ## Initial whitelist
 
 ```{r, warning = FALSE}
-knitr::kable(
+suppressWarnings({
+  knitr::kable(
     alevin$summaryTables$initialWhitelist
-)
+  )
+})
 ```
 
 ## Final whitelist
 
-```{r, warning = FALSE}
-knitr::kable(
+```{r}
+suppressWarnings({
+  knitr::kable(
     alevin$summaryTables$finalWhitelist
-)
+  )
+})
 ```
 
 ```{r custom-cb-tables-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
@@ -79,9 +87,11 @@ cat("## Custom cell barcode set(s)")
 ```{r custom-cb-tables, echo = showCode && (length(customCBList) > 0), results = "asis", eval = (length(customCBList) > 0)}
 for (cbl in names(customCBList)) {
   cat(paste0("### ", cbl))
-  print(knitr::kable(
-    alevin$summaryTables[[paste0("customCB__", cbl)]]
-  ))
+  suppressWarnings({
+    print(knitr::kable(
+      alevin$summaryTables[[paste0("customCB__", cbl)]]
+    ))
+  })
   cat("\n")
 }
 ```
