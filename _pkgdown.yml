@@ -9,6 +9,9 @@ template:
     bootswatch: cosmo
 
 reference:
+- title: Overview
+  contents:
+    - '`alevinQC-pkg`'
 - title: Functions for reading alevin output data
   contents:
     - '`checkAlevinInputFiles`'
@@ -24,4 +27,5 @@ reference:
     - '`plotAlevinQuant`'
     - '`plotAlevinQuantPairs`'
     - '`plotAlevinKneeNbrGenes`'
+    - '`plotAlevinHistogram`'
 
