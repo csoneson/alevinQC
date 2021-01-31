@@ -9,14 +9,15 @@
 #'
 #' @return A logical(1), indicating whether pandoc can be run or not.
 #'   In addition, raises either a warning or an error (depending on the
-#'   value of \code{ignorePandoc}) is raised if pandoc or pandoc-citeproc is not
+#'   value of \code{ignorePandoc}) if pandoc or pandoc-citeproc is not
 #'   available.
 #'
 #' @importFrom rmarkdown pandoc_available pandoc_exec
 #'
 .checkPandoc <- function(ignorePandoc) {
-    ## If pandoc is not available, don't do rendering
+    ## Initialize output to TRUE
     doRender <- TRUE
+
     ## First check whether pandoc is available
     if (!rmarkdown::pandoc_available()) {
         doRender <- FALSE
