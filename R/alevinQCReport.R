@@ -7,15 +7,19 @@
 #'
 #' @keywords internal
 #'
-#' @return No value is returned. Either a warning or an error (depending on the
+#' @return A logical(1), indicating whether pandoc can be run or not.
+#'   In addition, raises either a warning or an error (depending on the
 #'   value of \code{ignorePandoc}) is raised if pandoc or pandoc-citeproc is not
 #'   available.
 #'
 #' @importFrom rmarkdown pandoc_available pandoc_exec
 #'
 .checkPandoc <- function(ignorePandoc) {
+    ## If pandoc is not available, don't do rendering
+    doRender <- TRUE
     ## First check whether pandoc is available
     if (!rmarkdown::pandoc_available()) {
+        doRender <- FALSE
         ## If pandoc is not available, either give a warning or an error,
         ## depending on the value of ignorePandoc
         if (ignorePandoc) {
@@ -37,6 +41,7 @@
             if (Sys.which("pandoc-citeproc") == "" &&
                 !file.exists(file.path(dirname(rmarkdown::pandoc_exec()),
                                        "pandoc-citeproc"))) {
+                doRender <- FALSE
                 ## pandoc-citeproc is required, but not found
                 if (ignorePandoc) {
                     ## If ignorePandoc is TRUE, just give a warning
@@ -49,6 +54,7 @@
             }
         }
     }
+    return(doRender)
 }
 
 #' Generate alevin summary report
@@ -130,7 +136,7 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     }
 
     ## Check if pandoc and pandoc-citeproc are available
-    .checkPandoc(ignorePandoc)
+    doRender <- .checkPandoc(ignorePandoc)
 
     ## ---------------------------------------------------------------------- ##
     ## --------------------- Check input arguments -------------------------- ##
@@ -232,6 +238,7 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     args$output_format <- outputFormat
     args$output_file <- outputFile
     args$quiet <- !knitrProgress
+    args$run_pandoc <- doRender
 
     ## ---------------------------------------------------------------------- ##
     ## ------------------------ Render the report --------------------------- ##
