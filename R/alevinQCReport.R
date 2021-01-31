@@ -11,6 +11,8 @@
 #'   value of \code{ignorePandoc}) is raised if pandoc or pandoc-citeproc is not
 #'   available.
 #'
+#' @importFrom rmarkdown pandoc_available pandoc_exec
+#'
 .checkPandoc <- function(ignorePandoc) {
     ## First check whether pandoc is available
     if (!rmarkdown::pandoc_available()) {
