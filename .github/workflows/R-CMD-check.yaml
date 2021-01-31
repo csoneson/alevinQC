@@ -53,9 +53,17 @@ jobs:
         if: matrix.config.image == null && matrix.config.pandoc == 'manual'
         run: brew install pandoc@2.7.3
 
-      - name: Install remotes
+      - name: Install remotes and rmarkdown
         run: |
-          install.packages('remotes')
+          install.packages(c('remotes', 'rmarkdown'))
+        shell: Rscript {0}
+
+      - name: Test pandoc configuration
+        run: |
+          rmarkdown::pandoc_available()
+          rmarkdown::pandoc_version()
+          rmarkdown::pandoc_exec()
+          rmarkdown::pandoc_citeproc_args()
         shell: Rscript {0}
 
       - name: Set BiocManager version
