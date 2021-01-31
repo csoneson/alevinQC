@@ -13,17 +13,16 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     container: ${{ matrix.config.image }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }} - ${{ matrix.config.bioc }} - ${{ matrix.config.image }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }} - ${{ matrix.config.bioc }} - ${{ matrix.config.image }} - ${{ matrix.config.pandoc }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: 'devel', bioc: 'devel', pandoc: '2.7.3'}
-        - { os: macOS-latest, r: 'devel', bioc: 'devel', pandoc: '2.7.3', curlConfigPath: '/usr/bin/'}
-        - { os: macOS-latest, r: 'devel', bioc: 'devel', pandoc: 'manual', curlConfigPath: '/usr/bin/'}
+        - { os: windows-latest, r: 'devel', bioc: 'devel'}
+        - { os: macOS-latest, r: 'devel', bioc: 'devel', curlConfigPath: '/usr/bin/'}
         - { os: macOS-latest, r: 'devel', bioc: 'devel', pandoc: '2.11.4', curlConfigPath: '/usr/bin/'}
-        - { os: ubuntu-16.04, r: 'devel', bioc: 'devel', pandoc: '2.7.3', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+        - { os: ubuntu-16.04, r: 'devel', bioc: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
         - { os: ubuntu-latest, r: 'devel', image: 'bioconductor/bioconductor_docker:devel'}
 
     env:
@@ -43,15 +42,15 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: Set up pandoc
+      - name: Set up pandoc (default version)
         uses: r-lib/actions/setup-pandoc@master
-        if: matrix.config.image == null && matrix.config.pandoc != 'manual'
+        if: matrix.config.image == null && matrix.config.pandoc == null
+
+      - name: Set up pandoc (specified version)
+        uses: r-lib/actions/setup-pandoc@master
+        if: matrix.config.image == null && matrix.config.pandoc != null
         with:
           pandoc-version: ${{ matrix.config.pandoc }}
-
-      - name: Set up pandoc manually (without pandoc-citeproc, for testing)
-        if: matrix.config.image == null && matrix.config.pandoc == 'manual'
-        run: brew install pandoc@2.7.3
 
       - name: Install remotes and rmarkdown
         run: |
@@ -83,8 +82,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -140,14 +139,14 @@ jobs:
           path: check
 
       - name: Test coverage
-        if: matrix.config.os == 'macOS-latest'
+        if: matrix.config.os == 'macOS-latest' && matrix.config.pandoc == null
         run: |
           install.packages("covr")
           covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")
         shell: Rscript {0}
 
       - name: Deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.config.os == 'macOS-latest'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.config.os == 'macOS-latest' && matrix.config.pandoc == null
         run: |
           R CMD INSTALL .
           Rscript -e "remotes::install_dev('pkgdown'); pkgdown::deploy_to_branch(new_process = FALSE)"

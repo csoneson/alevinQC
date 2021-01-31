@@ -9,7 +9,7 @@ Description: Generate QC reports summarizing the output from an alevin run.
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports: 
-    rmarkdown,
+    rmarkdown (>= 2.5),
     tools,
     methods,
     ggplot2,
