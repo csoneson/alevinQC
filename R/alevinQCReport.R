@@ -25,7 +25,8 @@
         if (ignorePandoc) {
             ## If ignorePandoc is TRUE, just give a warning
             warning("pandoc is not available! ",
-                    "The final report will not be generated.")
+                    "The final report will not be generated.",
+                    immediate. = TRUE)
         } else {
             ## If ignorePandoc is FALSE, stop
             stop("pandoc is not available!")
@@ -46,7 +47,8 @@
                 if (ignorePandoc) {
                     ## If ignorePandoc is TRUE, just give a warning
                     warning("pandoc-citeproc is not available! ",
-                            "The final report will not be generated.")
+                            "The final report will not be generated.",
+                            immediate. = TRUE)
                 } else {
                     ## If ignorePandoc is FALSE, stop
                     stop("pandoc-citeproc is not available!")
