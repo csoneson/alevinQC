@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -78,13 +80,13 @@
   <div class="contents col-md-9">
 <div id="alevinqc" class="section level2">
 <h2 class="hasAnchor">
-<a href="#alevinqc" class="anchor"></a>alevinQC</h2>
+<a href="#alevinqc" class="anchor" aria-hidden="true"></a>alevinQC</h2>
 
-<p>The <code>alevinQC</code> R package provides functionality for generating QC reports summarizing the output of <a href="https://salmon.readthedocs.io/en/latest/alevin.html">alevin</a> (<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1670-y">Srivastava et al., Genome Biology 20:65 (2019)</a>). The reports can be generated in html or pdf format, or as R/Shiny applications.</p>
+<p>The <code>alevinQC</code> R package provides functionality for generating QC reports summarizing the output of <a href="https://salmon.readthedocs.io/en/latest/alevin.html" class="external-link">alevin</a> (<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1670-y" class="external-link">Srivastava et al., Genome Biology 20:65 (2019)</a>). The reports can be generated in html or pdf format, or as R/Shiny applications.</p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation:</h3>
-<p><code>alevinQC</code> is available from <a href="https://bioconductor.org/packages/alevinQC/">Bioconductor</a>, and can be installed using the <code>BiocManager</code> CRAN package:</p>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation:</h3>
+<p><code>alevinQC</code> is available from <a href="https://bioconductor.org/packages/alevinQC/" class="external-link">Bioconductor</a>, and can be installed using the <code>BiocManager</code> CRAN package:</p>
 <pre><code>if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("alevinQC")</code></pre>
@@ -92,13 +94,13 @@ BiocManager::install("alevinQC")</code></pre>
 </div>
 <div id="example-usage" class="section level3">
 <h3 class="hasAnchor">
-<a href="#example-usage" class="anchor"></a>Example usage:</h3>
-<pre><code><a href="reference/alevinQCReport.html">alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14", 
+<a href="#example-usage" class="anchor" aria-hidden="true"></a>Example usage:</h3>
+<pre><code>alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14", 
                                      package = "alevinQC"),
                sampleId = "testSample", 
                outputFile = "alevinReport.html", 
                outputFormat = "html_document",
-               outputDir = tempdir(), forceOverwrite = TRUE)</a></code></pre>
+               outputDir = tempdir(), forceOverwrite = TRUE)</code></pre>
 <p>For more information, we refer to the package vignette.</p>
 <p><img src="https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot1.png"><img src="https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot2.png"></p>
 </div>
@@ -107,7 +109,7 @@ BiocManager::install("alevinQC")</code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/alevinQC">https://​www.bioconductor.org/​packages/​alevinQC</a>
 </li>
@@ -117,15 +119,18 @@ BiocManager::install("alevinQC")</code></pre>
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
 <a href="https://csoneson.github.io">Charlotte Soneson</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3833-2169" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
@@ -133,23 +138,26 @@ BiocManager::install("alevinQC")</code></pre>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/github/csoneson/alevinQC"><img src="https://codecov.io/github/csoneson/alevinQC/coverage.svg?branch=master" alt="Codecov.io coverage status"></a></li>
-<li><a href="https://github.com/csoneson/alevinQC/actions"><img src="https://github.com/csoneson/alevinQC/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/github/csoneson/alevinQC" class="external-link"><img src="https://codecov.io/github/csoneson/alevinQC/coverage.svg?branch=master" alt="Codecov.io coverage status"></a></li>
+<li><a href="https://github.com/csoneson/alevinQC/actions" class="external-link"><img src="https://github.com/csoneson/alevinQC/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://csoneson.github.io">Charlotte Soneson</a>, Avi Srivastava.</p>
+  <p></p>
+<p>Developed by <a href="https://csoneson.github.io" class="external-link">Charlotte Soneson</a>, Avi Srivastava.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -157,6 +165,8 @@ BiocManager::install("alevinQC")</code></pre>
 
   
 
+
+  
 
   </body>
 </html>

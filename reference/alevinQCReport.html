@@ -60,9 +60,15 @@ run. The report generation assumes that alevin has been run with the
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +82,7 @@ run. The report generation assumes that alevin has been run with the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.9.0</span>
       </span>
     </div>
 
@@ -132,7 +138,7 @@ run. The report generation assumes that alevin has been run with the
 --dumpFeatures flag to generate the necessary output files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>alevinQCReport</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>alevinQCReport</span><span class='op'>(</span>
   <span class='va'>baseDir</span>,
   <span class='va'>sampleId</span>,
   <span class='va'>outputFile</span>,
@@ -145,7 +151,7 @@ run. The report generation assumes that alevin has been run with the
   ignorePandoc <span class='op'>=</span> <span class='cn'>FALSE</span>,
   customCBList <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,8 +203,8 @@ when generating the report.</p></td>
     <tr>
       <th>ignorePandoc</th>
       <td><p>Logical, determines what to do if <code>pandoc</code> or
-<code>pandoc-citeproc</code> is missing (if <code><a href='https://rdrr.io/r/base/Sys.which.html'>Sys.which("pandoc")</a></code> or
-<code><a href='https://rdrr.io/r/base/Sys.which.html'>Sys.which("pandoc-citeproc")</a></code> returns ""). If <code>ignorePandoc</code> is
+<code>pandoc-citeproc</code> is missing (if <code>Sys.which("pandoc")</code> or
+<code>Sys.which("pandoc-citeproc")</code> returns ""). If <code>ignorePandoc</code> is
 TRUE, only a warning is given. The figures will be generated, but not the
 final report. If <code>ignorePandoc</code> is FALSE (default), the execution
 stops immediately.</p></td>
@@ -211,7 +217,7 @@ alevin.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments that will be passed to <code><a href='https://rdrr.io/pkg/rmarkdown/man/render.html'>rmarkdown::render</a></code>.</p></td>
+      <td><p>Other arguments that will be passed to <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>rmarkdown::render</a></code>.</p></td>
     </tr>
     </table>
 
@@ -222,7 +228,7 @@ alevin.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>When the function is called, a .Rmd template file will be copied
-  into the output directory, and <code><a href='https://rdrr.io/pkg/rmarkdown/man/render.html'>rmarkdown::render</a></code> will be called to
+  into the output directory, and <code><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>rmarkdown::render</a></code> will be called to
   generate the final report. If there is already a .Rmd file with the same
   name in the output directory, the function will raise an error and stop, to
   avoid overwriting the existing file. The reason for this behaviour is that
@@ -233,12 +239,19 @@ alevin.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>alevinQCReport</span><span class='op'>(</span>baseDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/alevin_example_v0.14"</span>,
-                                     package <span class='op'>=</span> <span class='st'>"alevinQC"</span><span class='op'>)</span>,
-               sampleId <span class='op'>=</span> <span class='st'>"example"</span>, outputFile <span class='op'>=</span> <span class='st'>"alevinReport.html"</span>,
-               outputDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, forceOverwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Reading Alevin output files...</span></div><div class='output co'>#&gt; <span class='message'>Generating summary tables...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating barcode collapsing plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating quantification summary plot...</span></div><div class='output co'>#&gt; <span class='message'>Generating knee plot for nbr genes...</span></div><div class='output co'>#&gt; <span class='message'>Generating summary distribution plots...</span></div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>alevinQCReport</span><span class='op'>(</span>baseDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/alevin_example_v0.14"</span>,</span>
+<span class='r-in'>                                     package <span class='op'>=</span> <span class='st'>"alevinQC"</span><span class='op'>)</span>,</span>
+<span class='r-in'>               sampleId <span class='op'>=</span> <span class='st'>"example"</span>, outputFile <span class='op'>=</span> <span class='st'>"alevinReport.html"</span>,</span>
+<span class='r-in'>               outputDir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, forceOverwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Reading Alevin output files...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating summary tables...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating knee plot...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating barcode collapsing plot...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating quantification summary plot...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating knee plot for nbr genes...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Generating summary distribution plots...</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -250,11 +263,11 @@ alevin.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://csoneson.github.io'>Charlotte Soneson</a>, Avi Srivastava.</p>
+  <p><p>Developed by <a href="https://csoneson.github.io" class="external-link">Charlotte Soneson</a>, Avi Srivastava.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -262,6 +275,8 @@ alevin.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

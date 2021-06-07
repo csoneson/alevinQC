@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://csoneson.github.io/alevinQC/404.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/articles/alevinqc.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/authors.html</loc>
+  </url>
+  <url>
     <loc>http://csoneson.github.io/alevinQC/index.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/news/index.html</loc>
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/alevinQC-pkg.html</loc>
@@ -14,6 +35,9 @@
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/checkAlevinInputFiles.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/reference/index.html</loc>
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/plotAlevinBarcodeCollapse.html</loc>
@@ -35,8 +59,5 @@
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/readAlevinQC.html</loc>
-  </url>
-  <url>
-    <loc>http://csoneson.github.io/alevinQC/articles/alevinqc.html</loc>
   </url>
 </urlset>
