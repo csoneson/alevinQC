@@ -3,7 +3,7 @@ pkgdown: 1.9000.9000.9000
 pkgdown_sha: abfef4909fd93760c0cc2478d280ed594226cb95
 articles:
   alevinqc: alevinqc.html
-last_built: 2021-10-03T13:56Z
+last_built: 2021-10-03T14:05Z
 urls:
   reference: http://csoneson.github.io/alevinQC/reference
   article: http://csoneson.github.io/alevinQC/articles
