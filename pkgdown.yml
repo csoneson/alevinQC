@@ -1,9 +1,9 @@
 pandoc: 2.7.3
 pkgdown: 1.9000.9000.9000
-pkgdown_sha: abfef4909fd93760c0cc2478d280ed594226cb95
+pkgdown_sha: 30934fa24fa867ab078bdc5d67c278898a9fee10
 articles:
   alevinqc: alevinqc.html
-last_built: 2021-10-03T14:05Z
+last_built: 2021-10-26T19:11Z
 urls:
   reference: http://csoneson.github.io/alevinQC/reference
   article: http://csoneson.github.io/alevinQC/articles
