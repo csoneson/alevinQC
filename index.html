@@ -87,20 +87,20 @@
 <h3 id="installation">Installation:<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <p><code>alevinQC</code> is available from <a href="https://bioconductor.org/packages/alevinQC/" class="external-link">Bioconductor</a>, and can be installed using the <code>BiocManager</code> CRAN package:</p>
-<pre><code>if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("alevinQC")</code></pre>
+<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"alevinQC"</span><span class="op">)</span></code></pre>
 <p>Note that <code>alevinQC</code> v 1.1 or newer is required to process output from Salmon version 0.14.0 or newer.</p>
 </div>
 <div class="section level3">
 <h3 id="example-usage">Example usage:<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h3>
-<pre><code>alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14", 
-                                     package = "alevinQC"),
-               sampleId = "testSample", 
-               outputFile = "alevinReport.html", 
-               outputFormat = "html_document",
-               outputDir = tempdir(), forceOverwrite = TRUE)</code></pre>
+<pre><code><span class="fu"><a href="reference/alevinQCReport.html">alevinQCReport</a></span><span class="op">(</span>baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>, 
+                                     package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,
+               sampleId <span class="op">=</span> <span class="st">"testSample"</span>, 
+               outputFile <span class="op">=</span> <span class="st">"alevinReport.html"</span>, 
+               outputFormat <span class="op">=</span> <span class="st">"html_document"</span>,
+               outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre>
 <p>For more information, we refer to the package vignette.</p>
 <p><img src="https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot1.png"><img src="https://raw.githubusercontent.com/csoneson/alevinQC/master/inst/extdata/alevinQC_screenshot2.png"></p>
 </div>
