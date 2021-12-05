@@ -3,10 +3,14 @@
 #' @author Charlotte Soneson
 #'
 #' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
-#'   \code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
-#'   count and the number of detected genes for each cell.
+#'     \code{readAlevinQC} or \code{readAlevinFryQC}) with collapsed barcode
+#'     frequencies, the total UMI count and the number of detected genes
+#'     for each cell.
 #' @param colName Character scalar giving the name of a logical column of
-#'   \code{cbTable} to use for coloring the points.
+#'     \code{cbTable} to use for coloring the points.
+#' @param firstSelColName Character scalar indicating the name of the logical
+#'     column in \code{cbTable} that corresponds to the original selection of
+#'     barcodes for quantification.
 #'
 #' @export
 #'
@@ -22,15 +26,25 @@
 #'                                    package = "alevinQC"))
 #' plotAlevinQuantPairs(alevin$cbTable, colName = "inFinalWhiteList")
 #'
-plotAlevinQuantPairs <- function(cbTable, colName = "inFinalWhiteList") {
-    stopifnot(is.logical(cbTable[[colName]]))
+plotAlevinQuantPairs <- function(cbTable, colName = "inFinalWhiteList",
+                                 firstSelColName = "inFirstWhiteList") {
+    ## Check input arguments
+    .assertVector(x = cbTable, type = "data.frame")
+    .assertScalar(x = colName, type = "character",
+                  validValues = colnames(cbTable))
+    .assertVector(x = cbTable[[colName]], type = "logical")
+    .assertScalar(x = firstSelColName, type = "character",
+                  validValues = colnames(cbTable))
+    .assertVector(x = cbTable[[firstSelColName]], type = "logical")
+    stopifnot(all(c("collapsedFreq", "totalUMICount",
+                    "nbrGenesAboveZero") %in% colnames(cbTable)))
 
     GGally::ggpairs(
-        cbTable %>% dplyr::filter(inFirstWhiteList) %>%
+        cbTable %>% dplyr::filter(.data[[firstSelColName]]) %>%
             dplyr::rename(`Barcode frequency` = "collapsedFreq",
                           `Total UMI count` = "totalUMICount",
                           `Nbr detected genes` = "nbrGenesAboveZero"),
-        mapping = ggplot2::aes(color = !!rlang::sym(colName)),
+        mapping = ggplot2::aes(color = .data[[colName]]),
         columns = c("Barcode frequency", "Total UMI count",
                     "Nbr detected genes"),
         upper = list(continuous = function(data, mapping, ...) {

@@ -7,19 +7,25 @@
 plotAlevinQuant(
   cbTable,
   colName = "inFinalWhiteList",
-  cbName = "final whitelist"
+  cbName = "final whitelist",
+  firstSelColName = "inFirstWhiteList"
 )
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
-\code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
-count and the number of detected genes for each cell.}
+\code{readAlevinQC} or \code{readAlevinFryQC}) with collapsed barcode
+frequencies, the total UMI count and the number of detected genes for
+each cell.}
 
 \item{colName}{Character scalar giving the name of a logical column of
 \code{cbTable} to use for coloring the points.}
 
 \item{cbName}{Character scalar giving the name of the set of barcodes
 defined by \code{colName}, used for labelling the plot legend.}
+
+\item{firstSelColName}{Character scalar indicating the name of the logical
+column in \code{cbTable} that indicates the original selection of
+barcodes for quantification.}
 }
 \value{
 A ggplot object

@@ -6,13 +6,18 @@
 #' @author Charlotte Soneson
 #'
 #' @param cbTable \code{data.frame} (such as the \code{cbTable} returned by
-#'   \code{readAlevinQC}) with the number of detected genes per cell.
+#'     \code{readAlevinQC} or \code{readAlevinFryQC}) with the number of
+#'     detected genes per cell.
+#' @param firstSelColName Character scalar indicating the name of the logical
+#'     column in \code{cbTable} that corresponds to the original selection of
+#'     barcodes for quantification.
 #'
 #' @export
 #'
 #' @importFrom ggplot2 ggplot aes geom_line xlab ylab theme_bw theme
-#'   element_text
+#'     element_text
 #' @import dplyr
+#' @importFrom rlang .data
 #'
 #' @return A ggplot object
 #'
@@ -21,11 +26,20 @@
 #'                                    package = "alevinQC"))
 #' plotAlevinKneeNbrGenes(alevin$cbTable)
 #'
-plotAlevinKneeNbrGenes <- function(cbTable) {
-    ggplot2::ggplot(cbTable %>% dplyr::filter(inFirstWhiteList) %>%
-                        dplyr::arrange(desc(nbrGenesAboveZero)) %>%
-                        dplyr::mutate(x = seq_along(nbrGenesAboveZero)),
-                    ggplot2::aes(x = x, y = nbrGenesAboveZero)) +
+plotAlevinKneeNbrGenes <- function(cbTable,
+                                   firstSelColName = "inFirstWhiteList") {
+    ## Check input arguments
+    .assertVector(x = cbTable, type = "data.frame")
+    .assertScalar(x = firstSelColName, type = "character",
+                  validValues = colnames(cbTable))
+    .assertVector(x = cbTable[[firstSelColName]], type = "logical")
+    stopifnot(all(c("nbrGenesAboveZero") %in%
+                      colnames(cbTable)))
+
+    ggplot2::ggplot(cbTable %>% dplyr::filter(.data[[firstSelColName]]) %>%
+                        dplyr::arrange(dplyr::desc(.data$nbrGenesAboveZero)) %>%
+                        dplyr::mutate(x = seq_along(.data$nbrGenesAboveZero)),
+                    ggplot2::aes(x = .data$x, y = .data$nbrGenesAboveZero)) +
         ggplot2::geom_line(size = 2) +
         ggplot2::xlab("Cell barcode rank") +
         ggplot2::ylab("Number of detected genes") +
