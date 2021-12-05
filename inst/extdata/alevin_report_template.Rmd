@@ -31,19 +31,28 @@ knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
 knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
 
-```{r setup}
+```{r setup-alevin, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 ## Read input files
 if (!quiet) message("Reading Alevin output files...")
 alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
+firstSelColName <- "inFirstWhiteList"
+```
+
+```{r setup-alevinfry, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+## Read input files
+if (!quiet) message("Reading Alevin-fry output files...")
+alevin <- readAlevinFryQC(mapDir = mapDir, permitDir = permitDir,
+                          quantDir = quantDir)
+firstSelColName <- "inPermitList"
 ```
 
 # Version info for alevin run
 
 ```{r, warning = FALSE}
 suppressWarnings({
-  knitr::kable(
-    alevin$versionTable
-  )
+    knitr::kable(
+        alevin$versionTable
+    )
 })
 ```
 
@@ -54,29 +63,45 @@ suppressWarnings({
 ```{r, warning = FALSE}
 if (!quiet) message("Generating summary tables...")
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$fullDataset
-  )
+    knitr::kable(
+        alevin$summaryTables$fullDataset
+    )
 })
 ```
 
-## Initial whitelist
+```{r initial-whitelist-title, echo = FALSE, results = "asis", eval = ("initialWhitelist" %in% names(alevin$summaryTables))}
+cat("## Initial whitelist")
+```
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, echo = showCode && ("initialWhitelist" %in% names(alevin$summaryTables)), eval = ("initialWhitelist" %in% names(alevin$summaryTables))}
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$initialWhitelist
-  )
+    knitr::kable(
+        alevin$summaryTables$initialWhitelist
+    )
 })
 ```
 
-## Final whitelist
+```{r final-whitelist-title, echo = FALSE, results = "asis", eval = ("finalWhitelist" %in% names(alevin$summaryTables))}
+cat("## Final whitelist")
+```
 
-```{r}
+```{r, warning = FALSE, echo = showCode && ("finalWhitelist" %in% names(alevin$summaryTables)), eval = ("finalWhitelist" %in% names(alevin$summaryTables))}
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$finalWhitelist
-  )
+    knitr::kable(
+        alevin$summaryTables$finalWhitelist
+    )
+})
+```
+
+```{r permitlist-title, echo = FALSE, results = "asis", eval = ("permitlist" %in% names(alevin$summaryTables))}
+cat("## Permitlist")
+```
+
+```{r, warning = FALSE, echo = showCode && ("permitlist" %in% names(alevin$summaryTables)), eval = ("permitlist" %in% names(alevin$summaryTables))}
+suppressWarnings({
+    knitr::kable(
+        alevin$summaryTables$permitlist
+    )
 })
 ```
 
@@ -86,13 +111,13 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-tables, echo = showCode && (length(customCBList) > 0), results = "asis", eval = (length(customCBList) > 0)}
 for (cbl in names(customCBList)) {
-  cat(paste0("### ", cbl))
-  suppressWarnings({
-    print(knitr::kable(
-      alevin$summaryTables[[paste0("customCB__", cbl)]]
-    ))
-  })
-  cat("\n")
+    cat(paste0("### ", cbl))
+    suppressWarnings({
+        print(knitr::kable(
+            alevin$summaryTables[[paste0("customCB__", cbl)]]
+        ))
+    })
+    cat("\n")
 }
 ```
 
@@ -109,7 +134,7 @@ cell barcodes.
 
 ```{r}
 if (!quiet) message("Generating knee plot...")
-plotAlevinKneeRaw(alevin$cbTable)
+plotAlevinKneeRaw(alevin$cbTable, firstSelColName = firstSelColName)
 ```
 
 # Cell barcode error correction and merging with initial whitelist
@@ -124,7 +149,7 @@ barcode are discarded.
 
 ```{r}
 if (!quiet) message("Generating barcode collapsing plot...")
-plotAlevinBarcodeCollapse(alevin$cbTable)
+plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName)
 ```
 
 # Quantification
@@ -146,10 +171,18 @@ the total UMI count is rougly linear, while the association of any of these with
 the number of detected genes often deviates from linearity, if a small subset of
 the genes are assigned a large fraction of the UMI counts.
 
-```{r fig.width = 10, fig.height = 4}
+```{r fig.width = 10, fig.height = 4, eval = (quantMethod == "alevin"), echo = showCode && (quantMethod == "alevin")}
 if (!quiet) message("Generating quantification summary plot...")
 plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
-                cbName = "final whitelist")
+                cbName = "final whitelist",
+                firstSelColName = firstSelColName)
+```
+
+```{r fig.width = 10, fig.height = 4, eval = (quantMethod == "alevin-fry"), echo = showCode && (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating quantification summary plot...")
+plotAlevinQuant(alevin$cbTable, colName = "inPermitList",
+                cbName = "permitlist",
+                firstSelColName = firstSelColName)
 ```
 
 ```{r custom-cb-plots-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
@@ -158,8 +191,8 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-plots, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
 for (cbl in names(customCBList)) {
-  print(plotAlevinQuant(alevin$cbTable, colName = paste0("customCB__", cbl),
-                        cbName = cbl))
+    print(plotAlevinQuant(alevin$cbTable, colName = paste0("customCB__", cbl),
+                          cbName = cbl), firstSelColName = firstSelColName)
 }
 ```
 
@@ -171,7 +204,7 @@ barcode included in the initial whitelist, in decreasing order.
 
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
-plotAlevinKneeNbrGenes(alevin$cbTable)
+plotAlevinKneeNbrGenes(alevin$cbTable, firstSelColName = firstSelColName)
 ```
 
 # Selected summary distributions
@@ -180,18 +213,37 @@ The histograms below show the distributions of the deduplication rates
 (number of deduplicated UMI counts/number of mapped reads) and the 
 mapping rates, across the cells retained in the initial whitelist.
 
-```{r, fig.width = 10, fig.height = 4}
+```{r, fig.width = 10, fig.height = 4, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating summary distribution plots...")
 cowplot::plot_grid(
-  plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
-                      axisLabel = "Deduplication rate",
-                      colName = "inFinalWhiteList",
-                      cbName = "final whitelist"),
-  plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
-                      axisLabel = "Mapping rate",
-                      colName = "inFinalWhiteList",
-                      cbName = "final whitelist"),
-  nrow = 1
+    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                        axisLabel = "Deduplication rate",
+                        colName = "inFinalWhiteList",
+                        cbName = "final whitelist",
+                        firstSelColName = firstSelColName),
+    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                        axisLabel = "Mapping rate",
+                        colName = "inFinalWhiteList",
+                        cbName = "final whitelist",
+                        firstSelColName = firstSelColName),
+    nrow = 1
+)
+```
+
+```{r, fig.width = 10, fig.height = 4, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating summary distribution plots...")
+cowplot::plot_grid(
+    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                        axisLabel = "Deduplication rate",
+                        colName = firstSelColName,
+                        cbName = "permitlist",
+                        firstSelColName = firstSelColName),
+    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                        axisLabel = "Mapping rate",
+                        colName = firstSelColName,
+                        cbName = "permitlist",
+                        firstSelColName = firstSelColName),
+    nrow = 1
 )
 ```
 
@@ -201,17 +253,19 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-hists, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
 for (cbl in names(customCBList)) {
-  print(cowplot::plot_grid(
-    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
-                        axisLabel = "Deduplication rate",
-                        colName = paste0("customCB__", cbl),
-                        cbName = cbl),
-    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
-                        axisLabel = "Mapping rate",
-                        colName = paste0("customCB__", cbl),
-                        cbName = cbl),
-    nrow = 1
-  ))
+    print(cowplot::plot_grid(
+        plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                            axisLabel = "Deduplication rate",
+                            colName = paste0("customCB__", cbl),
+                            cbName = cbl,
+                            firstSelColName = firstSelColName),
+        plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                            axisLabel = "Mapping rate",
+                            colName = paste0("customCB__", cbl),
+                            cbName = cbl,
+                            firstSelColName = firstSelColName),
+        nrow = 1
+    ))
 }
 ```
 
