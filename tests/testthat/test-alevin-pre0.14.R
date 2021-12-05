@@ -1,5 +1,3 @@
-context("test-alevin-pre0.14")
-
 test_that("checking for input files works", {
     ## All required files available - check should pass
     expect_equal(checkAlevinInputFiles(system.file("extdata/alevin_example_pre0.14",

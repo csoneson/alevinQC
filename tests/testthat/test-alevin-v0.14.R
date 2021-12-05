@@ -1,5 +1,3 @@
-context("test-alevin-v0.14")
-
 test_that("checking for input files works", {
     ## All required files available - check should pass
     expect_equal(checkAlevinInputFiles(system.file("extdata/alevin_example_v0.14",
@@ -40,7 +38,7 @@ expect_message(alevin <- readAlevinQC(
 
 test_that("reading input files works", {
     expect_length(alevin, 4)
-    expect_is(alevin, "list")
+    expect_type(alevin, "list")
     expect_named(alevin, c("cbTable", "versionTable", "summaryTables", "type"))
     expect_equal(alevin$type, "standard")
 
@@ -49,8 +47,14 @@ test_that("reading input files works", {
     expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
     expect_equal(sum(alevin$cbTable$inFinalWhiteList), 95)
 
-    expect_equivalent(alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1], "1")
-    expect_equivalent(alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1], "106072")
+    expect_equal(
+        alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1],
+        "1", ignore_attr = TRUE
+    )
+    expect_equal(
+        alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1],
+        "106072", ignore_attr = TRUE
+    )
 
     expect_equal(sum(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set1]),
                  95259 + 108173)
@@ -61,11 +65,11 @@ test_that("reading input files works", {
 })
 
 test_that("plots are generated", {
-    expect_is(plotAlevinKneeRaw(alevin$cbTable), "ggplot")
-    expect_is(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
-    expect_is(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
-    expect_is(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
-    expect_is(plotAlevinHistogram(alevin$cbTable), "ggplot")
+    expect_s3_class(plotAlevinKneeRaw(alevin$cbTable), "ggplot")
+    expect_s3_class(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
+    expect_s3_class(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
+    expect_s3_class(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
+    expect_s3_class(plotAlevinHistogram(alevin$cbTable), "ggplot")
 
     expect_error(plotAlevinQuantPairs(alevin$cbTable,
                                       colName = "nbrGenesAboveMean"))
@@ -92,7 +96,7 @@ expect_message(alevin <- readAlevinQC(
 
 test_that("reading input files works", {
     expect_length(alevin, 4)
-    expect_is(alevin, "list")
+    expect_type(alevin, "list")
     expect_named(alevin, c("cbTable", "versionTable", "summaryTables", "type"))
     expect_equal(alevin$type, "nowl")
 
@@ -101,8 +105,14 @@ test_that("reading input files works", {
     expect_equal(sum(!is.na(alevin$cbTable$mappingRate)), 298)
     expect_equal(sum(alevin$cbTable$inFinalWhiteList), 100)
 
-    expect_equivalent(alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1], "1")
-    expect_equivalent(alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1], "106072")
+    expect_equal(
+        alevin$summaryTables$customCB__set2["Number of barcodes (set2)", 1],
+        "1", ignore_attr = TRUE
+    )
+    expect_equal(
+        alevin$summaryTables$customCB__set2["Mean number of reads per cell (set2)", 1],
+        "106072", ignore_attr = TRUE
+    )
 
     expect_equal(sum(alevin$cbTable$collapsedFreq[alevin$cbTable$customCB__set1]),
                  95259 + 108173)
@@ -174,14 +184,18 @@ test_that("report generation works", {
     file.copy(system.file("extdata/alevin_report_template.Rmd",
                           package = "alevinQC"),
               file.path(tempDir, "tmp.Rmd"))
-    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
-                                                      package = "alevinQC"),
-                                sampleId = "test", outputFile = "tmp.html",
-                                outputDir = tempDir, outputFormat = NULL,
-                                forceOverwrite = TRUE,
-                                customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                                             "ATGAGGGAGTAGTGCG"),
-                                                    set2 = c("CGAACATTCTGATACG"))))
+    expect_warning(
+        expect_error(
+            alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                 package = "alevinQC"),
+                           sampleId = "test", outputFile = "tmp.html",
+                           outputDir = tempDir, outputFormat = NULL,
+                           forceOverwrite = TRUE,
+                           customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                        "ATGAGGGAGTAGTGCG"),
+                                               set2 = c("CGAACATTCTGATACG")))
+        )
+    )
     rpt <- alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
                                                 package = "alevinQC"),
                           sampleId = "test", outputFile = "tmp2.html",
