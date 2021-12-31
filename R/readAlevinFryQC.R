@@ -81,7 +81,6 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
         by = "CB"
     )
 
-    ## we have a whitelist.txt file representing the final whitelist
     cbtable <- cbtable %>%
         dplyr::mutate(inPermitList = CB %in% permitlist)
     ## Check if there is any barcode that is not in the first whitelist,
