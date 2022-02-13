@@ -11,6 +11,8 @@
 #' @param firstSelColName Character scalar indicating the name of the logical
 #'     column in \code{cbTable} that corresponds to the original selection of
 #'     barcodes for quantification.
+#' @param countCol Character scalar indicating the name of the column in
+#'     \code{cbTable} that corresponds to the collapsed barcode frequencies.
 #'
 #' @export
 #'
@@ -26,26 +28,29 @@
 #' plotAlevinBarcodeCollapse(alevin$cbTable)
 #'
 plotAlevinBarcodeCollapse <- function(cbTable,
-                                      firstSelColName = "inFirstWhiteList") {
+                                      firstSelColName = "inFirstWhiteList",
+                                      countCol = "collapsedFreq") {
     ## Check input arguments
     .assertVector(x = cbTable, type = "data.frame")
     .assertScalar(x = firstSelColName, type = "character",
                   validValues = colnames(cbTable))
+    .assertScalar(x = countCol, type = "character",
+                  validValues = colnames(cbTable))
     .assertVector(x = cbTable[[firstSelColName]], type = "logical")
-    stopifnot(all(c("collapsedFreq", "originalFreq") %in%
+    stopifnot(all(c(countCol, "originalFreq") %in%
                       colnames(cbTable)))
 
     ## Get selected BCs and calculate the average read gain
     mrg <- cbTable %>% dplyr::filter(.data[[firstSelColName]]) %>%
         dplyr::summarize(
-            mrg = signif(100 * mean(.data$collapsedFreq/.data$originalFreq - 1,
+            mrg = signif(100 * mean(.data[[countCol]]/.data$originalFreq - 1,
                                     na.rm = TRUE), 4)) %>%
         dplyr::pull(mrg)
 
     ## Plot
     ggplot2::ggplot(cbTable %>% dplyr::filter(.data[[firstSelColName]]),
                     ggplot2::aes(x = .data$originalFreq,
-                                 y = .data$collapsedFreq)) +
+                                 y = .data[[countCol]])) +
         ggplot2::geom_abline(slope = 1, intercept = 0) +
         ggplot2::geom_point() +
         ggplot2::theme_bw() +

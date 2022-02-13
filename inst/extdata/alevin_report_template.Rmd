@@ -147,9 +147,16 @@ the whitelisted barcodes vs the frequency after this correction. The reads
 corresponding to cell barcodes that can not be corrected to a whitelisted
 barcode are discarded. 
 
-```{r}
+```{r, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating barcode collapsing plot...")
-plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName)
+plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName,
+                          countCol = "collapsedFreq")
+```
+
+```{r, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating barcode collapsing plot...")
+plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName,
+                          countCol = "nbrMappedUMI")
 ```
 
 # Quantification
