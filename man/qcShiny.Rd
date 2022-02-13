@@ -49,6 +49,17 @@ if (interactive()) {
     shiny::runApp(app)
 }
 
+app <- alevinFryQCShiny(
+    mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+                         package = "alevinQC"),
+    permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+                            package = "alevinQC"),
+    quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+                           package = "alevinQC"),
+    sampleId = "example")
+if (interactive()) {
+    shiny::runApp(app)
+}
 }
 \author{
 Charlotte Soneson

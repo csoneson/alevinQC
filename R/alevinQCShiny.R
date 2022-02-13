@@ -41,6 +41,17 @@
 #'     shiny::runApp(app)
 #' }
 #'
+#' app <- alevinFryQCShiny(
+#'     mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+#'                          package = "alevinQC"),
+#'     permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+#'                             package = "alevinQC"),
+#'     quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+#'                            package = "alevinQC"),
+#'     sampleId = "example")
+#' if (interactive()) {
+#'     shiny::runApp(app)
+#' }
 NULL
 
 #' @rdname qcShiny
@@ -68,6 +79,7 @@ alevinFryQCShiny <- function(mapDir, permitDir, quantDir, sampleId) {
         alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
         firstSelColName <- "inFirstWhiteList"
         wlName <- "initial whitelist"
+        countCol <- "collapsedFreq"
     } else if (quantMethod == "alevin-fry") {
         checkAlevinFryInputFiles(mapDir = mapDir, permitDir = permitDir,
                                  quantDir = quantDir)
@@ -75,6 +87,7 @@ alevinFryQCShiny <- function(mapDir, permitDir, quantDir, sampleId) {
                                   quantDir = quantDir)
         firstSelColName <- "inPermitList"
         wlName <- "permitlist"
+        countCol <- "nbrMappedUMI"
     }
 
 
@@ -224,7 +237,8 @@ alevinFryQCShiny <- function(mapDir, permitDir, quantDir, sampleId) {
 
         output$barcodeCollapsePlot <- shiny::renderPlot(
             plotAlevinBarcodeCollapse(alevin$cbTable,
-                                      firstSelColName = firstSelColName)
+                                      firstSelColName = firstSelColName,
+                                      countCol = countCol)
         )
 
         output$nbrGenesKneePlot <- shiny::renderPlot(
