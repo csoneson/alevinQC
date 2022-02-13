@@ -22,8 +22,13 @@ Returns nothing, raises an error if any of the required files are
 Check that all required input files are available for alevin-fry
 }
 \examples{
-#checkAlevinFryInputFiles(system.file("extdata/alevin_example_v0.14",
-#                                  package = "alevinQC"))
+checkAlevinFryInputFiles(
+    mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+                         package = "alevinQC"),
+    permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+                            package = "alevinQC"),
+    quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+                           package = "alevinQC"))
 
 }
 \author{

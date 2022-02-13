@@ -15,8 +15,13 @@
 #'   missing.
 #'
 #' @examples
-#' #checkAlevinFryInputFiles(system.file("extdata/alevin_example_v0.14",
-#' #                                  package = "alevinQC"))
+#' checkAlevinFryInputFiles(
+#'     mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+#'                          package = "alevinQC"),
+#'     permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+#'                             package = "alevinQC"),
+#'     quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+#'                            package = "alevinQC"))
 #'
 checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
     msg <- NULL
@@ -48,7 +53,8 @@ checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
                   file.path(quantDir, "featureDump.txt"),
                   file.path(mapDir, "aux_info/meta_info.json"),
                   file.path(quantDir, "quant.json"),
-                  file.path(mapDir, "cmd_info.json"))
+                  file.path(mapDir, "cmd_info.json"),
+                  file.path(quantDir, "alevin", "quants_mat_rows.txt"))
     missingFiles <- reqFiles[vapply(reqFiles,
                                     function(f) {
                                         !file.exists(f)
