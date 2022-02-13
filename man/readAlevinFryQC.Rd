@@ -7,11 +7,15 @@
 readAlevinFryQC(mapDir, permitDir, quantDir)
 }
 \arguments{
-\item{mapDir}{Map directory}
+\item{mapDir}{Path to the output directory from the \code{salmon alevin}
+run (should be the directory containing the \code{alevin} folder).}
 
-\item{permitDir}{Permit list directory}
+\item{permitDir}{Path to the output directory from the
+\code{generate-permit-list} and \code{collate} runs.}
 
-\item{quantDir}{Quant directory}
+\item{quantDir}{Path to the output directory from the
+\code{alevin-fry quant} run (should be the directory containing the
+\code{alevin} folder).}
 }
 \value{
 A list collecting all necessary information for generating the
@@ -22,8 +26,13 @@ Read all alevin-fry output files required to generate the
 summary report or shiny app.
 }
 \examples{
-#alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
-#                       package = "alevinQC"))
+alevinfry <- readAlevinFryQC(
+    mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+                         package = "alevinQC"),
+    permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+                            package = "alevinQC"),
+    quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+                           package = "alevinQC"))
 
 }
 \author{

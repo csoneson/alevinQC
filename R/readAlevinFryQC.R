@@ -3,9 +3,13 @@
 #' Read all alevin-fry output files required to generate the
 #' summary report or shiny app.
 #'
-#' @param mapDir Map directory
-#' @param permitDir Permit list directory
-#' @param quantDir Quant directory
+#' @param mapDir Path to the output directory from the \code{salmon alevin}
+#'     run (should be the directory containing the \code{alevin} folder).
+#' @param permitDir Path to the output directory from the
+#'     \code{generate-permit-list} and \code{collate} runs.
+#' @param quantDir Path to the output directory from the
+#'     \code{alevin-fry quant} run (should be the directory containing the
+#'     \code{alevin} folder).
 #'
 #' @author Charlotte Soneson
 #'
@@ -19,8 +23,13 @@
 #'     summary report/shiny app.
 #'
 #' @examples
-#' #alevin <- readAlevinQC(system.file("extdata/alevin_example_v0.14",
-#' #                       package = "alevinQC"))
+#' alevinfry <- readAlevinFryQC(
+#'     mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+#'                          package = "alevinQC"),
+#'     permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+#'                             package = "alevinQC"),
+#'     quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+#'                            package = "alevinQC"))
 #'
 readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
     ## Check that all required files are available, stop if not
@@ -71,8 +80,6 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
     metainfo <- rjson::fromJSON(file = file.path(mapDir,
                                                  "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(mapDir, "cmd_info.json"))
-    # alevinmetainfo <- rjson::fromJSON(
-    #     file = file.path(baseDir, "aux_info/alevin_meta_info.json"))
 
     ## Merge information about quantified CBs
     cbtable <- dplyr::full_join(
@@ -83,22 +90,23 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
 
     cbtable <- cbtable %>%
         dplyr::mutate(inPermitList = CB %in% permitlist)
-    ## Check if there is any barcode that is not in the first whitelist,
-    ## but which has an original ranking lower than any barcode that is
-    ## in the first whitelist, and remove it.
-    toremove <-
-        !cbtable$inPermitList &
-        cbtable$ranking <= max(cbtable$ranking[cbtable$inPermitList])
-    if (any(toremove)) {
-        warning("Excluding ", sum(toremove), " unquantified barcode",
-                ifelse(sum(toremove) > 1, "s", ""),
-                " with higher original frequency than barcodes ",
-                "included in the permitlist: ",
-                paste0(cbtable$CB[toremove], collapse = ", "))
-        cbtable <- cbtable[!toremove, ]
-    }
 
-    ## Add information from custom barcode sets
+    ## Check if there is any barcode that is not in the permitlist,
+    ## but which has an original ranking lower than any barcode that is
+    ## in the permitlist, and remove it.
+    # toremove <-
+    #     !cbtable$inPermitList &
+    #     cbtable$ranking <= max(cbtable$ranking[cbtable$inPermitList])
+    # if (any(toremove)) {
+    #     warning("Excluding ", sum(toremove), " unquantified barcode",
+    #             ifelse(sum(toremove) > 1, "s", ""),
+    #             " with higher original frequency than barcodes ",
+    #             "included in the permitlist: ",
+    #             paste0(cbtable$CB[toremove], collapse = ", "))
+    #     cbtable <- cbtable[!toremove, ]
+    # }
+
+    ## Add information from custom barcode sets (not implemented)
     customCBsummary <- list()
 
     ## Create "version info" table
@@ -121,37 +129,12 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
     summarytable_full <- t(data.frame(
         `Total number of processed reads` =
             as.character(metainfo$num_processed),
-        # `Number of reads with Ns` =
-        #     as.character(alevinmetainfo$reads_with_N),
-        # `Number of reads with valid cell barcode (no Ns)` =
-        #     as.character(round(sum(rawcbfreq$originalFreq, na.rm = TRUE))),
         `Number of mapped reads` = metainfo$num_mapped,
-        # `Percent mapped (of all reads)` =
-        #     paste0(signif(as.numeric(alevinmetainfo$mapping_rate), 4), "%"),
-        # `Number of noisy CB reads` =
-        #     as.character(alevinmetainfo$noisy_cb_reads),
-        # `Number of noisy UMI reads` =
-        #     as.character(alevinmetainfo$noisy_umi_reads),
         `Total number of observed cell barcodes` =
             as.character(length(unique(cbtable$CB))),
         stringsAsFactors = FALSE,
         check.names = FALSE
     ))
-
-    ## If used_reads is reported, add actual mapping rate
-    # if (!is.null(alevinmetainfo$used_reads)) {
-    #     summarytable_full <- rbind(
-    #         summarytable_full,
-    #         t(data.frame(
-    #             `Number of used reads` = alevinmetainfo$used_reads,
-    #             `Percent mapped (of used reads)` =
-    #                 paste0(signif(100 * alevinmetainfo$reads_in_eqclasses /
-    #                                   alevinmetainfo$used_reads, 4), "%"),
-    #             stringsAsFactors = FALSE,
-    #             check.names = FALSE
-    #         ))
-    #     )
-    # }
 
     summarytable_permitlist <- .makeSummaryTable(
         cbtable = cbtable,
