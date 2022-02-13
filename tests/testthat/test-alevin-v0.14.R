@@ -66,6 +66,9 @@ test_that("reading input files works", {
 
 test_that("plots are generated", {
     expect_s3_class(plotAlevinKneeRaw(alevin$cbTable), "ggplot")
+    cbTableTmp <- alevin$cbTable
+    cbTableTmp$inFirstWhiteList[1] <- FALSE
+    expect_s3_class(plotAlevinKneeRaw(cbTableTmp), "ggplot")
     expect_s3_class(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
     expect_s3_class(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
     expect_s3_class(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
