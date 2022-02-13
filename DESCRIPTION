@@ -5,10 +5,12 @@ Version: 1.11.1
 Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), 
                     email = "charlottesoneson@gmail.com", 
                     comment = c(ORCID = "0000-0003-3833-2169")),
-    person("Avi", "Srivastava", role = "aut"))
+    person("Avi", "Srivastava", role = "aut"),
+    person("Rob", "Patro", role = "aut"))
 Description: Generate QC reports summarizing the output from an alevin run. 
     Reports can be generated as html or pdf files, or as shiny applications.
 Encoding: UTF-8
+SystemRequirements: C++11
 Depends: R (>= 4.0)
 Imports: 
     rmarkdown (>= 2.5),
@@ -25,7 +27,8 @@ Imports:
     utils,
     tximport (>= 1.17.4),
     cowplot,
-    rlang
+    rlang,
+    Rcpp
 RoxygenNote: 7.1.2
 Suggests: 
     knitr,
@@ -38,3 +41,5 @@ URL: https://github.com/csoneson/alevinQC
 BugReports: https://github.com/csoneson/alevinQC/issues
 License: MIT + file LICENSE
 Config/testthat/edition: 3
+LinkingTo: 
+    Rcpp
