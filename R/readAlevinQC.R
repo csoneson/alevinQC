@@ -116,6 +116,8 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
 }
 
 .readAlevinQC_pre0.14 <- function(baseDir, customCBList = list()) {
+    ## No longer supported by tximport (version >= 1.17.4)
+    # nocov start
 
     alevinDir <- file.path(baseDir, "alevin")
 
@@ -248,6 +250,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
                            customCBsummary),
          type = "pre0.14"
     )
+    # nocov end
 }
 
 .readAlevinQC_v0.14 <- function(baseDir, customCBList = list(), type = "standard") {
