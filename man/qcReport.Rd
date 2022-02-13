@@ -34,6 +34,7 @@ alevinFryQCReport(
   knitrProgress = FALSE,
   quiet = FALSE,
   ignorePandoc = FALSE,
+  customCBList = list(),
   ...
 )
 }
@@ -114,6 +115,16 @@ alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
                                      package = "alevinQC"),
                sampleId = "example", outputFile = "alevinReport.html",
                outputDir = tempdir(), forceOverwrite = TRUE)
+
+alevinFryQCReport(
+    mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+                         package = "alevinQC"),
+    permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+                            package = "alevinQC"),
+    quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+                           package = "alevinQC"),
+    sampleId = "example", outputFile = "alevinFryReport.html",
+    outputDir = tempdir(), forceOverwrite = TRUE)
 
 }
 \author{

@@ -16,6 +16,7 @@
 #' @importFrom rmarkdown pandoc_available pandoc_exec
 #'
 .checkPandoc <- function(ignorePandoc) {
+    # nocov start
     ## Initialize output to TRUE
     doRender <- TRUE
 
@@ -59,6 +60,7 @@
         }
     }
     return(doRender)
+    # nocov end
 }
 
 #' Generate alevin/alevin-fry summary report
@@ -132,6 +134,16 @@
 #'                sampleId = "example", outputFile = "alevinReport.html",
 #'                outputDir = tempdir(), forceOverwrite = TRUE)
 #'
+#' alevinFryQCReport(
+#'     mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+#'                          package = "alevinQC"),
+#'     permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+#'                             package = "alevinQC"),
+#'     quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+#'                            package = "alevinQC"),
+#'     sampleId = "example", outputFile = "alevinFryReport.html",
+#'     outputDir = tempdir(), forceOverwrite = TRUE)
+#'
 NULL
 
 #' @rdname qcReport
@@ -157,7 +169,12 @@ alevinFryQCReport <- function(mapDir, permitDir, quantDir, sampleId,
                               outputFile, outputDir = "./",
                               outputFormat = NULL, showCode = FALSE,
                               forceOverwrite = FALSE, knitrProgress = FALSE,
-                              quiet = FALSE, ignorePandoc = FALSE, ...) {
+                              quiet = FALSE, ignorePandoc = FALSE,
+                              customCBList = list(), ...) {
+    if (length(customCBList) != 0) {
+        warning("custom CB lists are currently not implemented for ",
+                "alevin-fry QC reports")
+    }
     .alevinQCReport(baseDir = NULL, mapDir = mapDir, permitDir = permitDir,
                     quantDir = quantDir, quantMethod = "alevin-fry",
                     sampleId = sampleId, outputFile = outputFile,
