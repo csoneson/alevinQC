@@ -46,7 +46,7 @@ alevin <- readAlevinFryQC(mapDir = mapDir, permitDir = permitDir,
 firstSelColName <- "inPermitList"
 ```
 
-# Version info for alevin run
+# Version info for `r quantMethod` run
 
 ```{r, warning = FALSE}
 suppressWarnings({
@@ -123,14 +123,28 @@ for (cbl in names(customCBList)) {
 
 # Knee plot
 
-The knee plot displays the number of times each cell barcode is observed, in
-decreasing order. By finding a 'knee' in this plot, Alevin determines a
-threshold (indicated in the plot) that defines an initial 'whitelist' - a set
-of cell barcodes that likely represent non-empty droplets - and distinguishes
-them from the background. The initial whitelisting is only performed if no 
-external whitelist is provided when running alevin. In the figure below, red 
-indicates cell barcodes in the initial whitelist, black indicates all other 
-cell barcodes. 
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("The knee plot displays the number of times each cell barcode ", 
+           "is observed, indecreasing order. By finding a 'knee' in this ", 
+           "plot, Alevin determines a threshold (indicated in the plot) that ", 
+           "defines an initial 'whitelist' - a set of cell barcodes that ", 
+           "likely represent non-empty droplets - and distinguishes them from ", 
+           "the background. The initial whitelisting is only performed if no ", 
+           "external whitelist is provided when running alevin. In the ", 
+           "figure below, red indicates cell barcodes in the initial ", 
+           "whitelist, black indicates all other cell barcodes."))
+```
+
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("The knee plot displays the number of times each cell barcode ", 
+           "is observed, indecreasing order. By finding a 'knee' in this ", 
+           "plot, alevin-fry determines a threshold (indicated in the plot) ", 
+           "that defines a 'permitlist' - a set of cell barcodes that ", 
+           "likely represent non-empty droplets - and distinguishes them from ", 
+           "the background. In the figure below, red indicates cell barcodes ", 
+           "in the permitlist, black indicates all other cell barcodes."))
+```
+
 
 ```{r}
 if (!quiet) message("Generating knee plot...")
@@ -139,13 +153,28 @@ plotAlevinKneeRaw(alevin$cbTable, firstSelColName = firstSelColName)
 
 # Cell barcode error correction and merging with initial whitelist
 
-Once the initial set of whitelisted cell barcodes is defined, Alevin goes
-through the remaining cell barcodes. If a cell barcode is similar enough to a
-whitelisted cell barcode, it will be corrected and the reads will be added to
-those of the whitelisted one. The figure below shows the original frequency of
-the whitelisted barcodes vs the frequency after this correction. The reads
-corresponding to cell barcodes that can not be corrected to a whitelisted
-barcode are discarded. 
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("Once the initial set of whitelisted cell barcodes is defined, ", 
+           "Alevin goes through the remaining cell barcodes. If a cell ", 
+           "barcode is similar enough to a whitelisted cell barcode, it will ", 
+           "be corrected and the reads will be added to those of the ", 
+           "whitelisted one. The figure below shows the original frequency ", 
+           "of the whitelisted barcodes vs the frequency after this ", 
+           "correction. The reads corresponding to cell barcodes that can ", 
+           "not be corrected to a whitelisted barcode are discarded."))
+```
+
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("Once the initial permitlist of cell barcodes is defined, ", 
+           "alevin-fry goes through the remaining cell barcodes. If a cell ", 
+           "barcode is similar enough to cell barcode in the permitlist, it ", 
+           "will be corrected and the reads will be added to those of the ", 
+           "one in the permitlist. The figure below shows the original frequency ", 
+           "of the barcodes in the permitlist vs the frequency after this ", 
+           "correction. The reads corresponding to cell barcodes that can ", 
+           "not be corrected to a barcode in the permitlist are discarded."))
+```
+
 
 ```{r, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating barcode collapsing plot...")
@@ -161,15 +190,27 @@ plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName,
 
 # Quantification
 
-After cell barcode collapsing, Alevin estimates the UMI count for each cell and
-gene. Following quantification, an additional cell barcode whitelisting is
-performed with the aim of extracting good quality cells, using not only the
-barcode frequency but also other features such as the fraction of mapped reads,
-the duplication rate and the average gene count. The plots below show the
-association between the cell barcode frequency (the number of observed reads
-corresponding to a cell barcode), the total UMI count and the number
-of detected genes. The cell barcodes are colored by whether or not they 
-are included in the final whitelist.
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("After cell barcode collapsing, Alevin estimates the UMI count ", 
+           "for each cell and gene. Following quantification, an additional ", 
+           "cell barcode whitelisting is performed with the aim of ", 
+           "extracting good quality cells, using not only the barcode ", 
+           "frequency but also other features such as the fraction of mapped ", 
+           "reads, the duplication rate and the average gene count. The ", 
+           "plots below show the association between the cell barcode ", 
+           "frequency (the number of observed reads corresponding to a ", 
+           "cell barcode), the total UMI count and the number of detected ", 
+           "genes. The cell barcodes are colored by whether or not they ", 
+           "are included in the final whitelist."))
+```
+
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("After cell barcode collapsing, alevin-fry estimates the UMI count ",
+           "for each cell and gene. The plots below show the association ", 
+           "between the cell barcode frequency (the number of observed ", 
+           "reads corresponding to a cell barcode), the total UMI count and ", 
+           "the number of detected genes. "))
+```
 
 These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate and the degree of saturation.
@@ -205,9 +246,11 @@ for (cbl in names(customCBList)) {
 
 # Knee plot, number of detected genes
 
-Similarly to the knee plot that was used to select the initial cell barcode
-whitelist, the plot below shows the number of detected genes for each cell
-barcode included in the initial whitelist, in decreasing order.
+Similarly to the knee plot that was used to select the initial set of cell 
+barcodes, the plot below shows the number of detected genes for each cell
+barcode included in the 
+`r ifelse(quantMethod == "alevin", "initial whitelist", "permitlist")`, 
+in decreasing order.
 
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
@@ -218,7 +261,8 @@ plotAlevinKneeNbrGenes(alevin$cbTable, firstSelColName = firstSelColName)
 
 The histograms below show the distributions of the deduplication rates 
 (number of deduplicated UMI counts/number of mapped reads) and the 
-mapping rates, across the cells retained in the initial whitelist.
+mapping rates, across the cells retained in the 
+`r ifelse(quantMethod == "alevin", "initial whitelist", "permitlist")`.
 
 ```{r, fig.width = 10, fig.height = 4, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating summary distribution plots...")
