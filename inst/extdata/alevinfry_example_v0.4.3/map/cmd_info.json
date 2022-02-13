@@ -1,0 +1,30 @@
+{
+    "salmon_version": "1.6.0",
+    "libType": "ISR",
+    "mates1": [
+        "fastqs/hgmm_100_S1_L001_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L002_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L003_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L004_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L005_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L006_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L007_R1_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L008_R1_001.fastq.gz"
+    ],
+    "mates2": [
+        "fastqs/hgmm_100_S1_L001_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L002_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L003_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L004_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L005_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L006_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L007_R2_001.fastq.gz",
+        "fastqs/hgmm_100_S1_L008_R2_001.fastq.gz"
+    ],
+    "chromium": [],
+    "rad": [],
+    "index": "mouseM28_human38.sidx",
+    "threads": "16",
+    "output": "alevin_fry_0.4.3/salmon",
+    "dumpFeatures": []
+}
