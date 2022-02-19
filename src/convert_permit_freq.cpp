@@ -24,8 +24,8 @@ List cpp_get_permit_freq_info(String fn) {
     uint64_t num_elem;
     ifile.read(reinterpret_cast<char*>(&num_elem), sizeof(num_elem));
 
-    StringVector bc;
-    NumericVector counts;
+    StringVector bc(num_elem);
+    NumericVector counts(num_elem);
 
     uint64_t bc_integer;
     uint64_t bc_count;
@@ -38,8 +38,8 @@ List cpp_get_permit_freq_info(String fn) {
         k.word__(0) = bc_integer;
         ifile.read(reinterpret_cast<char*>(&bc_count), sizeof(bc_count));
 
-        bc.push_back(String(k.toStr()));
-        counts.push_back(static_cast<uint32_t>(bc_count));
+        bc[i] = String(k.toStr());
+        counts[i] = static_cast<uint32_t>(bc_count);
     }
 
     List L = List::create(bc, counts);

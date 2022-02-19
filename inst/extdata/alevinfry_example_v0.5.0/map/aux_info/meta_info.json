@@ -1,0 +1,34 @@
+{
+    "salmon_version": "1.6.0",
+    "samp_type": "none",
+    "opt_type": "rad_mode",
+    "quant_errors": [],
+    "num_libraries": 1,
+    "library_types": [
+        "ISR"
+    ],
+    "keep_duplicates": false,
+    "num_valid_targets": 672780,
+    "num_decoy_targets": 0,
+    "length_classes": [
+        553,
+        948,
+        1989,
+        4242,
+        2908916
+    ],
+    "index_seq_hash": "974f28936cae7c7e2f69012640c4157e9ca11c937feee7c59e0452228b2432d9",
+    "index_name_hash": "e1bbd18eddac2457d65009f9226812b51efc2027b0686fa7af47e16058299eb1",
+    "index_seq_hash512": "5c6e520143f1b60e08aa454c57a50bb5252c798e1b8b6d3efc1521a422a152bd8fbaba9deb484b0e294b17cee8ff833901012a73b6a60e48c0099de8c5a6598a",
+    "index_name_hash512": "63256a31b9b6d120f8f56805713dd5d00c71d93c2b4e25b542f8a68e43e1b8aa06a064a3b4cc3cba1a89e4a1c06e480f9877c0e4a68dadc891fe6a6da60993a1",
+    "index_decoy_seq_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "index_decoy_name_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "num_bootstraps": 0,
+    "num_processed": 7197662,
+    "num_mapped": 6299455,
+    "num_fragments_filtered_vm": 0,
+    "num_alignments_below_threshold_for_mapped_fragments_vm": 0,
+    "call": "quant",
+    "start_time": "Sat Feb 19 09:46:35 2022",
+    "end_time": "Sat Feb 19 09:47:31 2022"
+}

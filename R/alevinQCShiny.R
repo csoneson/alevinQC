@@ -42,11 +42,11 @@
 #' }
 #'
 #' app <- alevinFryQCShiny(
-#'     mapDir = system.file("extdata/alevinfry_example_v0.4.3/map",
+#'     mapDir = system.file("extdata/alevinfry_example_v0.5.0/map",
 #'                          package = "alevinQC"),
-#'     permitDir = system.file("extdata/alevinfry_example_v0.4.3/permit",
+#'     permitDir = system.file("extdata/alevinfry_example_v0.5.0/permit",
 #'                             package = "alevinQC"),
-#'     quantDir = system.file("extdata/alevinfry_example_v0.4.3/quant",
+#'     quantDir = system.file("extdata/alevinfry_example_v0.5.0/quant",
 #'                            package = "alevinQC"),
 #'     sampleId = "example")
 #' if (interactive()) {
