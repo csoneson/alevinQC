@@ -55,7 +55,7 @@ jobs:
 
       - name: Set bitmapType
         if: runner.os == 'macOS'
-        run: echo 'options(bitmapType = "cairo")' >> ./Rprofile
+        run: echo 'options(bitmapType = "cairo")' >> $HOME/.Rprofile
 
       - name: Install remotes and rmarkdown
         run: |
@@ -125,7 +125,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", env = c(R_PROFILE_USER = "./Rprofile"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", env = c(R_PROFILE_USER = "$HOME/.Rprofile"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: BiocCheck
