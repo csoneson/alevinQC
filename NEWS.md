@@ -1,3 +1,7 @@
+# alevinQC 1.11.1
+
+* Added support for reading alevin-fry output
+
 # alevinQC 1.5.2
 
 * Added selected summary distributions to the reports, and a function to plot histograms of arbitrary numeric columns of the cbTable

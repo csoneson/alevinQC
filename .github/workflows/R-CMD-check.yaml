@@ -37,11 +37,11 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@master
+      - name: Set up R and install BiocManager
+        uses: grimbough/bioc-actions/setup-bioc@v1
         if: matrix.config.image == null
         with:
-          r-version: ${{ matrix.config.r }}
+          bioc-version: ${{ matrix.config.bioc }}
 
       - name: Set up pandoc (default version)
         uses: r-lib/actions/setup-pandoc@master
@@ -52,6 +52,10 @@ jobs:
         if: matrix.config.image == null && matrix.config.pandoc != null
         with:
           pandoc-version: ${{ matrix.config.pandoc }}
+
+      - name: Set bitmapType
+        if: runner.os == 'macOS'
+        run: echo 'options(bitmapType = "cairo")' >> $HOME/.Rprofile
 
       - name: Install remotes and rmarkdown
         run: |
@@ -67,13 +71,6 @@ jobs:
           file.exists(file.path(dirname(rmarkdown::pandoc_exec()), "pandoc-citeproc"))
           Sys.which("pandoc")
           Sys.which("pandoc-citeproc")
-        shell: Rscript {0}
-
-      - name: Set BiocManager version
-        if: matrix.config.image == null
-        run: |
-          install.packages("BiocManager")
-          BiocManager::install(version = "${{ matrix.config.bioc }}", ask = FALSE)
         shell: Rscript {0}
 
       - name: Query dependencies
@@ -121,14 +118,17 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", env = c(R_PROFILE_USER = "$HOME/.Rprofile"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: BiocCheck
-        run: |
-          BiocManager::install("BiocCheck")
-          BiocCheck::BiocCheck(".")
-        shell: Rscript {0}
+      - name: Build, Install, Check (2)
+        uses: grimbough/bioc-actions/build-install-check@v1
+
+      - name: Run BiocCheck
+        uses: grimbough/bioc-actions/run-BiocCheck@v1
+        with:
+          arguments: '--no-check-bioc-views --no-check-bioc-help'
+          error-on: 'error'
 
       - name: Show testthat output
         if: always()

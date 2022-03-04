@@ -4,11 +4,23 @@
 \alias{plotAlevinBarcodeCollapse}
 \title{Summary plot of cell barcode collapsing}
 \usage{
-plotAlevinBarcodeCollapse(cbTable)
+plotAlevinBarcodeCollapse(
+  cbTable,
+  firstSelColName = "inFirstWhiteList",
+  countCol = "collapsedFreq"
+)
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
-\code{readAlevinQC}) with barcode frequencies before and after collapsing.}
+\code{readAlevinQC} or \code{readAlevinFryQC}) with barcode frequencies
+before and after collapsing.}
+
+\item{firstSelColName}{Character scalar indicating the name of the logical
+column in \code{cbTable} that corresponds to the original selection of
+barcodes for quantification.}
+
+\item{countCol}{Character scalar indicating the name of the column in
+\code{cbTable} that corresponds to the collapsed barcode frequencies.}
 }
 \value{
 A ggplot object

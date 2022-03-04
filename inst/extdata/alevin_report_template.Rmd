@@ -31,19 +31,28 @@ knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
 knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
 
-```{r setup}
+```{r setup-alevin, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 ## Read input files
 if (!quiet) message("Reading Alevin output files...")
 alevin <- readAlevinQC(baseDir = baseDir, customCBList = customCBList)
+firstSelColName <- "inFirstWhiteList"
 ```
 
-# Version info for alevin run
+```{r setup-alevinfry, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+## Read input files
+if (!quiet) message("Reading Alevin-fry output files...")
+alevin <- readAlevinFryQC(mapDir = mapDir, permitDir = permitDir,
+                          quantDir = quantDir)
+firstSelColName <- "inPermitList"
+```
+
+# Version info for `r quantMethod` run
 
 ```{r, warning = FALSE}
 suppressWarnings({
-  knitr::kable(
-    alevin$versionTable
-  )
+    knitr::kable(
+        alevin$versionTable
+    )
 })
 ```
 
@@ -54,29 +63,45 @@ suppressWarnings({
 ```{r, warning = FALSE}
 if (!quiet) message("Generating summary tables...")
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$fullDataset
-  )
+    knitr::kable(
+        alevin$summaryTables$fullDataset
+    )
 })
 ```
 
-## Initial whitelist
+```{r initial-whitelist-title, echo = FALSE, results = "asis", eval = ("initialWhitelist" %in% names(alevin$summaryTables))}
+cat("## Initial whitelist")
+```
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, echo = showCode && ("initialWhitelist" %in% names(alevin$summaryTables)), eval = ("initialWhitelist" %in% names(alevin$summaryTables))}
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$initialWhitelist
-  )
+    knitr::kable(
+        alevin$summaryTables$initialWhitelist
+    )
 })
 ```
 
-## Final whitelist
+```{r final-whitelist-title, echo = FALSE, results = "asis", eval = ("finalWhitelist" %in% names(alevin$summaryTables))}
+cat("## Final whitelist")
+```
 
-```{r}
+```{r, warning = FALSE, echo = showCode && ("finalWhitelist" %in% names(alevin$summaryTables)), eval = ("finalWhitelist" %in% names(alevin$summaryTables))}
 suppressWarnings({
-  knitr::kable(
-    alevin$summaryTables$finalWhitelist
-  )
+    knitr::kable(
+        alevin$summaryTables$finalWhitelist
+    )
+})
+```
+
+```{r permitlist-title, echo = FALSE, results = "asis", eval = ("permitlist" %in% names(alevin$summaryTables))}
+cat("## Permitlist")
+```
+
+```{r, warning = FALSE, echo = showCode && ("permitlist" %in% names(alevin$summaryTables)), eval = ("permitlist" %in% names(alevin$summaryTables))}
+suppressWarnings({
+    knitr::kable(
+        alevin$summaryTables$permitlist
+    )
 })
 ```
 
@@ -86,58 +111,106 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-tables, echo = showCode && (length(customCBList) > 0), results = "asis", eval = (length(customCBList) > 0)}
 for (cbl in names(customCBList)) {
-  cat(paste0("### ", cbl))
-  suppressWarnings({
-    print(knitr::kable(
-      alevin$summaryTables[[paste0("customCB__", cbl)]]
-    ))
-  })
-  cat("\n")
+    cat(paste0("### ", cbl))
+    suppressWarnings({
+        print(knitr::kable(
+            alevin$summaryTables[[paste0("customCB__", cbl)]]
+        ))
+    })
+    cat("\n")
 }
 ```
 
 # Knee plot
 
-The knee plot displays the number of times each cell barcode is observed, in
-decreasing order. By finding a 'knee' in this plot, Alevin determines a
-threshold (indicated in the plot) that defines an initial 'whitelist' - a set
-of cell barcodes that likely represent non-empty droplets - and distinguishes
-them from the background. The initial whitelisting is only performed if no 
-external whitelist is provided when running alevin. In the figure below, red 
-indicates cell barcodes in the initial whitelist, black indicates all other 
-cell barcodes. 
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("The knee plot displays the number of times each cell barcode ", 
+           "is observed, indecreasing order. By finding a 'knee' in this ", 
+           "plot, Alevin determines a threshold (indicated in the plot) that ", 
+           "defines an initial 'whitelist' - a set of cell barcodes that ", 
+           "likely represent non-empty droplets - and distinguishes them from ", 
+           "the background. The initial whitelisting is only performed if no ", 
+           "external whitelist is provided when running alevin. In the ", 
+           "figure below, red indicates cell barcodes in the initial ", 
+           "whitelist, black indicates all other cell barcodes."))
+```
+
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("The knee plot displays the number of times each cell barcode ", 
+           "is observed, indecreasing order. By finding a 'knee' in this ", 
+           "plot, alevin-fry determines a threshold (indicated in the plot) ", 
+           "that defines a 'permitlist' - a set of cell barcodes that ", 
+           "likely represent non-empty droplets - and distinguishes them from ", 
+           "the background. In the figure below, red indicates cell barcodes ", 
+           "in the permitlist, black indicates all other cell barcodes."))
+```
+
 
 ```{r}
 if (!quiet) message("Generating knee plot...")
-plotAlevinKneeRaw(alevin$cbTable)
+plotAlevinKneeRaw(alevin$cbTable, firstSelColName = firstSelColName)
 ```
 
 # Cell barcode error correction and merging with initial whitelist
 
-Once the initial set of whitelisted cell barcodes is defined, Alevin goes
-through the remaining cell barcodes. If a cell barcode is similar enough to a
-whitelisted cell barcode, it will be corrected and the reads will be added to
-those of the whitelisted one. The figure below shows the original frequency of
-the whitelisted barcodes vs the frequency after this correction. The reads
-corresponding to cell barcodes that can not be corrected to a whitelisted
-barcode are discarded. 
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("Once the initial set of whitelisted cell barcodes is defined, ", 
+           "Alevin goes through the remaining cell barcodes. If a cell ", 
+           "barcode is similar enough to a whitelisted cell barcode, it will ", 
+           "be corrected and the reads will be added to those of the ", 
+           "whitelisted one. The figure below shows the original frequency ", 
+           "of the whitelisted barcodes vs the frequency after this ", 
+           "correction. The reads corresponding to cell barcodes that can ", 
+           "not be corrected to a whitelisted barcode are discarded."))
+```
 
-```{r}
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("Once the initial permitlist of cell barcodes is defined, ", 
+           "alevin-fry goes through the remaining cell barcodes. If a cell ", 
+           "barcode is similar enough to cell barcode in the permitlist, it ", 
+           "will be corrected and the reads will be added to those of the ", 
+           "one in the permitlist. The figure below shows the original frequency ", 
+           "of the barcodes in the permitlist vs the frequency after this ", 
+           "correction. The reads corresponding to cell barcodes that can ", 
+           "not be corrected to a barcode in the permitlist are discarded."))
+```
+
+
+```{r, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating barcode collapsing plot...")
-plotAlevinBarcodeCollapse(alevin$cbTable)
+plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName,
+                          countCol = "collapsedFreq")
+```
+
+```{r, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating barcode collapsing plot...")
+plotAlevinBarcodeCollapse(alevin$cbTable, firstSelColName = firstSelColName,
+                          countCol = "nbrMappedUMI")
 ```
 
 # Quantification
 
-After cell barcode collapsing, Alevin estimates the UMI count for each cell and
-gene. Following quantification, an additional cell barcode whitelisting is
-performed with the aim of extracting good quality cells, using not only the
-barcode frequency but also other features such as the fraction of mapped reads,
-the duplication rate and the average gene count. The plots below show the
-association between the cell barcode frequency (the number of observed reads
-corresponding to a cell barcode), the total UMI count and the number
-of detected genes. The cell barcodes are colored by whether or not they 
-are included in the final whitelist.
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin")}
+cat(paste0("After cell barcode collapsing, Alevin estimates the UMI count ", 
+           "for each cell and gene. Following quantification, an additional ", 
+           "cell barcode whitelisting is performed with the aim of ", 
+           "extracting good quality cells, using not only the barcode ", 
+           "frequency but also other features such as the fraction of mapped ", 
+           "reads, the duplication rate and the average gene count. The ", 
+           "plots below show the association between the cell barcode ", 
+           "frequency (the number of observed reads corresponding to a ", 
+           "cell barcode), the total UMI count and the number of detected ", 
+           "genes. The cell barcodes are colored by whether or not they ", 
+           "are included in the final whitelist."))
+```
+
+```{r, results="asis", echo=FALSE, eval=(quantMethod == "alevin-fry")}
+cat(paste0("After cell barcode collapsing, alevin-fry estimates the UMI count ",
+           "for each cell and gene. The plots below show the association ", 
+           "between the cell barcode frequency (the number of observed ", 
+           "reads corresponding to a cell barcode), the total UMI count and ", 
+           "the number of detected genes. "))
+```
 
 These figures can give an indication of whether the sequenced reads actually
 align to genes, as well as the duplication rate and the degree of saturation.
@@ -146,10 +219,18 @@ the total UMI count is rougly linear, while the association of any of these with
 the number of detected genes often deviates from linearity, if a small subset of
 the genes are assigned a large fraction of the UMI counts.
 
-```{r fig.width = 10, fig.height = 4}
+```{r fig.width = 10, fig.height = 4, eval = (quantMethod == "alevin"), echo = showCode && (quantMethod == "alevin")}
 if (!quiet) message("Generating quantification summary plot...")
 plotAlevinQuant(alevin$cbTable, colName = "inFinalWhiteList",
-                cbName = "final whitelist")
+                cbName = "final whitelist",
+                firstSelColName = firstSelColName)
+```
+
+```{r fig.width = 10, fig.height = 4, eval = (quantMethod == "alevin-fry"), echo = showCode && (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating quantification summary plot...")
+plotAlevinQuant(alevin$cbTable, colName = "inPermitList",
+                cbName = "permitlist",
+                firstSelColName = firstSelColName)
 ```
 
 ```{r custom-cb-plots-title, echo = FALSE, results = 'asis', eval = (length(customCBList) > 0)}
@@ -158,40 +239,62 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-plots, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
 for (cbl in names(customCBList)) {
-  print(plotAlevinQuant(alevin$cbTable, colName = paste0("customCB__", cbl),
-                        cbName = cbl))
+    print(plotAlevinQuant(alevin$cbTable, colName = paste0("customCB__", cbl),
+                          cbName = cbl), firstSelColName = firstSelColName)
 }
 ```
 
 # Knee plot, number of detected genes
 
-Similarly to the knee plot that was used to select the initial cell barcode
-whitelist, the plot below shows the number of detected genes for each cell
-barcode included in the initial whitelist, in decreasing order.
+Similarly to the knee plot that was used to select the initial set of cell 
+barcodes, the plot below shows the number of detected genes for each cell
+barcode included in the 
+`r ifelse(quantMethod == "alevin", "initial whitelist", "permitlist")`, 
+in decreasing order.
 
 ```{r}
 if (!quiet) message("Generating knee plot for nbr genes...")
-plotAlevinKneeNbrGenes(alevin$cbTable)
+plotAlevinKneeNbrGenes(alevin$cbTable, firstSelColName = firstSelColName)
 ```
 
 # Selected summary distributions
 
 The histograms below show the distributions of the deduplication rates 
 (number of deduplicated UMI counts/number of mapped reads) and the 
-mapping rates, across the cells retained in the initial whitelist.
+mapping rates, across the cells retained in the 
+`r ifelse(quantMethod == "alevin", "initial whitelist", "permitlist")`.
 
-```{r, fig.width = 10, fig.height = 4}
+```{r, fig.width = 10, fig.height = 4, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
 if (!quiet) message("Generating summary distribution plots...")
 cowplot::plot_grid(
-  plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
-                      axisLabel = "Deduplication rate",
-                      colName = "inFinalWhiteList",
-                      cbName = "final whitelist"),
-  plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
-                      axisLabel = "Mapping rate",
-                      colName = "inFinalWhiteList",
-                      cbName = "final whitelist"),
-  nrow = 1
+    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                        axisLabel = "Deduplication rate",
+                        colName = "inFinalWhiteList",
+                        cbName = "final whitelist",
+                        firstSelColName = firstSelColName),
+    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                        axisLabel = "Mapping rate",
+                        colName = "inFinalWhiteList",
+                        cbName = "final whitelist",
+                        firstSelColName = firstSelColName),
+    nrow = 1
+)
+```
+
+```{r, fig.width = 10, fig.height = 4, echo = showCode && (quantMethod == "alevin-fry"), eval = (quantMethod == "alevin-fry")}
+if (!quiet) message("Generating summary distribution plots...")
+cowplot::plot_grid(
+    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                        axisLabel = "Deduplication rate",
+                        colName = firstSelColName,
+                        cbName = "permitlist",
+                        firstSelColName = firstSelColName),
+    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                        axisLabel = "Mapping rate",
+                        colName = firstSelColName,
+                        cbName = "permitlist",
+                        firstSelColName = firstSelColName),
+    nrow = 1
 )
 ```
 
@@ -201,17 +304,19 @@ cat("## Custom cell barcode set(s)")
 
 ```{r custom-cb-hists, echo = showCode && (length(customCBList) > 0), eval = (length(customCBList) > 0), fig.width = 10, fig.height = 4}
 for (cbl in names(customCBList)) {
-  print(cowplot::plot_grid(
-    plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
-                        axisLabel = "Deduplication rate",
-                        colName = paste0("customCB__", cbl),
-                        cbName = cbl),
-    plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
-                        axisLabel = "Mapping rate",
-                        colName = paste0("customCB__", cbl),
-                        cbName = cbl),
-    nrow = 1
-  ))
+    print(cowplot::plot_grid(
+        plotAlevinHistogram(alevin$cbTable, plotVar = "dedupRate",
+                            axisLabel = "Deduplication rate",
+                            colName = paste0("customCB__", cbl),
+                            cbName = cbl,
+                            firstSelColName = firstSelColName),
+        plotAlevinHistogram(alevin$cbTable, plotVar = "mappingRate",
+                            axisLabel = "Mapping rate",
+                            colName = paste0("customCB__", cbl),
+                            cbName = cbl,
+                            firstSelColName = firstSelColName),
+        nrow = 1
+    ))
 }
 ```
 

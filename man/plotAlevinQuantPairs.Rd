@@ -4,15 +4,24 @@
 \alias{plotAlevinQuantPairs}
 \title{Pairs plot with quantification summary statistics}
 \usage{
-plotAlevinQuantPairs(cbTable, colName = "inFinalWhiteList")
+plotAlevinQuantPairs(
+  cbTable,
+  colName = "inFinalWhiteList",
+  firstSelColName = "inFirstWhiteList"
+)
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
-\code{readAlevinQC}) with collapsed barcode frequencies, the total UMI
-count and the number of detected genes for each cell.}
+\code{readAlevinQC} or \code{readAlevinFryQC}) with collapsed barcode
+frequencies, the total UMI count and the number of detected genes
+for each cell.}
 
 \item{colName}{Character scalar giving the name of a logical column of
 \code{cbTable} to use for coloring the points.}
+
+\item{firstSelColName}{Character scalar indicating the name of the logical
+column in \code{cbTable} that corresponds to the original selection of
+barcodes for quantification.}
 }
 \value{
 A ggmatrix object

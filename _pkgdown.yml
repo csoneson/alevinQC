@@ -12,14 +12,18 @@ reference:
 - title: Overview
   contents:
     - '`alevinQC-pkg`'
-- title: Functions for reading alevin output data
+- title: Functions for reading alevin/alevin-fry output data
   contents:
     - '`checkAlevinInputFiles`'
+    - '`checkAlevinFryInputFiles`'
     - '`readAlevinQC`'
+    - '`readAlevinFryQC`'
 - title: Functions for generating QC reports
   contents:
     - '`alevinQCReport`'
+    - '`alevinFryQCReport`'
     - '`alevinQCShiny`'
+    - '`alevinFryQCShiny`'
 - title: Plot functions
   contents:
     - '`plotAlevinKneeRaw`'

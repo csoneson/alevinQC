@@ -4,11 +4,16 @@
 \alias{plotAlevinKneeNbrGenes}
 \title{Knee plot of the number of detected genes per cell}
 \usage{
-plotAlevinKneeNbrGenes(cbTable)
+plotAlevinKneeNbrGenes(cbTable, firstSelColName = "inFirstWhiteList")
 }
 \arguments{
 \item{cbTable}{\code{data.frame} (such as the \code{cbTable} returned by
-\code{readAlevinQC}) with the number of detected genes per cell.}
+\code{readAlevinQC} or \code{readAlevinFryQC}) with the number of
+detected genes per cell.}
+
+\item{firstSelColName}{Character scalar indicating the name of the logical
+column in \code{cbTable} that corresponds to the original selection of
+barcodes for quantification.}
 }
 \value{
 A ggplot object

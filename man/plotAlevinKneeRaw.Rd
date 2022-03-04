@@ -4,11 +4,16 @@
 \alias{plotAlevinKneeRaw}
 \title{Knee plot of raw cell barcode frequencies}
 \usage{
-plotAlevinKneeRaw(cbTable)
+plotAlevinKneeRaw(cbTable, firstSelColName = "inFirstWhiteList")
 }
 \arguments{
 \item{cbTable}{\code{data.frame} with raw barcode frequencies (such as the
-\code{cbTable} returned by \code{readAlevinQC}).}
+\code{cbTable} returned by \code{readAlevinQC} or
+\code{readAlevinFryQC}).}
+
+\item{firstSelColName}{Character scalar indicating the name of the logical
+column in \code{cbTable} that corresponds to the original selection of
+barcodes for quantification.}
 }
 \value{
 A ggplot object

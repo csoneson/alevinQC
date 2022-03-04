@@ -1,20 +1,22 @@
-#' Check whether pandoc and pandoc-citeproc is available
+#' Check whether pandoc and pandoc-citeproc are available
 #'
 #' @author Charlotte Soneson
 #'
 #' @param ignorePandoc logical. If TRUE, just give a warning if pandoc or
-#'   pandoc-citeproc is not available. If FALSE, stop.
+#'     pandoc-citeproc is not available. If FALSE, stop.
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return A logical(1), indicating whether pandoc can be run or not.
-#'   In addition, raises either a warning or an error (depending on the
-#'   value of \code{ignorePandoc}) if pandoc or pandoc-citeproc is not
-#'   available.
+#'     In addition, raises either a warning or an error (depending on the
+#'     value of \code{ignorePandoc}) if pandoc or pandoc-citeproc is not
+#'     available.
 #'
 #' @importFrom rmarkdown pandoc_available pandoc_exec
 #'
 .checkPandoc <- function(ignorePandoc) {
+    # nocov start
     ## Initialize output to TRUE
     doRender <- TRUE
 
@@ -58,16 +60,28 @@
         }
     }
     return(doRender)
+    # nocov end
 }
 
-#' Generate alevin summary report
+#' Generate alevin/alevin-fry summary report
 #'
-#' Generate a report summarizing the main aspects of an alevin quantification
-#' run. The report generation assumes that alevin has been run with the
-#' --dumpFeatures flag to generate the necessary output files.
+#' Generate a report summarizing the main aspects of an alevin/alevin-fry
+#' quantification run. The report generation assumes that alevin/alevin-fry
+#' has been run with the --dumpFeatures flag to generate the necessary
+#' output files.
 #'
-#' @param baseDir Path to the output directory from the alevin run (should be
-#'   the directory containing the \code{alevin} directory).
+#' @param baseDir (Only used for alevin output) Path to the output directory
+#'     from the alevin run (should be the directory containing the
+#'     \code{alevin} directory).
+#' @param mapDir (Only used for alevin-fry output) Path to the output directory
+#'     from the salmon alevin run (should be the directory containing the
+#'     \code{map.rad} file).
+#' @param permitDir (Only used for alevin-fry output) Path to the output
+#'     directory from the permit list generation step (should be
+#'     the directory containing the \code{all_freq.tsv} file).
+#' @param quantDir (Only used for alevin-fry output) Path to the output
+#'     directory from the alevin-fry quantification step (should be
+#'     the directory containing the \code{alevin} directory).
 #' @param sampleId Sample ID, will be used to set the title for the report.
 #' @param outputFile File name of the output report. The file name extension
 #'   must be either \code{.html} or \code{.pdf}, and consistent with the value
@@ -104,7 +118,7 @@
 #'   the copied template in the output directory will be deleted once the report
 #'   is generated.
 #'
-#' @export
+#' @name qcReport
 #'
 #' @importFrom rmarkdown render
 #' @importFrom tools file_ext file_path_sans_ext
@@ -120,11 +134,66 @@
 #'                sampleId = "example", outputFile = "alevinReport.html",
 #'                outputDir = tempdir(), forceOverwrite = TRUE)
 #'
+#' alevinFryQCReport(
+#'     mapDir = system.file("extdata/alevinfry_example_v0.5.0/map",
+#'                          package = "alevinQC"),
+#'     permitDir = system.file("extdata/alevinfry_example_v0.5.0/permit",
+#'                             package = "alevinQC"),
+#'     quantDir = system.file("extdata/alevinfry_example_v0.5.0/quant",
+#'                            package = "alevinQC"),
+#'     sampleId = "example", outputFile = "alevinFryReport.html",
+#'     outputDir = tempdir(), forceOverwrite = TRUE)
+#'
+NULL
+
+#' @rdname qcReport
+#' @export
 alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                            outputFormat = NULL, showCode = FALSE,
                            forceOverwrite = FALSE, knitrProgress = FALSE,
                            quiet = FALSE, ignorePandoc = FALSE,
                            customCBList = list(), ...) {
+    .alevinQCReport(baseDir = baseDir, mapDir = NULL, permitDir = NULL,
+                    quantDir = NULL, quantMethod = "alevin",
+                    sampleId = sampleId, outputFile = outputFile,
+                    outputDir = outputDir, outputFormat = outputFormat,
+                    showCode = showCode, forceOverwrite = forceOverwrite,
+                    knitrProgress = knitrProgress, quiet = quiet,
+                    ignorePandoc = ignorePandoc,
+                    customCBList = customCBList, ...)
+}
+
+#' @rdname qcReport
+#' @export
+alevinFryQCReport <- function(mapDir, permitDir, quantDir, sampleId,
+                              outputFile, outputDir = "./",
+                              outputFormat = NULL, showCode = FALSE,
+                              forceOverwrite = FALSE, knitrProgress = FALSE,
+                              quiet = FALSE, ignorePandoc = FALSE,
+                              customCBList = list(), ...) {
+    if (length(customCBList) != 0) {
+        warning("custom CB lists are currently not implemented for ",
+                "alevin-fry QC reports")
+    }
+    .alevinQCReport(baseDir = NULL, mapDir = mapDir, permitDir = permitDir,
+                    quantDir = quantDir, quantMethod = "alevin-fry",
+                    sampleId = sampleId, outputFile = outputFile,
+                    outputDir = outputDir, outputFormat = outputFormat,
+                    showCode = showCode, forceOverwrite = forceOverwrite,
+                    knitrProgress = knitrProgress, quiet = quiet,
+                    ignorePandoc = ignorePandoc,
+                    customCBList = list(), ...)
+}
+
+#' @keywords internal
+#' @noRd
+#' @author Charlotte Soneson
+.alevinQCReport <- function(baseDir, mapDir, permitDir, quantDir,
+                            quantMethod, sampleId, outputFile, outputDir = "./",
+                            outputFormat = NULL, showCode = FALSE,
+                            forceOverwrite = FALSE, knitrProgress = FALSE,
+                            quiet = FALSE, ignorePandoc = FALSE,
+                            customCBList = list(), ...) {
     ## This function was inspired by code from Nicholas Hamilton, provided at
     ## http://stackoverflow.com/questions/37097535/generate-report-in-r
 
@@ -165,11 +234,28 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
     }
 
     ## ----------------------- input directory ------------------------------ ##
-    ## Normalize base directory path
-    baseDir <- normalizePath(baseDir)
+    ## Normalize directory paths
+    if (!is.null(baseDir)) {
+        baseDir <- normalizePath(baseDir)
+    }
+    if (!is.null(mapDir)) {
+        mapDir <- normalizePath(mapDir)
+    }
+    if (!is.null(permitDir)) {
+        permitDir <- normalizePath(permitDir)
+    }
+    if (!is.null(quantDir)) {
+        quantDir <- normalizePath(quantDir)
+    }
+
 
     ## Check that all required input files are available
-    checkAlevinInputFiles(baseDir)
+    if (quantMethod == "alevin") {
+        checkAlevinInputFiles(baseDir)
+    } else if (quantMethod == "alevin-fry") {
+        checkAlevinFryInputFiles(mapDir = mapDir, permitDir = permitDir,
+                                 quantDir = quantDir)
+    }
 
     ## sampleId must be a character string of length 1
     if (!is(sampleId, "character") || length(sampleId) != 1) {
