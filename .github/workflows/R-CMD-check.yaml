@@ -13,18 +13,18 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     container: ${{ matrix.config.image }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }} - ${{ matrix.config.bioc }} - ${{ matrix.config.image }} - ${{ matrix.config.pandoc }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.bioc }} - ${{ matrix.config.image }} - ${{ matrix.config.pandoc }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-        - { os: windows-latest, r: 'devel', bioc: 'devel'}
-        - { os: macOS-latest, r: 'devel', bioc: 'devel', curlConfigPath: '/usr/bin/'}
-        - { os: macOS-latest, r: 'devel', bioc: 'devel', pandoc: '2.11.4', curlConfigPath: '/usr/bin/'}
-#        - { os: ubuntu-latest, r: '4.1', bioc: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-        - { os: ubuntu-latest, r: 'devel', bioc: 'devel'}
-        - { os: ubuntu-latest, r: 'devel', image: 'bioconductor/bioconductor_docker:devel'}
+        - { os: windows-latest, bioc: 'devel'}
+        - { os: macOS-latest, bioc: 'devel', curlConfigPath: '/usr/bin/'}
+        - { os: macOS-latest, bioc: 'devel', pandoc: '2.11.4', curlConfigPath: '/usr/bin/'}
+#        - { os: ubuntu-latest, bioc: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+        - { os: ubuntu-latest, bioc: 'devel'}
+        - { os: ubuntu-latest, image: 'bioconductor/bioconductor_docker:devel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -83,8 +83,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-
+          key: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -117,10 +117,6 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", env = c(R_PROFILE_USER = "$HOME/.Rprofile"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-
       - name: Build, Install, Check (2)
         uses: grimbough/bioc-actions/build-install-check@v1
 
@@ -139,7 +135,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-results
+          name: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-results
           path: check
 
       - name: Test coverage
