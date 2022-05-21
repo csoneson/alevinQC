@@ -28,10 +28,7 @@
     <loc>http://csoneson.github.io/alevinQC/reference/alevinQC-pkg.html</loc>
   </url>
   <url>
-    <loc>http://csoneson.github.io/alevinQC/reference/alevinQCReport.html</loc>
-  </url>
-  <url>
-    <loc>http://csoneson.github.io/alevinQC/reference/alevinQCShiny.html</loc>
+    <loc>http://csoneson.github.io/alevinQC/reference/checkAlevinFryInputFiles.html</loc>
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/checkAlevinInputFiles.html</loc>
@@ -56,6 +53,15 @@
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/plotAlevinQuantPairs.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/reference/qcReport.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/reference/qcShiny.html</loc>
+  </url>
+  <url>
+    <loc>http://csoneson.github.io/alevinQC/reference/readAlevinFryQC.html</loc>
   </url>
   <url>
     <loc>http://csoneson.github.io/alevinQC/reference/readAlevinQC.html</loc>

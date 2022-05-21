@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.1</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,7 +65,7 @@
         </td>
         <td><p>alevinQC</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="functions-for-reading-alevin-output-data">Functions for reading alevin output data <a href="#functions-for-reading-alevin-output-data" class="anchor" aria-hidden="true"></a></h2>
+          <h2 id="functions-for-reading-alevin-alevin-fry-output-data">Functions for reading alevin/alevin-fry output data <a href="#functions-for-reading-alevin-alevin-fry-output-data" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
@@ -73,21 +73,29 @@
         </td>
         <td><p>Check that all required input files are available</p></td>
       </tr><tr><td>
+          <p><code><a href="checkAlevinFryInputFiles.html">checkAlevinFryInputFiles()</a></code> </p>
+        </td>
+        <td><p>Check that all required input files are available for alevin-fry</p></td>
+      </tr><tr><td>
           <p><code><a href="readAlevinQC.html">readAlevinQC()</a></code> </p>
         </td>
         <td><p>Read alevin data required to generate summary report</p></td>
+      </tr><tr><td>
+          <p><code><a href="readAlevinFryQC.html">readAlevinFryQC()</a></code> </p>
+        </td>
+        <td><p>Read alevin-fry data required to generate summary report</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="functions-for-generating-qc-reports">Functions for generating QC reports <a href="#functions-for-generating-qc-reports" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="alevinQCReport.html">alevinQCReport()</a></code> </p>
+          <p><code><a href="qcReport.html">alevinQCReport()</a></code> <code><a href="qcReport.html">alevinFryQCReport()</a></code> </p>
         </td>
-        <td><p>Generate alevin summary report</p></td>
+        <td><p>Generate alevin/alevin-fry summary report</p></td>
       </tr><tr><td>
-          <p><code><a href="alevinQCShiny.html">alevinQCShiny()</a></code> </p>
+          <p><code><a href="qcShiny.html">alevinQCShiny()</a></code> <code><a href="qcShiny.html">alevinFryQCShiny()</a></code> </p>
         </td>
-        <td><p>Generate alevin summary shiny app</p></td>
+        <td><p>Generate alevin/alevin-fry summary shiny app</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="plot-functions">Plot functions <a href="#plot-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
@@ -125,11 +133,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://csoneson.github.io" class="external-link">Charlotte Soneson</a>, Avi Srivastava.</p>
+  <p></p><p>Developed by <a href="https://csoneson.github.io" class="external-link">Charlotte Soneson</a>, Avi Srivastava, Rob Patro, Dongze He.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
 </div>
 
       </footer></div>
