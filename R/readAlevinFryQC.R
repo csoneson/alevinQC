@@ -146,6 +146,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
         cbtable = cbtable,
         colName = "inPermitList",
         cbName = " (permitlist)",
+        countCol = "nbrMappedUMI",
         quantmat = NULL
     )
 
@@ -252,6 +253,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
         cbtable = cbtable,
         colName = "inPermitList",
         cbName = " (permitlist)",
+        countCol = "nbrMappedUMI",
         quantmat = NULL
     )
 

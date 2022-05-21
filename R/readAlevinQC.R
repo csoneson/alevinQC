@@ -2,9 +2,16 @@
 # colName should be the name of a logical column in cbtable, indicating
 # inclusion/exclusion with respect to the barcode collection
 # cbName will be used for display purposes, to identify the barcode collection
-.makeSummaryTable <- function(cbtable, colName, cbName = "", quantmat = NULL) {
+.makeSummaryTable <- function(cbtable, colName, cbName = "",
+                              countCol = "collapsedFreq", quantmat = NULL) {
     stopifnot(colName %in% colnames(cbtable))
     stopifnot(is.logical(cbtable[[colName]]))
+
+    if (countCol == "nbrMappedUMI") {
+        readtype <- " mapped"
+    } else {
+        readtype <- ""
+    }
 
     df <- list()
     df[[paste0("Number of barcodes", cbName)]] <-
@@ -12,18 +19,18 @@
     df[[paste0("Number of barcodes with quantification", cbName)]] <-
         as.character(sum(cbtable[[colName]] & !is.na(cbtable$mappingRate),
                          na.rm = TRUE))
-    df[[paste0("Fraction reads in barcodes", cbName)]] <-
+    df[[paste0("Fraction", readtype, " reads in barcodes", cbName)]] <-
         as.character(paste0(signif(
-            100 * sum(cbtable$collapsedFreq[cbtable[[colName]]],
+            100 * sum(cbtable[[countCol]][cbtable[[colName]]],
                       na.rm = TRUE) /
                 sum(cbtable$originalFreq, na.rm = TRUE), 4), "%"))
-    df[[paste0("Mean number of reads per cell", cbName)]] <-
+    df[[paste0("Mean number of", readtype, " reads per cell", cbName)]] <-
         as.character(round(mean(
-            cbtable$collapsedFreq[cbtable[[colName]]],
+            cbtable[[countCol]][cbtable[[colName]]],
             na.rm = TRUE)))
-    df[[paste0("Median number of reads per cell", cbName)]] <-
+    df[[paste0("Median number of", readtype, " reads per cell", cbName)]] <-
         as.character(round(stats::median(
-            cbtable$collapsedFreq[cbtable[[colName]]],
+            cbtable[[countCol]][cbtable[[colName]]],
             na.rm = TRUE)))
     df[[paste0("Mean number of detected genes per cell", cbName)]] <-
         as.character(round(mean(
@@ -191,6 +198,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
             cbtable = cbtable,
             colName = nm,
             cbName = paste0(" (", gsub("customCB__", "", nm), ")"),
+            countCol = "collapsedFreq",
             quantmat = quantmat)
     }
 
@@ -232,6 +240,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         cbtable = cbtable,
         colName = "inFirstWhiteList",
         cbName = " (initial whitelist)",
+        countCol = "collapsedFreq",
         quantmat = quantmat
     )
 
@@ -239,6 +248,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         cbtable = cbtable,
         colName = "inFinalWhiteList",
         cbName = " (final whitelist)",
+        countCol = "collapsedFreq",
         quantmat = quantmat
     )
 
@@ -378,6 +388,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
             cbtable = cbtable,
             colName = nm,
             cbName = paste0(" (", gsub("customCB__", "", nm), ")"),
+            countCol = "collapsedFreq",
             quantmat = NULL)
     }
 
@@ -466,6 +477,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         cbtable = cbtable,
         colName = "inFirstWhiteList",
         cbName = " (initial whitelist)",
+        countCol = "collapsedFreq",
         quantmat = NULL
     )
 
@@ -473,6 +485,7 @@ readAlevinQC <- function(baseDir, customCBList = list()) {
         cbtable = cbtable,
         colName = "inFinalWhiteList",
         cbName = " (final whitelist)",
+        countCol = "collapsedFreq",
         quantmat = NULL
     )
 
