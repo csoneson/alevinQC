@@ -1,3 +1,7 @@
+# alevinQC 1.13.1
+
+* Bug fix; use nbr mapped reads to calculate fraction of reads in barcode list for alevin-fry
+
 # alevinQC 1.11.1
 
 * Added support for reading alevin-fry output
