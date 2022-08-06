@@ -1,0 +1,8 @@
+{
+  "cmd": "alevin-fry generate-permit-list -d fw --knee-distance -i alevin_fry_0.4.3/salmon -o alevin_fry_0.4.3/permit",
+  "expected_ori": "+",
+  "max-ambig-record": 582,
+  "permit-list-type": "filtered",
+  "velo_mode": false,
+  "version_str": "0.4.3"
+}
