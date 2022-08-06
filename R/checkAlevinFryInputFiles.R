@@ -99,12 +99,18 @@ checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
 #' @noRd
 .checkAlevinFryInputFiles_0.5.0 <- function(mapDir, permitDir, quantDir) {
     ## Raise an error if any of the required files is missing
-    reqFiles <- c(file.path(permitDir, "all_freq.bin"),
+    reqFiles <- c(file.path(permitDir, "generate_permit_list.json"),
                   file.path(permitDir, "permit_freq.bin"),
                   file.path(quantDir, "featureDump.txt"),
                   file.path(mapDir, "aux_info/meta_info.json"),
                   file.path(quantDir, "quant.json"),
                   file.path(mapDir, "cmd_info.json"))
+    permitinfo <- rjson::fromJSON(file = file.path(permitDir,
+                                                   "generate_permit_list.json"))
+    if (permitinfo$`permit-list-type` != "unfiltered") {
+        reqFiles <- c(reqFiles,
+                      file.path(permitDir, "all_freq.bin"))
+    }
     missingFiles <- reqFiles[vapply(reqFiles,
                                     function(f) {
                                         !file.exists(f)

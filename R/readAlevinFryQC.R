@@ -163,7 +163,15 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
 .readAlevinFryQC_v0.5.0 <- function(mapDir, permitDir, quantDir) {
 
     ## Raw CB frequencies (in descending order)
-    rawcbfreq <- cpp_get_permit_freq_info(file.path(permitDir, "all_freq.bin"))
+    if (file.exists(file.path(permitDir, "all_freq.bin"))) {
+        rawcbfreq <- cpp_get_permit_freq_info(file.path(permitDir,
+                                                        "all_freq.bin"))
+    } else {
+        message(file.path(permitDir, "all_freq.bin"),
+                " is missing - using permit_freq.bin")
+        rawcbfreq <- cpp_get_permit_freq_info(file.path(permitDir,
+                                                        "permit_freq.bin"))
+    }
     rawcbfreq <- data.frame(CB = rawcbfreq[[1]],
                             originalFreq = rawcbfreq[[2]]) %>%
         dplyr::arrange(dplyr::desc(originalFreq)) %>%

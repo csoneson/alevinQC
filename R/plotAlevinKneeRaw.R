@@ -42,7 +42,7 @@ plotAlevinKneeRaw <- function(cbTable,
     ## with a rug
     if (max(cbTable$ranking[cbTable[[firstSelColName]]], na.rm = TRUE) <
         min(cbTable$ranking[!cbTable[[firstSelColName]]], na.rm = TRUE)) {
-        ggplot2::ggplot(cbTable,
+        g <- ggplot2::ggplot(cbTable,
                         ggplot2::aes(x = .data$ranking,
                                      y = .data$originalFreq)) +
             ggplot2::geom_line(size = 2,
@@ -55,15 +55,18 @@ plotAlevinKneeRaw <- function(cbTable,
             ggplot2::theme(legend.position = "none",
                            axis.title = ggplot2::element_text(size = 12)) +
             ggplot2::scale_color_manual(values = c(`TRUE` = "red",
-                                                   `FALSE` = "black")) +
-            ggplot2::geom_label(data = cbTable %>%
-                                    dplyr::filter(.data[[firstSelColName]]) %>%
-                                    dplyr::filter(ranking == max(ranking)),
-                                ggplot2::aes(label = paste0("(", ranking, ", ",
-                                                            originalFreq, ")")),
-                                hjust = 0, nudge_x = 0.1)
+                                                   `FALSE` = "black"))
+        if (any(!cbTable[[firstSelColName]])) {
+            g <- g + ggplot2::geom_label(
+                data = cbTable %>%
+                    dplyr::filter(.data[[firstSelColName]]) %>%
+                    dplyr::filter(ranking == max(ranking)),
+                ggplot2::aes(label = paste0("(", ranking, ", ",
+                                            originalFreq, ")")),
+                hjust = 0, nudge_x = 0.1)
+        }
     } else {
-        ggplot2::ggplot(cbTable,
+        g <- ggplot2::ggplot(cbTable,
                         ggplot2::aes(x = .data$ranking,
                                      y = .data$originalFreq)) +
             ggplot2::geom_line(size = 2, color = "black") +
@@ -78,4 +81,5 @@ plotAlevinKneeRaw <- function(cbTable,
                                   dplyr::filter(.data[[firstSelColName]]),
                               color = "red")
     }
+    g
 }
