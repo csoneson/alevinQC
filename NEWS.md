@@ -1,3 +1,7 @@
+# alevinQC 1.13.2
+
+* Allow processing of alevin-fry data with unfiltered permitlist
+
 # alevinQC 1.13.1
 
 * Bug fix; use nbr mapped reads to calculate fraction of reads in barcode list for alevin-fry
