@@ -20,7 +20,7 @@ output files."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.2</span>
       </span>
     </div>
 
@@ -69,37 +69,37 @@ output files.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">alevinQCReport</span><span class="op">(</span>
-  <span class="va">baseDir</span>,
-  <span class="va">sampleId</span>,
-  <span class="va">outputFile</span>,
-  outputDir <span class="op">=</span> <span class="st">"./"</span>,
-  outputFormat <span class="op">=</span> <span class="cn">NULL</span>,
-  showCode <span class="op">=</span> <span class="cn">FALSE</span>,
-  forceOverwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  knitrProgress <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  ignorePandoc <span class="op">=</span> <span class="cn">FALSE</span>,
-  customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">alevinFryQCReport</span><span class="op">(</span>
-  <span class="va">mapDir</span>,
-  <span class="va">permitDir</span>,
-  <span class="va">quantDir</span>,
-  <span class="va">sampleId</span>,
-  <span class="va">outputFile</span>,
-  outputDir <span class="op">=</span> <span class="st">"./"</span>,
-  outputFormat <span class="op">=</span> <span class="cn">NULL</span>,
-  showCode <span class="op">=</span> <span class="cn">FALSE</span>,
-  forceOverwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  knitrProgress <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  ignorePandoc <span class="op">=</span> <span class="cn">FALSE</span>,
-  customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">alevinQCReport</span><span class="op">(</span></span>
+<span>  <span class="va">baseDir</span>,</span>
+<span>  <span class="va">sampleId</span>,</span>
+<span>  <span class="va">outputFile</span>,</span>
+<span>  outputDir <span class="op">=</span> <span class="st">"./"</span>,</span>
+<span>  outputFormat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  showCode <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  forceOverwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  knitrProgress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ignorePandoc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">alevinFryQCReport</span><span class="op">(</span></span>
+<span>  <span class="va">mapDir</span>,</span>
+<span>  <span class="va">permitDir</span>,</span>
+<span>  <span class="va">quantDir</span>,</span>
+<span>  <span class="va">sampleId</span>,</span>
+<span>  <span class="va">outputFile</span>,</span>
+<span>  outputDir <span class="op">=</span> <span class="st">"./"</span>,</span>
+<span>  outputFormat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  showCode <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  forceOverwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  knitrProgress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ignorePandoc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,29 +108,47 @@ output files.</p>
 <dd><p>(Only used for alevin output) Path to the output directory
 from the alevin run (should be the directory containing the
 <code>alevin</code> directory).</p></dd>
+
+
 <dt>sampleId</dt>
 <dd><p>Sample ID, will be used to set the title for the report.</p></dd>
+
+
 <dt>outputFile</dt>
 <dd><p>File name of the output report. The file name extension
 must be either <code>.html</code> or <code>.pdf</code>, and consistent with the value
 of <code>outputFormat</code>.</p></dd>
+
+
 <dt>outputDir</dt>
 <dd><p>Path to the output directory where the report will be
 generated.</p></dd>
+
+
 <dt>outputFormat</dt>
 <dd><p>The format of the output report. Either
 <code>"html_document"</code> or <code>"pdf_document"</code>. The file name extension of
 <code>outputFile</code> must be consistent with this choice.</p></dd>
+
+
 <dt>showCode</dt>
 <dd><p>Logical, whether to display the R code in the report.</p></dd>
+
+
 <dt>forceOverwrite</dt>
 <dd><p>Logical, whether to force overwrite an existing report
 with the same name in the output directory.</p></dd>
+
+
 <dt>knitrProgress</dt>
 <dd><p>Logical, whether to display the progress of <code>knitr</code>
 when generating the report.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical, whether to show progress messages.</p></dd>
+
+
 <dt>ignorePandoc</dt>
 <dd><p>Logical, determines what to do if <code>pandoc</code> or
 <code>pandoc-citeproc</code> is missing (if <code>Sys.which("pandoc")</code> or
@@ -138,28 +156,41 @@ when generating the report.</p></dd>
 TRUE, only a warning is given. The figures will be generated, but not the
 final report. If <code>ignorePandoc</code> is FALSE (default), the execution
 stops immediately.</p></dd>
+
+
 <dt>customCBList</dt>
 <dd><p>Named list with custom set(s) of barcodes to provide
 summary statistics/plots for, in addition to the whitelists generated by
 alevin.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other arguments that will be passed to <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render</a></code>.</p></dd>
+
+
 <dt>mapDir</dt>
 <dd><p>(Only used for alevin-fry output) Path to the output directory
 from the salmon alevin run (should be the directory containing the
 <code>map.rad</code> file).</p></dd>
+
+
 <dt>permitDir</dt>
 <dd><p>(Only used for alevin-fry output) Path to the output
 directory from the permit list generation step (should be
 the directory containing the <code>all_freq.tsv</code> file).</p></dd>
+
+
 <dt>quantDir</dt>
 <dd><p>(Only used for alevin-fry output) Path to the output
 directory from the alevin-fry quantification step (should be
 the directory containing the <code>alevin</code> directory).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Generates a summary report in the <code>outputDir</code> directory, and
+    
+
+<p>Generates a summary report in the <code>outputDir</code> directory, and
   returns (invisibly) the name of the generated report.</p>
     </div>
     <div id="details">
@@ -179,10 +210,10 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">alevinQCReport</span><span class="op">(</span>baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span>
-<span class="r-in">                                     package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span>
-<span class="r-in">               sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinReport.html"</span>,</span>
-<span class="r-in">               outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">alevinQCReport</span><span class="op">(</span>baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
+<span class="r-in"><span>                                     package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinReport.html"</span>,</span></span>
+<span class="r-in"><span>               outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 6): Library not loaded: /opt/X11/lib/libSM.6.dylib</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: /Library/Frameworks/R.framework/Versions/4.2/Resources/modules/R_X11.so</span>
@@ -195,20 +226,20 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Quitting from lines 30-32 (alevinReport.Rmd) </span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dev.control(displaylist = if (record) "enable" else "inhibit"):</span> dev.control() called without an open graphics device</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">alevinFryQCReport</span><span class="op">(</span></span>
-<span class="r-in">    mapDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/map"</span>,</span>
-<span class="r-in">                         package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span>
-<span class="r-in">    permitDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/permit"</span>,</span>
-<span class="r-in">                            package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span>
-<span class="r-in">    quantDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/quant"</span>,</span>
-<span class="r-in">                           package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span>
-<span class="r-in">    sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinFryReport.html"</span>,</span>
-<span class="r-in">    outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">alevinFryQCReport</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    mapDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/map"</span>,</span></span>
+<span class="r-in"><span>                         package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    permitDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/permit"</span>,</span></span>
+<span class="r-in"><span>                            package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    quantDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_v0.5.0/quant"</span>,</span></span>
+<span class="r-in"><span>                           package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinFryReport.html"</span>,</span></span>
+<span class="r-in"><span>    outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Quitting from lines 30-32 (alevinFryReport.Rmd) </span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dev.control(displaylist = if (record) "enable" else "inhibit"):</span> dev.control() called without an open graphics device</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -223,7 +254,7 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

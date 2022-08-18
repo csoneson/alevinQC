@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.2</span>
       </span>
     </div>
 
@@ -63,14 +63,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plotAlevinHistogram</span><span class="op">(</span>
-  <span class="va">cbTable</span>,
-  plotVar <span class="op">=</span> <span class="st">"dedupRate"</span>,
-  axisLabel <span class="op">=</span> <span class="va">plotVar</span>,
-  colName <span class="op">=</span> <span class="st">"inFinalWhiteList"</span>,
-  cbName <span class="op">=</span> <span class="st">"final whitelist"</span>,
-  firstSelColName <span class="op">=</span> <span class="st">"inFirstWhiteList"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotAlevinHistogram</span><span class="op">(</span></span>
+<span>  <span class="va">cbTable</span>,</span>
+<span>  plotVar <span class="op">=</span> <span class="st">"dedupRate"</span>,</span>
+<span>  axisLabel <span class="op">=</span> <span class="va">plotVar</span>,</span>
+<span>  colName <span class="op">=</span> <span class="st">"inFinalWhiteList"</span>,</span>
+<span>  cbName <span class="op">=</span> <span class="st">"final whitelist"</span>,</span>
+<span>  firstSelColName <span class="op">=</span> <span class="st">"inFirstWhiteList"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,26 +79,39 @@
 <dd><p><code>data.frame</code> (such as the <code>cbTable</code> returned by
 <code>readAlevinQC</code> or <code>readAlevinFryQC</code>) containing the desired
 summary statistic in a column.</p></dd>
+
+
 <dt>plotVar</dt>
 <dd><p>Character scalar giving the name of a numeric column of
 <code>cbTable</code> to plot.</p></dd>
+
+
 <dt>axisLabel</dt>
 <dd><p>Character scalar giving the label of the selected
 statistic (will be displayed as the axis label in the plot).</p></dd>
+
+
 <dt>colName</dt>
 <dd><p>Character scalar giving the name of a logical column of
 <code>cbTable</code> to use for filling the bars in the histogram.</p></dd>
+
+
 <dt>cbName</dt>
 <dd><p>Character scalar giving the name of the set of barcodes
 defined by <code>colName</code>, used for labelling the plot legend.</p></dd>
+
+
 <dt>firstSelColName</dt>
 <dd><p>Character scalar indicating the name of the logical
 column in <code>cbTable</code> that corresponds to the original selection of
 barcodes for quantification.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A ggplot object</p>
+    
+
+<p>A ggplot object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -107,14 +120,14 @@ barcodes for quantification.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">alevin</span> <span class="op">&lt;-</span> <span class="fu"><a href="readAlevinQC.html">readAlevinQC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span>
-<span class="r-in">                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotAlevinHistogram</span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span>, plotVar <span class="op">=</span> <span class="st">"dedupRate"</span>,</span>
-<span class="r-in">                    axisLabel <span class="op">=</span> <span class="st">"Deduplication rate"</span>,</span>
-<span class="r-in">                    colName <span class="op">=</span> <span class="st">"inFinalWhiteList"</span>,</span>
-<span class="r-in">                    cbName <span class="op">=</span> <span class="st">"final whitelist"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">alevin</span> <span class="op">&lt;-</span> <span class="fu"><a href="readAlevinQC.html">readAlevinQC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
+<span class="r-in"><span>                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotAlevinHistogram</span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span>, plotVar <span class="op">=</span> <span class="st">"dedupRate"</span>,</span></span>
+<span class="r-in"><span>                    axisLabel <span class="op">=</span> <span class="st">"Deduplication rate"</span>,</span></span>
+<span class="r-in"><span>                    colName <span class="op">=</span> <span class="st">"inFinalWhiteList"</span>,</span></span>
+<span class="r-in"><span>                    cbName <span class="op">=</span> <span class="st">"final whitelist"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotAlevinHistogram-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -129,7 +142,7 @@ barcodes for quantification.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ against the frequency after collapsing similar cell barcodes."><!-- mathjax --><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.2</span>
       </span>
     </div>
 
@@ -65,11 +65,11 @@ against the frequency after collapsing similar cell barcodes.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plotAlevinBarcodeCollapse</span><span class="op">(</span>
-  <span class="va">cbTable</span>,
-  firstSelColName <span class="op">=</span> <span class="st">"inFirstWhiteList"</span>,
-  countCol <span class="op">=</span> <span class="st">"collapsedFreq"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotAlevinBarcodeCollapse</span><span class="op">(</span></span>
+<span>  <span class="va">cbTable</span>,</span>
+<span>  firstSelColName <span class="op">=</span> <span class="st">"inFirstWhiteList"</span>,</span>
+<span>  countCol <span class="op">=</span> <span class="st">"collapsedFreq"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,17 +78,24 @@ against the frequency after collapsing similar cell barcodes.</p>
 <dd><p><code>data.frame</code> (such as the <code>cbTable</code> returned by
 <code>readAlevinQC</code> or <code>readAlevinFryQC</code>) with barcode frequencies
 before and after collapsing.</p></dd>
+
+
 <dt>firstSelColName</dt>
 <dd><p>Character scalar indicating the name of the logical
 column in <code>cbTable</code> that corresponds to the original selection of
 barcodes for quantification.</p></dd>
+
+
 <dt>countCol</dt>
 <dd><p>Character scalar indicating the name of the column in
 <code>cbTable</code> that corresponds to the collapsed barcode frequencies.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A ggplot object</p>
+    
+
+<p>A ggplot object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -97,11 +104,11 @@ barcodes for quantification.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">alevin</span> <span class="op">&lt;-</span> <span class="fu"><a href="readAlevinQC.html">readAlevinQC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span>
-<span class="r-in">                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotAlevinBarcodeCollapse</span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">alevin</span> <span class="op">&lt;-</span> <span class="fu"><a href="readAlevinQC.html">readAlevinQC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
+<span class="r-in"><span>                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotAlevinBarcodeCollapse</span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotAlevinBarcodeCollapse-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -116,7 +123,7 @@ barcodes for quantification.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
