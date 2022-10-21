@@ -44,11 +44,11 @@ jobs:
           bioc-version: ${{ matrix.config.bioc }}
 
       - name: Set up pandoc (default version)
-        uses: r-lib/actions/setup-pandoc@master
+        uses: r-lib/actions/setup-pandoc@v2
         if: matrix.config.image == null && matrix.config.pandoc == null
 
       - name: Set up pandoc (specified version)
-        uses: r-lib/actions/setup-pandoc@master
+        uses: r-lib/actions/setup-pandoc@v2
         if: matrix.config.image == null && matrix.config.pandoc != null
         with:
           pandoc-version: ${{ matrix.config.pandoc }}
