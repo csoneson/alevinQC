@@ -1,3 +1,7 @@
+# alevinQC 1.15.1
+
+* Support BiocStyle::pdf_document and BiocStyle::html_document output formats (thanks to Mike Smith for insights regarding BiocStyle)
+
 # alevinQC 1.13.2
 
 * Allow processing of alevin-fry data with unfiltered permitlist

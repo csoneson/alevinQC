@@ -53,8 +53,10 @@ of \code{outputFormat}.}
 generated.}
 
 \item{outputFormat}{The format of the output report. Either
-\code{"html_document"} or \code{"pdf_document"}. The file name extension of
-\code{outputFile} must be consistent with this choice.}
+\code{"html_document"}, \code{"pdf_document"},
+\code{"BiocStyle::html_document"} or \code{"BiocStyle::pdf_document"}.
+The file name extension of \code{outputFile} must be consistent with this
+choice.}
 
 \item{showCode}{Logical, whether to display the R code in the report.}
 
@@ -93,7 +95,7 @@ the directory containing the \code{alevin} directory).}
 }
 \value{
 Generates a summary report in the \code{outputDir} directory, and
-  returns (invisibly) the name of the generated report.
+    returns (invisibly) the name of the generated report.
 }
 \description{
 Generate a report summarizing the main aspects of an alevin/alevin-fry
@@ -103,18 +105,19 @@ output files.
 }
 \details{
 When the function is called, a .Rmd template file will be copied
-  into the output directory, and \code{rmarkdown::render} will be called to
-  generate the final report. If there is already a .Rmd file with the same
-  name in the output directory, the function will raise an error and stop, to
-  avoid overwriting the existing file. The reason for this behaviour is that
-  the copied template in the output directory will be deleted once the report
-  is generated.
+    into the output directory, and \code{rmarkdown::render} will be called to
+    generate the final report. If there is already a .Rmd file with the same
+    name in the output directory, the function will raise an error and stop,
+    to avoid overwriting the existing file. The reason for this behaviour is
+    that the copied template in the output directory will be deleted once
+    the report is generated.
 }
 \examples{
-alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
-                                     package = "alevinQC"),
-               sampleId = "example", outputFile = "alevinReport.html",
-               outputDir = tempdir(), forceOverwrite = TRUE)
+alevinQCReport(
+    baseDir = system.file("extdata/alevin_example_v0.14",
+                          package = "alevinQC"),
+    sampleId = "example", outputFile = "alevinReport.html",
+    outputDir = tempdir(), forceOverwrite = TRUE)
 
 alevinFryQCReport(
     mapDir = system.file("extdata/alevinfry_example_v0.5.0/map",

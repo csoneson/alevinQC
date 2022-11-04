@@ -139,6 +139,9 @@ if (file.exists(file.path(tempDir, "tmp2.html"))) {
 if (file.exists(file.path(tempDir, "tmp.pdf"))) {
     file.remove(file.path(tempDir, "tmp.pdf"))
 }
+if (file.exists(file.path(tempDir, "tmp2.pdf"))) {
+    file.remove(file.path(tempDir, "tmp2.pdf"))
+}
 
 test_that("input arguments are processed correctly", {
     ## outputFormat
@@ -149,6 +152,16 @@ test_that("input arguments are processed correctly", {
     expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
                                                       package = "alevinQC"),
                                 outputFormat = "html_document", outputFile = "tmp.pdf",
+                                outputDir = tempDir, sampleId = "test"))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                      package = "alevinQC"),
+                                outputFormat = "BiocStyle::html_document",
+                                outputFile = "tmp.pdf",
+                                outputDir = tempDir, sampleId = "test"))
+    expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                      package = "alevinQC"),
+                                outputFormat = "BiocStyle::pdf_document",
+                                outputFile = "tmp.html",
                                 outputDir = tempDir, sampleId = "test"))
     expect_error(alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
                                                       package = "alevinQC"),
@@ -205,6 +218,24 @@ test_that("report generation works", {
                           outputDir = tempDir, outputFormat = NULL,
                           forceOverwrite = FALSE)
     expect_equal(basename(rpt), "tmp2.html")
+    expect_warning(
+        rpt <- alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                    package = "alevinQC"),
+                              sampleId = "test", outputFile = "tmp2.html",
+                              outputDir = tempDir,
+                              outputFormat = "BiocStyle::html_document",
+                              forceOverwrite = TRUE))
+    expect_equal(basename(rpt), "tmp2.html")
+    ## BiocStyle::pdf_document generates lots of warnings related to fancyhdr
+    wns <- capture_warnings(
+        rpt <- alevinQCReport(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                    package = "alevinQC"),
+                              sampleId = "test", outputFile = "tmp2.pdf",
+                              outputDir = tempDir,
+                              outputFormat = "BiocStyle::pdf_document",
+                              forceOverwrite = TRUE))
+    expect_equal(basename(rpt), "tmp2.pdf")
+    expect_true(length(wns) > 1)
 })
 
 test_that("app generation works", {
