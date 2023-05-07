@@ -45,6 +45,11 @@ checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
                  "Input directory not compatible with alevin-fry v0.5.0 ",
                  "or newer, the following required file(s) are missing ",
                  "or malformed:\n",
+                 paste(v0.5.0, collapse = "\n"), "\n\n")
+        msg <- c(msg,
+                 "Input directory not compatible with alevin-fry with the piscem mapper v0.6.0",
+                 "or newer, the following required file(s) are missing ",
+                 "or malformed:\n",
                  paste(piscem_0.6.0, collapse = "\n"), "\n\n")
     }
 

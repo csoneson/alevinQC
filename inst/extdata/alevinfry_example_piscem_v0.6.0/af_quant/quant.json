@@ -1,0 +1,11 @@
+{
+  "alt_resolved_cell_numbers": [],
+  "cmd": "alevin-fry quant -t 16 -i alevin_fry_0.5.0/permit -o alevin_fry_0.5.0/quant --tg-map mouseM28_human38_t2g_3col.tsv --resolution cr-like --use-mtx",
+  "dump_eq": false,
+  "empty_resolved_cell_numbers": [],
+  "num_genes": 348018,
+  "num_quantified_cells": 101,
+  "resolution_strategy": "CellRangerLike",
+  "usa_mode": true,
+  "version_str": "0.5.0"
+}

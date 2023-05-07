@@ -40,7 +40,7 @@ plotAlevinKneeNbrGenes <- function(cbTable,
                         dplyr::arrange(dplyr::desc(.data$nbrGenesAboveZero)) %>%
                         dplyr::mutate(x = seq_along(.data$nbrGenesAboveZero)),
                     ggplot2::aes(x = .data$x, y = .data$nbrGenesAboveZero)) +
-        ggplot2::geom_line(size = 2) +
+        ggplot2::geom_line(linewidth = 2) +
         ggplot2::xlab("Cell barcode rank") +
         ggplot2::ylab("Number of detected genes") +
         ggplot2::theme_bw() +
