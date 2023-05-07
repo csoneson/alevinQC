@@ -46,6 +46,10 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
         ## v0.5.0 or newer
         .readAlevinFryQC_v0.5.0(mapDir = mapDir, permitDir = permitDir,
                                 quantDir = quantDir)
+    } else if (infversion == "piscem_v0.6.0") {
+        ## v0.5.0 or newer
+        .readAlevinFryQC_piscem_v0.6.0(mapDir = mapDir, permitDir = permitDir,
+                                quantDir = quantDir)
     } else {
         stop("Unidentifiable alevin-fry output")
     }
@@ -200,6 +204,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                                                  "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(mapDir, "cmd_info.json"))
     quantinfo <- rjson::fromJSON(file = file.path(quantDir, "quant.json"))
+    quantinfo <- parse_quant_t2gmap(quantinfo)
 
     ## Merge information about quantified CBs
     cbtable <- dplyr::full_join(
@@ -239,8 +244,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                          collapse = ", "),
         `R2file` = paste(cmdinfo$mates2,
                          collapse = ", "),
-        `tgMap` = ifelse(is.null(cmdinfo$tgMap), "NA",
-                         cmdinfo$tgMap),
+        `tgMap` = quantinfo$tgMap,
         `Library type` = metainfo$library_types,
         stringsAsFactors = FALSE,
         check.names = FALSE
@@ -273,4 +277,126 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                            customCBsummary),
          type = "alevin-fry"
     )
+}
+
+
+
+.readAlevinFryQC_piscem_v0.6.0 <- function(mapDir, permitDir, quantDir) {
+
+    ## Raw CB frequencies (in descending order)
+    if (file.exists(file.path(permitDir, "all_freq.bin"))) {
+        rawcbfreq <- cpp_get_permit_freq_info(file.path(permitDir,
+                                                        "all_freq.bin"))
+    } else {
+        message(file.path(permitDir, "all_freq.bin"),
+                " is missing - using permit_freq.bin")
+        rawcbfreq <- cpp_get_permit_freq_info(file.path(permitDir,
+                                                        "permit_freq.bin"))
+    }
+    rawcbfreq <- data.frame(CB = rawcbfreq[[1]],
+                            originalFreq = rawcbfreq[[2]]) %>%
+        dplyr::arrange(dplyr::desc(originalFreq)) %>%
+        dplyr::mutate(ranking = seq_len(length(CB)))
+    if (!all(diff(rawcbfreq$originalFreq) <= 0)) {
+        warning("The raw CB frequencies are not sorted in decreasing order")
+    }
+
+    ## FeatureDump
+    featuredump <- utils::read.delim(file.path(quantDir, "featureDump.txt"),
+                                     header = TRUE, as.is = TRUE, sep = "\t")
+    featuredump <- featuredump %>%
+        dplyr::rename(mappingRate = MappingRate,
+                      collapsedFreq = CorrectedReads,
+                      dedupRate = DedupRate,
+                      nbrGenesAboveMean = NumGenesOverMean,
+                      nbrMappedUMI = MappedReads,
+                      totalUMICount = DeduplicatedReads,
+                      nbrGenesAboveZero = NumGenesExpressed)
+
+    permitlist <- cpp_get_permit_freq_info(file.path(permitDir,
+                                                     "permit_freq.bin"))[[1]]
+
+    mapinfo <- rjson::fromJSON(file = file.path(mapDir, "map_info.json"))
+    mapinfo <- parse_piscem_map_info(mapinfo)
+
+    quantinfo <- rjson::fromJSON(file = file.path(quantDir, "quant.json"))
+    quantinfo <- parse_quant_t2gmap(quantinfo)
+
+
+    ## Merge information about quantified CBs
+    cbtable <- dplyr::full_join(
+        rawcbfreq,
+        featuredump,
+        by = "CB"
+    )
+
+    cbtable <- cbtable %>%
+        dplyr::mutate(inPermitList = CB %in% permitlist)
+
+    ## Add information from custom barcode sets (not implemented)
+    customCBsummary <- list()
+
+
+    ## Create "version info" table
+    versiontable <- t(data.frame(
+        `Run time (seconds)` = mapinfo$runtime_seconds,
+        # `Salmon version` = metainfo$salmon_version,
+        `alevin-fry version (quant)` = quantinfo$version_str,
+        `Index` = mapinfo$Index,
+        `R1file` = mapinfo$R1file,
+        `R2file` = mapinfo$R2file,
+        `tgMap` = quantinfo$tgMap,
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+    ))
+
+
+    ## Create summary tables
+    summarytable_full <- t(data.frame(
+        `Total number of processed reads` =
+            as.character(mapinfo$num_reads),
+        `Number of mapped reads` = mapinfo$num_mapped,
+        `Percent of mapped reads` = mapinfo$percent_mapped,
+        `Total number of observed cell barcodes` =
+            as.character(length(unique(cbtable$CB))),
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+    ))
+
+    summarytable_permitlist <- .makeSummaryTable(
+        cbtable = cbtable,
+        colName = "inPermitList",
+        cbName = " (permitlist)",
+        countCol = "nbrMappedUMI",
+        quantmat = NULL
+    )
+
+
+    ## Return
+    list(cbTable = cbtable, versionTable = versiontable,
+         summaryTables = c(list(fullDataset = summarytable_full,
+                                permitlist = summarytable_permitlist),
+                           customCBsummary),
+         type = "alevin-fry"
+    )
+}
+
+parse_piscem_map_info <- function(mapinfo) {
+    cmdline = strsplit(mapinfo$cmdline," ")[[1]][-1]
+
+    mapinfo$Index = cmdline[which(cmdline == "-i" | cmdline == "--index")+1]
+    mapinfo$R1file = cmdline[which(cmdline == "-1" | cmdline == "--read1")+1]
+    mapinfo$R2file = cmdline[which(cmdline == "-2" | cmdline == "--read2")+1]
+
+    mapinfo
+}
+
+parse_quant_t2gmap <- function(quantinfo) {
+    if (is.null(quantinfo$quant_options$tg_map)) {
+        cmd = strsplit(quantinfo$cmd, " ")[[1]]
+        quantinfo$tgMap = cmd[which(cmd == "-m" | cmd == "--tg-map")+1]
+    } else {
+        quantinfo$tgMap = quantinfo$quant_options$tg_map
+    }
+    quantinfo
 }
