@@ -166,6 +166,34 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                     customCBList = customCBList, ...)
 }
 
+
+#' @rdname qcReport
+#' @export
+simpleafQCReport <- function(simpleafQuantDir, sampleId,
+                              outputFile, outputDir = "./",
+                              outputFormat = NULL, showCode = FALSE,
+                              forceOverwrite = FALSE, knitrProgress = FALSE,
+                              quiet = FALSE, ignorePandoc = FALSE,
+                              customCBList = list(), ...) {
+    if (length(customCBList) != 0) {
+        warning("custom CB lists are currently not implemented for ",
+                "alevin-fry QC reports")
+    }
+    mapDir = file.path(simpleafQuantDir, "af_map")
+    permitDir = file.path(simpleafQuantDir, "af_quant")
+    quantDir = file.path(simpleafQuantDir, "af_quant")
+
+    .alevinQCReport(baseDir = NULL, mapDir = mapDir, permitDir = permitDir,
+                    quantDir = quantDir, quantMethod = "alevin-fry",
+                    sampleId = sampleId, outputFile = outputFile,
+                    outputDir = outputDir, outputFormat = outputFormat,
+                    showCode = showCode, forceOverwrite = forceOverwrite,
+                    knitrProgress = knitrProgress, quiet = quiet,
+                    ignorePandoc = ignorePandoc,
+                    customCBList = list(), ...)
+}
+
+
 #' @rdname qcReport
 #' @export
 alevinFryQCReport <- function(mapDir, permitDir, quantDir, sampleId,
