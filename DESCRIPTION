@@ -1,14 +1,15 @@
 Package: alevinQC
 Type: Package
 Title: Generate QC Reports For Alevin Output
-Version: 1.17.0
+Version: 1.17.1
 Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), 
                     email = "charlottesoneson@gmail.com", 
                     comment = c(ORCID = "0000-0003-3833-2169")),
     person("Avi", "Srivastava", role = "aut"),
     person("Rob", "Patro", role = "aut"),
     person("Dongze", "He", role = "aut"))
-Description: Generate QC reports summarizing the output from an alevin run. 
+Description: Generate QC reports summarizing the output from an alevin, 
+    alevin-fry, or simpleaf run. 
     Reports can be generated as html or pdf files, or as shiny applications.
 Encoding: UTF-8
 SystemRequirements: C++11
@@ -17,7 +18,7 @@ Imports:
     rmarkdown (>= 2.5),
     tools,
     methods,
-    ggplot2,
+    ggplot2 (>= 3.4.0),
     GGally,
     dplyr,
     rjson,
@@ -30,7 +31,7 @@ Imports:
     cowplot,
     rlang,
     Rcpp
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     BiocStyle,
