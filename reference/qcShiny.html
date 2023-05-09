@@ -19,7 +19,7 @@ with the --dumpFeatures flag to generate the necessary output files."><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.1</span>
       </span>
     </div>
 
@@ -69,7 +69,9 @@ with the --dumpFeatures flag to generate the necessary output files.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">alevinQCShiny</span><span class="op">(</span><span class="va">baseDir</span>, <span class="va">sampleId</span>, customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">alevinFryQCShiny</span><span class="op">(</span><span class="va">mapDir</span>, <span class="va">permitDir</span>, <span class="va">quantDir</span>, <span class="va">sampleId</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">alevinFryQCShiny</span><span class="op">(</span><span class="va">mapDir</span>, <span class="va">permitDir</span>, <span class="va">quantDir</span>, <span class="va">sampleId</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">simpleafQCShiny</span><span class="op">(</span><span class="va">simpleafQuantDir</span>, <span class="va">sampleId</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -107,6 +109,12 @@ the directory containing the <code>all_freq.tsv</code> file).</p></dd>
 directory from the alevin-fry quantification step (should be
 the directory containing the <code>alevin</code> directory).</p></dd>
 
+
+<dt>simpleafQuantDir</dt>
+<dd><p>(Only used for simpleaf output) Path to the output
+directory from the simpleaf run (should be the directory containing the
+<code>af_map</code> and <code>af_quant</code> directories).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -121,11 +129,12 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">alevinQCShiny</span><span class="op">(</span>baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
-<span class="r-in"><span>                                           package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                     sampleId <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">alevinQCShiny</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
+<span class="r-in"><span>                          package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">alevinFryQCShiny</span><span class="op">(</span></span></span>
@@ -137,8 +146,17 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 <span class="r-in"><span>                           package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">simpleafQCShiny</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    simpleafQuantDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_piscem_v0.6.0"</span>,</span></span>
+<span class="r-in"><span>                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -153,7 +171,7 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

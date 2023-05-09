@@ -20,7 +20,7 @@ output files."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.15.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.1</span>
       </span>
     </div>
 
@@ -84,6 +84,21 @@ output files.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">simpleafQCReport</span><span class="op">(</span></span>
+<span>  <span class="va">simpleafQuantDir</span>,</span>
+<span>  <span class="va">sampleId</span>,</span>
+<span>  <span class="va">outputFile</span>,</span>
+<span>  outputDir <span class="op">=</span> <span class="st">"./"</span>,</span>
+<span>  outputFormat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  showCode <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  forceOverwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  knitrProgress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ignorePandoc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  customCBList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">alevinFryQCReport</span><span class="op">(</span></span>
 <span>  <span class="va">mapDir</span>,</span>
 <span>  <span class="va">permitDir</span>,</span>
@@ -127,8 +142,10 @@ generated.</p></dd>
 
 <dt>outputFormat</dt>
 <dd><p>The format of the output report. Either
-<code>"html_document"</code> or <code>"pdf_document"</code>. The file name extension of
-<code>outputFile</code> must be consistent with this choice.</p></dd>
+<code>"html_document"</code>, <code>"pdf_document"</code>,
+<code>"BiocStyle::html_document"</code> or <code>"BiocStyle::pdf_document"</code>.
+The file name extension of <code>outputFile</code> must be consistent with this
+choice.</p></dd>
 
 
 <dt>showCode</dt>
@@ -152,10 +169,10 @@ when generating the report.</p></dd>
 <dt>ignorePandoc</dt>
 <dd><p>Logical, determines what to do if <code>pandoc</code> or
 <code>pandoc-citeproc</code> is missing (if <code>Sys.which("pandoc")</code> or
-<code>Sys.which("pandoc-citeproc")</code> returns ""). If <code>ignorePandoc</code> is
-TRUE, only a warning is given. The figures will be generated, but not the
-final report. If <code>ignorePandoc</code> is FALSE (default), the execution
-stops immediately.</p></dd>
+<code>Sys.which("pandoc-citeproc")</code> returns ""). If <code>ignorePandoc</code>
+is TRUE, only a warning is given. The figures will be generated, but not
+the final report. If <code>ignorePandoc</code> is FALSE (default), the
+execution stops immediately.</p></dd>
 
 
 <dt>customCBList</dt>
@@ -166,6 +183,12 @@ alevin.</p></dd>
 
 <dt>...</dt>
 <dd><p>Other arguments that will be passed to <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render</a></code>.</p></dd>
+
+
+<dt>simpleafQuantDir</dt>
+<dd><p>(Only used for simpleaf output) Path to the output
+directory from the simpleaf run (should be the directory containing the
+<code>af_map</code> and <code>af_quant</code> directories).</p></dd>
 
 
 <dt>mapDir</dt>
@@ -191,17 +214,17 @@ the directory containing the <code>alevin</code> directory).</p></dd>
     
 
 <p>Generates a summary report in the <code>outputDir</code> directory, and
-  returns (invisibly) the name of the generated report.</p>
+    returns (invisibly) the name of the generated report.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>When the function is called, a .Rmd template file will be copied
-  into the output directory, and <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render</a></code> will be called to
-  generate the final report. If there is already a .Rmd file with the same
-  name in the output directory, the function will raise an error and stop, to
-  avoid overwriting the existing file. The reason for this behaviour is that
-  the copied template in the output directory will be deleted once the report
-  is generated.</p>
+    into the output directory, and <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render</a></code> will be called to
+    generate the final report. If there is already a .Rmd file with the same
+    name in the output directory, the function will raise an error and stop,
+    to avoid overwriting the existing file. The reason for this behaviour is
+    that the copied template in the output directory will be deleted once
+    the report is generated.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -210,18 +233,19 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">alevinQCReport</span><span class="op">(</span>baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
-<span class="r-in"><span>                                     package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>               sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinReport.html"</span>,</span></span>
-<span class="r-in"><span>               outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">alevinQCReport</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    baseDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevin_example_v0.14"</span>,</span></span>
+<span class="r-in"><span>                          package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"alevinReport.html"</span>,</span></span>
+<span class="r-in"><span>    outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 6): Library not loaded: /opt/X11/lib/libSM.6.dylib</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: /Library/Frameworks/R.framework/Versions/4.2/Resources/modules/R_X11.so</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: image not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 0x0006): Library not loaded: '/opt/X11/lib/libSM.6.dylib'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/modules/R_X11.so'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.372-7/x64/Contents/Home//lib/server/libSM.6.dylib' (no such file)</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unable to load shared object '/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so':</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so, 6): Library not loaded: /opt/X11/lib/libXrender.1.dylib</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: /Library/Frameworks/R.framework/Versions/4.2/Resources/library/grDevices/libs/cairo.so</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: image not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so, 0x0006): Library not loaded: '/opt/X11/lib/libXrender.1.dylib'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/grDevices/libs/cairo.so'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libXrender.1.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libXrender.1.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/8.0.372-7/x64/Contents/Home//lib/server/libXrender.1.dylib' (no such file)</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Quitting from lines 30-32 (alevinReport.Rmd) </span>
@@ -240,6 +264,15 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Quitting from lines 30-32 (alevinFryReport.Rmd) </span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dev.control(displaylist = if (record) "enable" else "inhibit"):</span> dev.control() called without an open graphics device</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">simpleafQCReport</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    simpleafQuantDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/alevinfry_example_piscem_v0.6.0"</span>,</span></span>
+<span class="r-in"><span>                                   package <span class="op">=</span> <span class="st">"alevinQC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sampleId <span class="op">=</span> <span class="st">"example"</span>, outputFile <span class="op">=</span> <span class="st">"simpleafReport.html"</span>,</span></span>
+<span class="r-in"><span>    outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Quitting from lines 30-32 (simpleafReport.Rmd) </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dev.control(displaylist = if (record) "enable" else "inhibit"):</span> dev.control() called without an open graphics device</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -254,7 +287,7 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>
