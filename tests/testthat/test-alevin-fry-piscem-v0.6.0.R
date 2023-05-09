@@ -204,6 +204,17 @@ test_that("report generation works", {
         outputDir = tempDir, outputFormat = NULL,
         forceOverwrite = FALSE)
     expect_equal(basename(rpt), "tmpp2simpleaf.html")
+    tmpF <- tempfile()
+    dir.create(tmpF)
+    expect_error(simpleafQCReport(simpleafQuantDir = tmpF, sampleId = "test"),
+                 "doesn't contain the `af_map` folder")
+    expect_error(simpleafQCShiny(simpleafQuantDir = tmpF, sampleId = "test"),
+                 "doesn't contain the `af_map` folder")
+    dir.create(file.path(tmpF, "af_map"))
+    expect_error(simpleafQCReport(simpleafQuantDir = tmpF, sampleId = "test"),
+                 "doesn't contain the `af_quant` folder")
+    expect_error(simpleafQCShiny(simpleafQuantDir = tmpF, sampleId = "test"),
+                 "doesn't contain the `af_quant` folder")
 
 
     ## Try to specify custom barcode lists - currently not supported
