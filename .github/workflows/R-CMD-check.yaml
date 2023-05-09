@@ -130,13 +130,13 @@ jobs:
             ${{ steps.build-install-check.outputs.install-log }}
 
       - name: Show testthat output (windows)
-        if: matrix.config.os == 'windows-latest'
+        if: always() && runner.os == 'Windows'
         run: |
             type ${{ steps.build-install-check.outputs.check-dir }}\tests\testthat.Rout
         shell: cmd
 
       - name: Show testthat output (non-windows)
-        if: matrix.config.os != 'windows-latest'
+        if: always() && runner.os != 'Windows'
         run: |
             cat ${{ steps.build-install-check.outputs.check-dir }}/tests/testthat.Rout
         shell: bash
