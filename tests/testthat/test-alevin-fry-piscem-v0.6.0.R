@@ -101,6 +101,9 @@ if (file.exists(file.path(tempDir, "tmppfry.html"))) {
 if (file.exists(file.path(tempDir, "tmpp2fry.html"))) {
     file.remove(file.path(tempDir, "tmpp2fry.html"))
 }
+if (file.exists(file.path(tempDir, "tmpp2simpleaf.html"))) {
+    file.remove(file.path(tempDir, "tmpp2simpleaf.html"))
+}
 if (file.exists(file.path(tempDir, "tmppfry3.Rmd"))) {
     file.remove(file.path(tempDir, "tmppfry3.Rmd"))
 }
@@ -193,6 +196,16 @@ test_that("report generation works", {
         forceOverwrite = FALSE)
     expect_equal(basename(rpt), "tmpp2fry.html")
 
+    ## simpleaf
+    rpt <- simpleafQCReport(
+        simpleafQuantDir = system.file("extdata/alevinfry_example_piscem_v0.6.0",
+                                       package = "alevinQC"),
+        sampleId = "test", outputFile = "tmpp2simpleaf.html",
+        outputDir = tempDir, outputFormat = NULL,
+        forceOverwrite = FALSE)
+    expect_equal(basename(rpt), "tmpp2simpleaf.html")
+
+
     ## Try to specify custom barcode lists - currently not supported
     expect_warning(rpt <- alevinFryQCReport(
         mapDir = system.file("extdata/alevinfry_example_piscem_v0.6.0/af_map",
@@ -218,6 +231,12 @@ test_that("app generation works", {
                                 package = "alevinQC"),
         quantDir = system.file("extdata/alevinfry_example_piscem_v0.6.0/af_quant",
                                package = "alevinQC"),
+        sampleId = "test")
+    expect_s3_class(app, "shiny.appobj")
+
+    app <- simpleafQCShiny(
+        simpleafQuantDir = system.file("extdata/alevinfry_example_piscem_v0.6.0",
+                                       package = "alevinQC"),
         sampleId = "test")
     expect_s3_class(app, "shiny.appobj")
 })
