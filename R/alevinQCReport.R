@@ -166,6 +166,49 @@ alevinQCReport <- function(baseDir, sampleId, outputFile, outputDir = "./",
                     customCBList = customCBList, ...)
 }
 
+
+#' @rdname qcReport
+#' @export
+simpleafQCReport <- function(simpleafQuantDir, sampleId,
+                              outputFile, outputDir = "./",
+                              outputFormat = NULL, showCode = FALSE,
+                              forceOverwrite = FALSE, knitrProgress = FALSE,
+                              quiet = FALSE, ignorePandoc = FALSE,
+                              customCBList = list(), ...) {
+    if (length(customCBList) != 0) {
+        warning("custom CB lists are currently not implemented for ",
+                "alevin-fry QC reports")
+    }
+    mapDir = file.path(simpleafQuantDir, "af_map")
+    permitDir = file.path(simpleafQuantDir, "af_quant")
+    quantDir = file.path(simpleafQuantDir, "af_quant")
+
+    if(!dir.exists(mapDir)) {
+        stop("The provided simpleaf quant output directory doesn't contain the `af_map` folder; Cannot proceed. ",
+        "Please run alevinFryQCReport() and provide mapDir, permitDir, quantDir explicitly. ",
+        "If produced by calling `simpleaf quant`, the permitDir and `quantDir` is the same and is named as `af_quant` ",
+        "under the simpleaf quant output directory.")
+    }
+
+
+    if(!dir.exists(quantDir)) {
+        stop("The provided simpleaf quant output directory doesn't contain the `af_quant` folder; Cannot proceed. ",
+        "Please run alevinFryQCReport() and provide mapDir, permitDir, quantDir explicitly. ",
+        "If produced by calling `simpleaf quant`, the permitDir and `quantDir` is the same and is named as `af_quant` ",
+        "under the simpleaf quant output directory.")
+    }
+
+    .alevinQCReport(baseDir = NULL, mapDir = mapDir, permitDir = permitDir,
+                    quantDir = quantDir, quantMethod = "alevin-fry",
+                    sampleId = sampleId, outputFile = outputFile,
+                    outputDir = outputDir, outputFormat = outputFormat,
+                    showCode = showCode, forceOverwrite = forceOverwrite,
+                    knitrProgress = knitrProgress, quiet = quiet,
+                    ignorePandoc = ignorePandoc,
+                    customCBList = list(), ...)
+}
+
+
 #' @rdname qcReport
 #' @export
 alevinFryQCReport <- function(mapDir, permitDir, quantDir, sampleId,

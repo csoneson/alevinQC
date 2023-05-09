@@ -70,6 +70,33 @@ alevinFryQCShiny <- function(mapDir, permitDir, quantDir, sampleId) {
                    sampleId = sampleId, customCBList = list())
 }
 
+simpleafQCShiny <- function(simpleafQuantDir, sampleId) {
+
+    mapDir = file.path(simpleafQuantDir, "af_map")
+    permitDir = file.path(simpleafQuantDir, "af_quant")
+    quantDir = file.path(simpleafQuantDir, "af_quant")
+
+    if(!dir.exists(mapDir)) {
+        stop("The provided simpleaf quant output directory doesn't contain the `af_map` folder; Cannot proceed. ",
+        "Please run alevinFryQCShiny() and provide mapDir, permitDir, quantDir explicitly. ",
+        "If produced by calling `simpleaf quant`, the permitDir and `quantDir` is the same and is named as `af_quant` ",
+        "under the simpleaf quant output directory.")
+    }
+
+
+    if(!dir.exists(quantDir)) {
+        stop("The provided simpleaf quant output directory doesn't contain the `af_quant` folder; Cannot proceed. ",
+        "Please run alevinFryQCShiny() and provide mapDir, permitDir, quantDir explicitly. ",
+        "If produced by calling `simpleaf quant`, the permitDir and `quantDir` is the same and is named as `af_quant` ",
+        "under the simpleaf quant output directory.")
+    }
+
+    .alevinQCShiny(baseDir = NULL, mapDir = mapDir, permitDir = permitDir,
+                   quantDir = quantDir, quantMethod = "alevin-fry",
+                   sampleId = sampleId, customCBList = list())
+}
+
+
 #' @keywords internal
 #' @noRd
 .alevinQCShiny <- function(baseDir, mapDir, permitDir, quantDir,

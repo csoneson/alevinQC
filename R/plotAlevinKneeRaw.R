@@ -45,7 +45,7 @@ plotAlevinKneeRaw <- function(cbTable,
         g <- ggplot2::ggplot(cbTable,
                         ggplot2::aes(x = .data$ranking,
                                      y = .data$originalFreq)) +
-            ggplot2::geom_line(size = 2,
+            ggplot2::geom_line(linewidth = 2,
                                ggplot2::aes(color = .data[[firstSelColName]])) +
             ggplot2::scale_x_log10() +
             ggplot2::scale_y_log10() +
@@ -69,7 +69,7 @@ plotAlevinKneeRaw <- function(cbTable,
         g <- ggplot2::ggplot(cbTable,
                         ggplot2::aes(x = .data$ranking,
                                      y = .data$originalFreq)) +
-            ggplot2::geom_line(size = 2, color = "black") +
+            ggplot2::geom_line(linewidth = 2, color = "black") +
             ggplot2::scale_x_log10() +
             ggplot2::scale_y_log10() +
             ggplot2::xlab("Cell barcode rank") +
