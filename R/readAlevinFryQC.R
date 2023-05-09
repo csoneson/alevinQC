@@ -48,8 +48,8 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                                 quantDir = quantDir)
     } else if (infversion == "piscem_v0.6.0") {
         ## v0.5.0 or newer
-        .readAlevinFryQC_piscem_v0.6.0(mapDir = mapDir, permitDir = permitDir,
-                                quantDir = quantDir)
+        .readAlevinFryQC_piscemv0.6.0(mapDir = mapDir, permitDir = permitDir,
+                                      quantDir = quantDir)
     } else {
         stop("Unidentifiable alevin-fry output")
     }
@@ -204,7 +204,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                                                  "aux_info/meta_info.json"))
     cmdinfo <- rjson::fromJSON(file = file.path(mapDir, "cmd_info.json"))
     quantinfo <- rjson::fromJSON(file = file.path(quantDir, "quant.json"))
-    quantinfo <- parse_quant_t2gmap(quantinfo)
+    quantinfo <- .parse_quant_t2gmap(quantinfo)
 
     ## Merge information about quantified CBs
     cbtable <- dplyr::full_join(
@@ -281,7 +281,7 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
 
 
 
-.readAlevinFryQC_piscem_v0.6.0 <- function(mapDir, permitDir, quantDir) {
+.readAlevinFryQC_piscemv0.6.0 <- function(mapDir, permitDir, quantDir) {
 
     ## Raw CB frequencies (in descending order)
     if (file.exists(file.path(permitDir, "all_freq.bin"))) {
@@ -317,10 +317,10 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
                                                      "permit_freq.bin"))[[1]]
 
     mapinfo <- rjson::fromJSON(file = file.path(mapDir, "map_info.json"))
-    mapinfo <- parse_piscem_map_info(mapinfo)
+    mapinfo <- .parse_piscem_map_info(mapinfo)
 
     quantinfo <- rjson::fromJSON(file = file.path(quantDir, "quant.json"))
-    quantinfo <- parse_quant_t2gmap(quantinfo)
+    quantinfo <- .parse_quant_t2gmap(quantinfo)
 
 
     ## Merge information about quantified CBs
@@ -381,22 +381,26 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
     )
 }
 
-parse_piscem_map_info <- function(mapinfo) {
-    cmdline = strsplit(mapinfo$cmdline," ")[[1]][-1]
+#' @keywords internal
+#' @noRd
+.parse_piscem_map_info <- function(mapinfo) {
+    cmdline <- strsplit(mapinfo$cmdline," ")[[1]][-1]
 
-    mapinfo$Index = cmdline[which(cmdline == "-i" | cmdline == "--index")+1]
-    mapinfo$R1file = cmdline[which(cmdline == "-1" | cmdline == "--read1")+1]
-    mapinfo$R2file = cmdline[which(cmdline == "-2" | cmdline == "--read2")+1]
+    mapinfo$Index <- cmdline[which(cmdline == "-i" | cmdline == "--index") + 1]
+    mapinfo$R1file <- cmdline[which(cmdline == "-1" | cmdline == "--read1") + 1]
+    mapinfo$R2file <- cmdline[which(cmdline == "-2" | cmdline == "--read2") + 1]
 
     mapinfo
 }
 
-parse_quant_t2gmap <- function(quantinfo) {
+#' @keywords internal
+#' @noRd
+.parse_quant_t2gmap <- function(quantinfo) {
     if (is.null(quantinfo$quant_options$tg_map)) {
-        cmd = strsplit(quantinfo$cmd, " ")[[1]]
-        quantinfo$tgMap = cmd[which(cmd == "-m" | cmd == "--tg-map")+1]
+        cmd <- strsplit(quantinfo$cmd, " ")[[1]]
+        quantinfo$tgMap <- cmd[which(cmd == "-m" | cmd == "--tg-map") + 1]
     } else {
-        quantinfo$tgMap = quantinfo$quant_options$tg_map
+        quantinfo$tgMap <- quantinfo$quant_options$tg_map
     }
     quantinfo
 }
