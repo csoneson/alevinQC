@@ -4,11 +4,14 @@
 \alias{qcShiny}
 \alias{alevinQCShiny}
 \alias{alevinFryQCShiny}
+\alias{simpleafQCShiny}
 \title{Generate alevin/alevin-fry summary shiny app}
 \usage{
 alevinQCShiny(baseDir, sampleId, customCBList = list())
 
 alevinFryQCShiny(mapDir, permitDir, quantDir, sampleId)
+
+simpleafQCShiny(simpleafQuantDir, sampleId)
 }
 \arguments{
 \item{baseDir}{(Only used for alevin output) Path to the output directory
@@ -32,6 +35,10 @@ the directory containing the \code{all_freq.tsv} file).}
 \item{quantDir}{(Only used for alevin-fry output) Path to the output
 directory from the alevin-fry quantification step (should be
 the directory containing the \code{alevin} directory).}
+
+\item{simpleafQuantDir}{(Only used for simpleaf output) Path to the output
+directory from the simpleaf run (should be the directory containing the
+\code{af_map} and \code{af_quant} directories).}
 }
 \value{
 A shiny app.
@@ -42,9 +49,10 @@ quantification run. The app generation assumes that alevin has been run
 with the --dumpFeatures flag to generate the necessary output files.
 }
 \examples{
-app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example_v0.14",
-                                           package = "alevinQC"),
-                     sampleId = "example")
+app <- alevinQCShiny(
+    baseDir = system.file("extdata/alevin_example_v0.14",
+                          package = "alevinQC"),
+    sampleId = "example")
 if (interactive()) {
     shiny::runApp(app)
 }
@@ -60,6 +68,15 @@ app <- alevinFryQCShiny(
 if (interactive()) {
     shiny::runApp(app)
 }
+
+app <- simpleafQCShiny(
+    simpleafQuantDir = system.file("extdata/alevinfry_example_piscem_v0.6.0",
+                                   package = "alevinQC"),
+    sampleId = "example")
+if (interactive()) {
+    shiny::runApp(app)
+}
+
 }
 \author{
 Charlotte Soneson
