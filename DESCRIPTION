@@ -1,7 +1,7 @@
 Package: alevinQC
 Type: Package
 Title: Generate QC Reports For Alevin Output
-Version: 1.16.0
+Version: 1.16.1
 Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), 
                     email = "charlottesoneson@gmail.com", 
                     comment = c(ORCID = "0000-0003-3833-2169")),
