@@ -27,8 +27,16 @@ author: "`r paste0('alevinQC (v', utils::packageVersion('alevinQC'), ')')`"
 </style>
 
 ```{r prep, include = FALSE}
-knitr::opts_chunk$set(echo = showCode, warning = FALSE, message = FALSE)
-knitr::opts_knit$set(progress = FALSE, verbose = FALSE)
+knitr::opts_chunk$set(
+    echo = showCode, 
+    warning = FALSE, 
+    message = FALSE,
+    crop = NULL
+)
+knitr::opts_knit$set(
+    progress = FALSE, 
+    verbose = FALSE
+)
 ```
 
 ```{r setup-alevin, echo = showCode && (quantMethod == "alevin"), eval = (quantMethod == "alevin")}
