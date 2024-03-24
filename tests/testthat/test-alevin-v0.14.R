@@ -28,13 +28,15 @@ test_that("checking for input files works", {
 })
 
 ## Read provided example input files for tests of file reading/plotting
-expect_message(alevin <- readAlevinQC(
-    system.file("extdata/alevin_example_v0.14",
-                package = "alevinQC"),
-    customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                 "ATGAGGGAGTAGTGCG"),
-                        set2 = c("CGAACATTCTGATACG"))),
-    "100% of barcodes in custom barcode set set1 were found in the data set")
+expect_message(
+    expect_message(alevin <- readAlevinQC(
+        system.file("extdata/alevin_example_v0.14",
+                    package = "alevinQC"),
+        customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                     "ATGAGGGAGTAGTGCG"),
+                            set2 = c("CGAACATTCTGATACG"))),
+        "100% of barcodes in custom barcode set set1 were found in the data set"),
+    "100% of barcodes in custom barcode set set2 were found in the data set")
 
 test_that("reading input files works", {
     expect_length(alevin, 4)
@@ -90,12 +92,14 @@ file.copy(from = system.file("extdata/alevin_example_v0.14",
                              package = "alevinQC"),
           to = tmp, overwrite = TRUE, recursive = TRUE)
 file.remove(file.path(tmp, "alevin_example_v0.14/alevin/whitelist.txt"))
-expect_message(alevin <- readAlevinQC(
-    file.path(tmp, "alevin_example_v0.14"),
-    customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                 "ATGAGGGAGTAGTGCG"),
-                        set2 = c("CGAACATTCTGATACG"))),
-    "100% of barcodes in custom barcode set set1 were found in the data set")
+expect_message(
+    expect_message(alevin <- readAlevinQC(
+        file.path(tmp, "alevin_example_v0.14"),
+        customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                     "ATGAGGGAGTAGTGCG"),
+                            set2 = c("CGAACATTCTGATACG"))),
+        "100% of barcodes in custom barcode set set1 were found in the data set"),
+    "100% of barcodes in custom barcode set set2 were found in the data set")
 
 test_that("reading input files works", {
     expect_length(alevin, 4)
@@ -244,11 +248,15 @@ test_that("app generation works", {
                                                package = "alevinQC"),
                          sampleId = "test")
     expect_s3_class(app, "shiny.appobj")
-    app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example_v0.14",
-                                               package = "alevinQC"),
-                         sampleId = "test",
-                         customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
-                                                      "ATGAGGGAGTAGTGCG"),
-                                             set2 = c("CGAACATTCTGATACG")))
+    expect_message(
+        expect_message(
+            app <- alevinQCShiny(baseDir = system.file("extdata/alevin_example_v0.14",
+                                                       package = "alevinQC"),
+                                 sampleId = "test",
+                                 customCBList = list(set1 = c("TCGCGAGGTTCAGACT",
+                                                              "ATGAGGGAGTAGTGCG"),
+                                                     set2 = c("CGAACATTCTGATACG"))),
+            "100% of barcodes in custom barcode set set1 were found in the data set"),
+        "100% of barcodes in custom barcode set set2 were found in the data set")
     expect_s3_class(app, "shiny.appobj")
 })
