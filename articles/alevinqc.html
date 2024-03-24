@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.19.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.19.2</span>
       </span>
     </div>
 
@@ -199,6 +199,21 @@ function from the <em><a href="https://CRAN.R-project.org/package=shiny" class="
 package.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></code></pre></div>
+<p>It is possible to export the data used internally by the interactive
+application (in effect, the output from the internal call to
+<code><a href="../reference/readAlevinQC.html">readAlevinQC()</a></code> or <code><a href="../reference/readAlevinFryQC.html">readAlevinFryQC()</a></code>). To
+enable such export, first generate the <code>app</code> object as in the
+example above, and then assign the call to <code><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">shiny::runApp()</a></code>
+to a variable to capture the output. For example:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>To activate the export, make sure to click the button ‘Close app’ in
+the top right corner in order to close the application (don’t just close
+the window). This will take you back to your R session, where the
+variable <code>out</code> will be populated with the data used in the
+app.</p>
 </div>
 <div class="section level2">
 <h2 id="generate-individual-plots">Generate individual plots<a class="anchor" aria-label="anchor" href="#generate-individual-plots"></a>
@@ -206,7 +221,7 @@ package.</p>
 <p>The individual plots included in the QC reports can also be
 independently generated. To do so, we must first read the alevin output
 into an R object.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alevin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readAlevinQC.html">readAlevinQC</a></span><span class="op">(</span>baseDir <span class="op">=</span> <span class="va">baseDir</span><span class="op">)</span></span></code></pre></div>
 <p>The resulting list contains four entries:</p>
 <ul>
@@ -225,7 +240,7 @@ about the invokation of alevin.</li>
 <code>type</code>: a <code>character</code> scalar indicating how
 alevinQC interpreted the alevin output directory.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 CB originalFreq ranking collapsedFreq nbrMappedUMI</span></span>
 <span><span class="co">#&gt; 1 GACTGCGAGGGCATGT       121577       1        123419       104128</span></span>
@@ -248,7 +263,7 @@ alevinQC interpreted the alevin output directory.</li>
 <span><span class="co">#&gt; 4               957           1.43441             TRUE             TRUE</span></span>
 <span><span class="co">#&gt; 5              1238           1.44149             TRUE             TRUE</span></span>
 <span><span class="co">#&gt; 6              1068           1.43393             TRUE             TRUE</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">summaryTables</span><span class="op">$</span><span class="va">fullDataset</span><span class="op">)</span></span></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
@@ -284,7 +299,7 @@ alevinQC interpreted the alevin output directory.</li>
 <td align="left">188613</td>
 </tr>
 </tbody></table>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">summaryTables</span><span class="op">$</span><span class="va">initialWhitelist</span><span class="op">)</span></span></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
@@ -328,7 +343,7 @@ whitelist)</td>
 <td align="left">31353</td>
 </tr>
 </tbody></table>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">summaryTables</span><span class="op">$</span><span class="va">finalWhitelist</span><span class="op">)</span></span></code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
@@ -371,7 +386,7 @@ whitelist)</td>
 <td align="left">32028</td>
 </tr>
 </tbody></table>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">versionTable</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -413,23 +428,23 @@ whitelist)</td>
 provided with <em><a href="https://bioconductor.org/packages/3.19/alevinQC" class="external-link">alevinQC</a></em>
 (see the help file for the respective function for more
 information).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotAlevinKneeRaw.html">plotAlevinKneeRaw</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span></code></pre></div>
 <p><img src="alevinqc_files/figure-html/v13-1.png" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotAlevinBarcodeCollapse.html">plotAlevinBarcodeCollapse</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span></code></pre></div>
 <p><img src="alevinqc_files/figure-html/v13-2.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotAlevinQuant.html">plotAlevinQuant</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span></code></pre></div>
 <p><img src="alevinqc_files/figure-html/v13-3.png" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotAlevinKneeNbrGenes.html">plotAlevinKneeNbrGenes</a></span><span class="op">(</span><span class="va">alevin</span><span class="op">$</span><span class="va">cbTable</span><span class="op">)</span></span></code></pre></div>
 <p><img src="alevinqc_files/figure-html/v13-4.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R Under development (unstable) (2024-03-22 r86169)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-apple-darwin20</span></span>
@@ -449,7 +464,7 @@ information).</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] alevinQC_1.19.1  BiocStyle_2.31.0</span></span>
+<span><span class="co">#&gt; [1] alevinQC_1.19.2  BiocStyle_2.31.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] tximport_1.31.0      gtable_0.3.4         rjson_0.2.21        </span></span>
