@@ -11,7 +11,7 @@ template:
 reference:
 - title: Overview
   contents:
-    - '`alevinQC-pkg`'
+    - '`alevinQC-package`'
 - title: Functions for reading alevin/alevin-fry output data
   contents:
     - '`checkAlevinInputFiles`'
