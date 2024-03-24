@@ -1,3 +1,7 @@
+# alevinQC 1.19.2
+
+* Add 'Close app' button to close the shiny application and return data
+
 # alevinQC 1.15.1
 
 * Support BiocStyle::pdf_document and BiocStyle::html_document output formats (thanks to Mike Smith for insights regarding BiocStyle)

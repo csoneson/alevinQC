@@ -29,8 +29,10 @@
 #' @name qcShiny
 #'
 #' @import dplyr
-#' @importFrom shiny fluidRow plotOutput renderPlot shinyApp
-#' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar box
+#' @importFrom shiny fluidRow plotOutput renderPlot shinyApp actionButton icon
+#'     stopApp observeEvent
+#' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar
+#'     box dropdownMenu notificationItem
 #' @importFrom DT dataTableOutput datatable renderDataTable
 #' @importFrom utils packageVersion
 #'
@@ -144,7 +146,22 @@ simpleafQCShiny <- function(simpleafQuantDir, sampleId) {
             title = paste0("alevinQC (v",
                            utils::packageVersion("alevinQC"), "), ",
                            sampleId),
-            titleWidth = (10 + nchar(sampleId)) * 20),
+            titleWidth = (10 + nchar(sampleId)) * 20,
+            shinydashboard::dropdownMenu(
+                type = "tasks",
+                icon = shiny::icon("circle-xmark"),
+                badgeStatus = NULL,
+                headerText = "",
+                shinydashboard::notificationItem(
+                    text = shiny::actionButton(
+                        inputId = "close_app", label = "Close app",
+                        icon = shiny::icon("circle-xmark")
+                    ),
+                    icon = shiny::icon(""), # tricking it to not have additional icon
+                    status = "primary"
+                )
+            )
+        ),
 
         shinydashboard::dashboardSidebar(disable = TRUE),
 
@@ -390,6 +407,16 @@ simpleafQCShiny <- function(simpleafQuantDir, sampleId) {
                 id <- paste0("hpl", i)
                 shiny::plotOutput(id)
             })
+        })
+
+        ## ----------------------------------------------------------------- ##
+        ## Close and return button
+        ## ----------------------------------------------------------------- ##
+        shiny::observeEvent(input$close_app, {
+            shiny::stopApp(returnValue = list(alevin = alevin,
+                                              firstSelColName = firstSelColName,
+                                              wlName = wlName,
+                                              countCol = countCol))
         })
 
     } # nocov end
