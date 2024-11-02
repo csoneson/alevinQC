@@ -20,7 +20,7 @@ output files."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">alevinQC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.21.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0</span>
       </span>
     </div>
 
@@ -240,12 +240,12 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 <span class="r-in"><span>    outputDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, forceOverwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 0x0006): Library not loaded: /opt/X11/lib/libSM.6.dylib</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: &lt;31EADEB5-0A17-3546-9944-9B3747071FE8&gt; /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/modules/R_X11.so</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libSM.6.dylib' (no such file), '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.3-9.0/arm64/Contents/Home//lib/server/libSM.6.dylib' (no such file)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: &lt;90A8A2AC-A629-3717-A4A5-D58EA3C840EE&gt; /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/modules/R_X11.so</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libSM.6.dylib' (no such file), '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.5-11.0/arm64/Contents/Home//lib/server/libSM.6.dylib' (no such file)</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>unable to load shared object '/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so':</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   dlopen(/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so, 0x0006): Library not loaded: /opt/X11/lib/libXrender.1.dylib</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: &lt;63619C6D-FE72-3544-BCEF-9C834A5E39D8&gt; /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/library/grDevices/libs/cairo.so</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libXrender.1.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libXrender.1.dylib' (no such file), '/opt/X11/lib/libXrender.1.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libXrender.1.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.3-9.0/arm64/Contents/Home//lib/server/libXrender.1.dylib' (no such file)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Referenced from: &lt;C6A11057-3B07-39E4-BC6D-BF4311277098&gt; /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/grDevices/libs/cairo.so</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Reason: tried: '/opt/X11/lib/libXrender.1.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libXrender.1.dylib' (no such file), '/opt/X11/lib/libXrender.1.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libXrender.1.dylib' (no such file), '/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.5-11.0/arm64/Contents/Home//lib/server/libXrender.1.dylib' (no such file)</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>failed to load cairo DLL</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dev.control(displaylist = if (record) "enable" else "inhibit"):</span> dev.control() called without an open graphics device</span>
@@ -292,7 +292,7 @@ the directory containing the <code>alevin</code> directory).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
 </div>
 
       </footer></div>
