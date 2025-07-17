@@ -1,3 +1,7 @@
+# alevinQC 1.25.1
+
+* Minor fixes to tests to be more robust to possible future changes in ggplot2
+
 # alevinQC 1.19.3
 
 * Minor fixes to adapt to changes in ggplot2
