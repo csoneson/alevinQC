@@ -45,11 +45,11 @@ expect_error(alevin <- readAlevinQC(
 # })
 #
 # test_that("plots are generated", {
-#     expect_is(plotAlevinKneeRaw(alevin$cbTable), "ggplot")
-#     expect_is(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
+#     expect_true(ggplot2::is_ggplot(plotAlevinKneeRaw(alevin$cbTable)))
+#     expect_true(ggplot2::is_ggplot(plotAlevinBarcodeCollapse(alevin$cbTable)))
 #     expect_is(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
-#     expect_is(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
-#     expect_is(plotAlevinHistogram(alevin$cbTable), "ggplot")
+#     expect_true(ggplot2::is_ggplot(plotAlevinKneeNbrGenes(alevin$cbTable)))
+#     expect_true(ggplot2::is_ggplot(plotAlevinHistogram(alevin$cbTable)))
 # })
 #
 # tempDir <- tempdir()

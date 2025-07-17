@@ -67,14 +67,14 @@ test_that("reading input files works", {
 })
 
 test_that("plots are generated", {
-    expect_s3_class(plotAlevinKneeRaw(alevin$cbTable), "ggplot")
+    expect_true(ggplot2::is_ggplot(plotAlevinKneeRaw(alevin$cbTable)))
     cbTableTmp <- alevin$cbTable
     cbTableTmp$inFirstWhiteList[1] <- FALSE
-    expect_s3_class(plotAlevinKneeRaw(cbTableTmp), "ggplot")
-    expect_s3_class(plotAlevinBarcodeCollapse(alevin$cbTable), "ggplot")
+    expect_true(ggplot2::is_ggplot(plotAlevinKneeRaw(cbTableTmp)))
+    expect_true(ggplot2::is_ggplot(plotAlevinBarcodeCollapse(alevin$cbTable)))
     expect_s3_class(plotAlevinQuantPairs(alevin$cbTable), "ggmatrix")
-    expect_s3_class(plotAlevinKneeNbrGenes(alevin$cbTable), "ggplot")
-    expect_s3_class(plotAlevinHistogram(alevin$cbTable), "ggplot")
+    expect_true(ggplot2::is_ggplot(plotAlevinKneeNbrGenes(alevin$cbTable)))
+    expect_true(ggplot2::is_ggplot(plotAlevinHistogram(alevin$cbTable)))
 
     expect_error(plotAlevinQuantPairs(alevin$cbTable,
                                       colName = "nbrGenesAboveMean"))

@@ -47,19 +47,19 @@ test_that("reading input files works", {
 })
 
 test_that("plots are generated", {
-    expect_s3_class(plotAlevinKneeRaw(
-        alevin$cbTable, firstSelColName = "inPermitList"), "ggplot")
-    expect_s3_class(plotAlevinBarcodeCollapse(
+    expect_true(ggplot2::is_ggplot(plotAlevinKneeRaw(
+        alevin$cbTable, firstSelColName = "inPermitList")))
+    expect_true(ggplot2::is_ggplot(plotAlevinBarcodeCollapse(
         alevin$cbTable,
-        firstSelColName = "inPermitList", countCol = "nbrMappedUMI"), "ggplot")
+        firstSelColName = "inPermitList", countCol = "nbrMappedUMI")))
     expect_s3_class(plotAlevinQuantPairs(
         alevin$cbTable,
         firstSelColName = "inPermitList", colName = "inPermitList"), "ggmatrix")
-    expect_s3_class(plotAlevinKneeNbrGenes(
-        alevin$cbTable, firstSelColName = "inPermitList"), "ggplot")
-    expect_s3_class(plotAlevinHistogram(
+    expect_true(ggplot2::is_ggplot(plotAlevinKneeNbrGenes(
+        alevin$cbTable, firstSelColName = "inPermitList")))
+    expect_true(ggplot2::is_ggplot(plotAlevinHistogram(
         alevin$cbTable, colName = "inPermitList", cbName = "permitlist",
-        firstSelColName = "inPermitList"), "ggplot")
+        firstSelColName = "inPermitList")))
 
     expect_error(plotAlevinQuantPairs(alevin$cbTable,
                                       firstSelColName = "inPermitList",
