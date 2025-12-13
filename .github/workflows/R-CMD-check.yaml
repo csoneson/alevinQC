@@ -32,6 +32,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CURL_CONFIG: ${{ matrix.config.curlConfigPath }}curl-config
+      cache-version: v1
 
     steps:
       - name: Check out repo
@@ -83,8 +84,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-
+          key: ${{ env.cache-version }}-${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-bioc-${{ matrix.config.bioc }}-pandoc-${{ matrix.config.pandoc }}-
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
