@@ -13,7 +13,6 @@ Description: Generate QC reports summarizing the output from an alevin,
     alevin-fry, or simpleaf run. 
     Reports can be generated as html or pdf files, or as shiny applications.
 Encoding: UTF-8
-SystemRequirements: C++11
 Depends: R (>= 4.0)
 Imports: 
     rmarkdown (>= 2.5),
@@ -32,7 +31,7 @@ Imports:
     cowplot,
     rlang,
     Rcpp
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     knitr,
     BiocStyle,
