@@ -1,3 +1,7 @@
+# alevinQC 1.27.1
+
+* Remove explicit C++11 system dependency
+
 # alevinQC 1.25.1
 
 * Minor fixes to tests to be more robust to possible future changes in ggplot2
