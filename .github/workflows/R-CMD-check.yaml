@@ -51,10 +51,6 @@ jobs:
         with:
           pandoc-version: ${{ matrix.config.pandoc }}
 
-      # - name: Set bitmapType
-      #   if: runner.os == 'macOS'
-      #   run: echo 'options(bitmapType = "cairo")' >> $HOME/.Rprofile
-
       - name: Show repositories
         run: |
           Rscript -e 'print(getOption("repos"))'
@@ -93,6 +89,11 @@ jobs:
           print(deps)
           BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], Ncpu = 2L)
           remotes::install_cran(c('rcmdcheck', 'rmarkdown'), Ncpu = 2L)
+        shell: Rscript {0}
+
+      - name: Install Rcpp from source
+        run: |
+          BiocManager::install("Rcpp", type = "source", force = TRUE)
         shell: Rscript {0}
 
       - name: Test pandoc configuration
