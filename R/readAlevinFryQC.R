@@ -50,7 +50,11 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
         ## v0.5.0 or newer
         .readAlevinFryQC_piscemv0.6.0(mapDir = mapDir, permitDir = permitDir,
                                       quantDir = quantDir)
-    } else {
+    } else if (infversion == "piscem_v0.6.0_multiquant") {
+        ## v0.5.0 or newer
+        .readAlevinFryQC_piscemv0.6.0_multiquant(mapDir = mapDir, permitDir = permitDir,
+                                      quantDir = quantDir)
+    }else {
         stop("Unidentifiable alevin-fry output")
     }
 }
@@ -404,3 +408,105 @@ readAlevinFryQC <- function(mapDir, permitDir, quantDir) {
     }
     quantinfo
 }
+
+.readAlevinFryQC_piscemv0.6.0_multiquant <- function(mapDir, permitDir, quantDir) {
+
+    ## Raw CB frequencies (in descending order)
+    BinFiles <- .getSimpleAfMultiQuantDirs(quantDir)
+    FreqFiles <- sapply(BinFiles, \(files) files[sapply(files, \(file) basename(file) == "permit_freq.bin")])
+    rawcbfreq <- do.call(rbind, lapply(names(FreqFiles), \(sample_name) {
+                          tmpdf <- cpp_get_permit_freq_info(FreqFiles[sample_name])
+                          data.frame(
+                            CB = tmpdf[[1]],
+                            originalFreq = tmpdf[[2]],
+                            sample_name = sub("^sample_", "", sample_name),
+                            inPermitList = TRUE
+        )
+    })) %>%
+        dplyr::arrange(dplyr::desc(originalFreq)) %>%
+        dplyr::mutate(ranking = dplyr::row_number())
+    if (!all(diff(rawcbfreq$originalFreq) <= 0)) {
+        warning("The raw CB frequencies are not sorted in decreasing order")
+    }
+
+    ## FeatureDump
+    featuredump <- utils::read.delim(file.path(quantDir, "featureDump.txt"),
+                                     header = TRUE, as.is = TRUE, sep = "\t")
+    featuredump <- featuredump %>%
+        dplyr::rename(mappingRate = MappingRate,
+                      collapsedFreq = CorrectedReads,
+                      dedupRate = DedupRate,
+                      nbrGenesAboveMean = NumGenesOverMean,
+                      nbrMappedUMI = MappedReads,
+                      totalUMICount = DeduplicatedReads,
+                      nbrGenesAboveZero = NumGenesExpressed)
+
+    mapinfo <- rjson::fromJSON(file = file.path(mapDir, "map_info.json"))
+    mapinfo <- .parse_piscem_map_info(mapinfo)
+
+    quantinfo <- rjson::fromJSON(file = file.path(quantDir, "quant.json"))
+    quantinfo <- .parse_quant_t2gmap(quantinfo)
+
+
+    ## Merge information about quantified CBs
+    cbtable <- dplyr::full_join(
+        rawcbfreq,
+        featuredump,
+        by = c("CB","sample_name")
+    )
+    # there should be no cases that are missing, but just in case
+    cbtable$inPermitList[is.na(cbtable$inPermitList)] <- FALSE
+
+    ## Add information from custom barcode sets (not implemented)
+    customCBsummary <- list()
+
+
+    ## Create "version info" table
+    versiontable <- t(data.frame(
+        `Run time (seconds)` = mapinfo$runtime_seconds,
+        # `Salmon version` = metainfo$salmon_version,
+        `alevin-fry version (quant)` = quantinfo$version_str,
+        `Index` = mapinfo$Index,
+        `R1file` = mapinfo$R1file,
+        `R2file` = mapinfo$R2file,
+        `tgMap` = quantinfo$tgMap,
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+    ))
+
+
+    ## Create summary tables
+    summarytable_full <- t(data.frame(
+        `Total number of processed reads` =
+            as.character(mapinfo$num_reads),
+        `Number of mapped reads` = mapinfo$num_mapped,
+        `Percent of mapped reads` = mapinfo$percent_mapped,
+        `Total number of observed cell barcodes` =
+            as.character(length(unique(cbtable$CB))),
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+    ))
+
+    summarytable_permitlist <- .makeSummaryTable(
+        cbtable = cbtable,
+        colName = "inPermitList",
+        cbName = " (permitlist)",
+        countCol = "nbrMappedUMI",
+        quantmat = NULL
+    )
+
+
+    ## Return
+    list(cbTable = cbtable, versionTable = versiontable,
+         summaryTables = c(list(fullDataset = summarytable_full,
+                                permitlist = summarytable_permitlist),
+                           customCBsummary),
+         type = "alevin-fry"
+    )
+}
+
+
+
+
+
+
