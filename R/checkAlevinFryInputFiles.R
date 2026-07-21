@@ -71,6 +71,20 @@ checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
                  paste(v0.4.3, collapse = "\n"), "\n\n")
     }
 
+    ## First check if the files are compatible with piscem v0.6.0 or newer
+    piscem_0.6.0_multiquant <- .checkAlevinFryInputFiles_piscem0.6.0_multiquant(mapDir = mapDir,
+                                                          permitDir = permitDir,
+                                                          quantDir = quantDir)
+    if (is.null(piscem_0.6.0_multiquant)) {
+        return("piscem_v0.6.0_multiquant")
+    } else {
+        msg <- c(msg,
+                 "Input directory not compatible with alevin-fry with the ",
+                 "piscem mapper v0.6.0 or newer as the simpleaf multiquant, the following required ",
+                 "file(s) are missing or malformed:\n",
+                 paste(piscem_0.6.0_multiquant, collapse = "\n"), "\n\n")
+    }
+
     ## If we are here, the baseDir doesn't match any of the known
     ## output structures.
     stop(msg)
@@ -205,3 +219,60 @@ checkAlevinFryInputFiles <- function(mapDir, permitDir, quantDir) {
     ## If we are here, the input is consistent with the expectation
     return(NULL)
 }
+
+
+#' @keywords internal
+#' @noRd
+.getSimpleAfMultiQuantDirs <- function(quantDir) {
+    potentialSampleQuantDirs <- list.dirs(quantDir)
+    potentialSampleQuantDirs <- potentialSampleQuantDirs[grepl("sample*",potentialSampleQuantDirs)]
+    requiredFiles <- c("permit_freq.bin", "permit_map.bin")
+    fileList <- lapply(potentialSampleQuantDirs, \(file) list.files(file, full.names=TRUE))
+    names(fileList) <- basename(potentialSampleQuantDirs)
+    hasRequired = sapply(names(fileList), \(file) all(sapply(requiredFiles,\(file2) basename(file2) %in% basename(fileList[[file]]))))
+    fileList[hasRequired]
+}
+
+#' @keywords internal
+#' @noRd
+.checkAlevinFryInputFiles_piscem0.6.0_multiquant <- function(mapDir, permitDir, quantDir) {
+    ## Raise an error if any of the required files is missing
+    reqFiles <- file.path(permitDir, "generate_permit_list.json")
+    if (!file.exists(reqFiles)) {
+        return(reqFiles)
+    }
+    reqFiles <- c(reqFiles,
+                  file.path(quantDir, "featureDump.txt"),
+                  file.path(quantDir, "quant.json"),
+                  file.path(mapDir, "map_info.json"))
+
+    if (length(.getSimpleAfMultiQuantDirs(quantDir)) == 0) {
+        return("missing_multiplex_quant_files")
+    }
+
+    missingFiles <- reqFiles[vapply(reqFiles,
+                                    function(f) {
+                                        !file.exists(f)
+                                    }, TRUE)]
+    if (length(missingFiles) > 0) {
+        return(missingFiles)
+    }
+
+    ## Check that all required columns in featureDump.txt are present
+    coln <- unlist(utils::read.delim(
+        file.path(quantDir, "featureDump.txt"),
+        header = FALSE, as.is = TRUE, sep = "\t", nrows = 1))
+    if (!(all(c("CorrectedReads", "MappingRate", "DedupRate",
+                "NumGenesOverMean", "MappedReads", "DeduplicatedReads",
+                "NumGenesExpressed") %in% coln))) {
+        missingFiles <- c(file.path(quantDir, "featureDump.txt"))
+    }
+
+    if (length(missingFiles) > 0) {
+        return(missingFiles)
+    }
+
+    ## If we are here, the input is consistent with the expectation
+    return(NULL)
+}
+
