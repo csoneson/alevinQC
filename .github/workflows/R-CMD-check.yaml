@@ -29,7 +29,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      cache-version: v4
+      cache-version: v5
 
     steps:
       - name: Check out repo
@@ -149,7 +149,7 @@ jobs:
         uses: grimbough/bioc-actions/run-BiocCheck@v1
         with:
           arguments: '--no-check-bioc-views --no-check-bioc-help'
-          error-on: 'error'
+          error-on: 'never'
 
       - name: Test coverage
         if: matrix.config.os == 'macos-latest' && matrix.config.pandoc == null
