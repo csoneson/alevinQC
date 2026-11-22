@@ -29,7 +29,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      cache-version: v5
+      cache-version: v6
 
     steps:
       - name: Check out repo
@@ -155,8 +155,10 @@ jobs:
         if: matrix.config.os == 'macos-latest' && matrix.config.pandoc == null
         run: |
           install.packages("covr")
-          covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")
+          covr::codecov(quiet = FALSE)
         shell: Rscript {0}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Install fansi
         run: |
